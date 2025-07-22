@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>문의 작성</title>
+
+    <!-- Quill 스타일 -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet"/>
+    <link href="/image/didimIcon.png" rel="icon" type="image/png">
+
+    <style>
+        body {
+          background: linear-gradient(135deg, #f0fdfa 0%, #ecfdf5 25%, #f0fdf4 50%, #f7fee7 75%, #fffbeb 100%);
+          font-family: "Noto Sans KR", sans-serif;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+        }
+        .container {
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(10px);
+          border-radius: 15px;
+          padding: 40px;
+          width: 100%;
+          max-width: 1000px;
+          box-shadow: 0 8px 32px rgba(168, 230, 207, 0.15);
+        }
+
+        .form-group {
+          margin-top: 20px;
+        }
+
+        .form-group label {
+          font-weight: 600;
+          color: #4a9b8e;
+          display: block;
+          margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group select {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #a8e6cf;
+          border-radius: 6px;
+          font-size: 1rem;
+          box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+          outline: none;
+          border-color: #7fcdcd;
+          box-shadow: 0 0 0 2px rgba(127, 205, 205, 0.2);
+        }
+
+        .form-row {
+          display: flex;
+          gap: 15px;
+          align-items: end;
+        }
+
+        .form-row .form-group {
+          flex: 1;
+          margin-top: 0;
+        }
+
+        .add-manager-btn {
+          background: linear-gradient(45deg, #a8e6cf, #7fcdcd);
+          color: white;
+          border: none;
+          padding: 10px 15px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 0.9rem;
+          height: 40px;
+          white-space: nowrap;
+        }
+
+        .add-manager-btn:hover {
+          background: linear-gradient(45deg, #7fcdcd, #a8e6cf);
+        }
+
+        #editor {
+          height: 500px;
+          background: white;
+          border-radius: 0px 0px 8px 8px;
+          font-size: 1.05rem;
+        }
+
+        input#title {
+          font-size: 1.1rem;
+          padding: 12px;
+        }
+
+        .ql-toolbar.ql-snow {
+          border-radius: 8px 8px 0 0;
+        }
+
+        .ql-container.ql-snow {
+          border-radius: 0 0 8px 8px;
+          border-top: none;
+        }
+
+        .readonly-field {
+          background-color: #f8f9fa;
+          color: #6c757d;
+        }
+
+        .submit-btn {
+          background: linear-gradient(45deg, #a8e6cf, #7fcdcd);
+          color: #fff;
+          padding: 8px 16px;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .submit-btn:disabled {
+          background: #ccc;
+          color: #666;
+          cursor: not-allowed;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <h2 style="text-align:center; color:#4a9b8e;">문의 작성</h2>
+    <form action="/inquiryWrite" id="inquiryForm" method="POST">
+
+        <!-- 제목 -->
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input id="title" name="title" placeholder="문의 제목을 입력하세요" required type="text"/>
+        </div>
+        <br>
+        <!-- 담당자 선택 -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="manager">담당자</label>
+                <select id="manager" name="managerId" required>
+                    <option value="">담당자를 선택하세요</option>
+                    <option th:data-email="${manager.email}"
+                            th:data-tel="${manager.tel}"
+                            th:each="manager : ${managerList}"
+                            th:text="${manager.name}"
+                            th:value="${manager.id}">
+                    </option>
+                </select>
+            </div>
+            <button class="add-manager-btn" onclick="openAddManagerModal()" type="button">
+                담당자 추가
+            </button>
+        </div>
+        <br>
+        <!-- 연락처 정보 -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="managertel">담당자 연락처</label>
+                <input class="readonly-field" id="managertel" name="managerTel"
+                       placeholder="담당자 선택 시 자동 입력" readonly type="text"/>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="managerEmail">담당자 이메일</label>
+                <input class="readonly-field" id="managerEmail" name="managerEmail"
+                       placeholder="담당자 선택 시 자동 입력" readonly type="email"/>
+            </div>
+        </div>
+
+        <!-- 프로젝트 선택 -->
+        <div class="form-group">
+            <label for="project">문의선택</label>
+            <select id="project" name="projectId" required>
+                <option value="">기타문의</option>
+                <option th:each="project : ${projectList}"
+                        th:text="${project.subject}"
+                        th:value="${project.id}">
+                </option>
+            </select>
+        </div>
+
+        <!-- 내용 -->
+        <div class="form-group">
+            <label for="content">내용</label>
+            <div id="editor"></div>
+            <input id="hiddenContent" name="content" type="hidden"/>
+        </div>
+
+        <!-- 버튼 -->
+        <div style="margin-top: 25px; display: flex; justify-content: flex-end; gap: 10px;">
+            <button onclick="history.back()"
+                    style="background:#ccc; color:#444; padding:10px 20px; border:none; border-radius:6px; cursor:pointer;"
+                    type="button">
+                취소
+            </button>
+            <button style="background: linear-gradient(45deg, #a8e6cf, #7fcdcd); color:#fff; padding:10px 20px; border:none; border-radius:6px; cursor:pointer;"
+                    type="submit">
+                제출
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- 담당자 추가 모달 -->
+<div id="addManagerModal"
+     style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 15px; width: 800px; max-width: 90%;">
+        <h3 style="color: #4a9b8e; margin-top: 0;">담당자 추가</h3>
+        <form id="addManagerForm">
+            <div class="form-group">
+                <label for="newManagerName">이름</label>
+                <input id="newManagerName" name="name" placeholder="담당자 이름" required type="text"/>
+            </div>
+            <div class="form-group">
+                <label for="newManagertel">연락처</label>
+                <input id="newManagertel" name="tel" placeholder="연락처" required type="text"/>
+            </div>
+            <div class="form-group">
+                <label for="newManagerEmail">이메일</label>
+                <input id="newManagerEmail" name="email" placeholder="이메일" required type="email"/>
+            </div>
+            <!-- 개인정보 수집 및 이용 동의 -->
+            <div class="form-group" style="margin-top: 30px;">
+                <label style="font-weight: 600; color: #4a9b8e;">개인정보 수집 및 이용 동의 <span style="color:red">*</span></label>
+                <div style="border: 1px solid #a8e6cf; border-radius: 6px; padding: 15px; max-height: 180px; overflow-y: auto; background-color: #f8f9fa; font-size: 0.95rem; line-height: 1.6;">
+                    디딤솔루션코리아는 문의 접수 및 처리, 사후관리 등을 위해 아래와 같은 개인정보를 수집 및 이용합니다. <br><br>
+                    <strong>1. 수집 항목:</strong> 이름, 연락처, 이메일 <br>
+                    <strong>2. 이용 목적:</strong> 문의 응대 및 결과 회신 <br>
+                    <strong>3. 보유 기간:</strong> 수집일로부터 1년간 보관 후 파기 <br><br>
+                    위와 같은 개인정보 수집 및 이용에 동의하실 경우 아래 체크박스를 선택해 주세요. 동의를 거부하실 경우 문의 작성이 제한될 수 있습니다.
+                </div>
+                <div style="margin-top: 15px;">
+                    <label style="display: inline-flex; align-items: center; cursor: pointer; width: auto;">
+                        <input id="privacyAgreement" name="privacyAgreement" required style="margin-right: 8px; width: auto; flex-shrink: 0;" type="checkbox">
+                        <span style="color: #333;">개인정보 수집 및 이용에 동의합니다.</span>
+                    </label>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button onclick="closeAddManagerModal()"
+                        style="background:#ccc; color:#444; padding:8px 16px; border:none; border-radius:6px; cursor:pointer;"
+                        type="button">
+                    취소
+                </button>
+                <button class="submit-btn" disabled id="addManagerSubmitBtn" type="submit">
+                    추가
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Quill 스크립트 -->
+<script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
+<script>
+    // Quill 에디터 생성
+    const quill = new Quill('#editor', {
+      theme: 'snow',
+      placeholder: '문의 내용을 입력하세요',
+      modules: {
+        toolbar: {
+          container: [
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            ['link', 'image'],
+            ['clean']
+          ],
+          handlers: {
+            'image': imageHandler
+          }
+        }
+      }
+    });
+
+    // 담당자 선택 시 연락처 정보 자동 입력
+    document.getElementById('manager').addEventListener('change', function() {
+      const selectedOption = this.options[this.selectedIndex];
+      const tel = selectedOption.getAttribute('data-tel') || '';
+      const email = selectedOption.getAttribute('data-email') || '';
+
+      document.getElementById('managertel').value = tel;
+      document.getElementById('managerEmail').value = email;
+    });
+
+    // 담당자 추가 모달 관련 함수
+    function openAddManagerModal() {
+      document.getElementById('addManagerModal').style.display = 'block';
+      updateSubmitButtonState(); // 모달 열 때 버튼 상태 업데이트
+    }
+
+    function closeAddManagerModal() {
+      document.getElementById('addManagerModal').style.display = 'none';
+      document.getElementById('addManagerForm').reset();
+      updateSubmitButtonState(); // 모달 닫을 때 버튼 상태 업데이트
+    }
+
+    // 개인정보 동의 체크박스 상태에 따른 제출 버튼 활성화/비활성화
+    function updateSubmitButtonState() {
+      const checkbox = document.getElementById('privacyAgreement');
+      const submitBtn = document.getElementById('addManagerSubmitBtn');
+
+      if (checkbox && submitBtn) {
+        submitBtn.disabled = !checkbox.checked;
+      }
+    }
+
+    // 체크박스 변경 시 제출 버튼 상태 업데이트
+    document.addEventListener('DOMContentLoaded', function() {
+      const checkbox = document.getElementById('privacyAgreement');
+      if (checkbox) {
+        checkbox.addEventListener('change', updateSubmitButtonState);
+      }
+    });
+
+    // 담당자 추가 폼 제출
+    document.getElementById('addManagerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const managerData = {
+        managerName: formData.get('name'),
+        managerTel: formData.get('tel'),
+        managerEmail: formData.get('email')
+      };
+
+      try {
+        const response = await fetch('/addManagerApi', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(managerData)
+        });
+
+        if (!response.ok) throw new Error('담당자 추가 실패');
+
+        const newManager = await response.json();
+
+        // 드롭다운에 새 담당자 추가
+        const managerSelect = document.getElementById('manager');
+        const newOption = document.createElement('option');
+        newOption.value = newManager.managerId;
+        newOption.textContent = newManager.managerName;
+        newOption.setAttribute('data-tel', newManager.managerTel);
+        newOption.setAttribute('data-email', newManager.managerEmail);
+        managerSelect.appendChild(newOption);
+
+        // 새로 추가된 담당자 선택
+        managerSelect.value = newManager.managerId;
+        document.getElementById('managertel').value = newManager.managerTel;
+        document.getElementById('managerEmail').value = newManager.managerEmail;
+
+        closeAddManagerModal();
+        alert('담당자가 성공적으로 추가되었습니다.');
+
+      } catch (error) {
+        alert('담당자 추가 중 오류가 발생했습니다.');
+        console.error(error);
+      }
+    });
+
+    // 이미지 업로드 핸들러
+    function imageHandler() {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+
+      input.onchange = async () => {
+        const file = input.files[0];
+        if (!file) return;
+
+        // FormData 생성
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+          // 서버에 업로드 요청
+          const response = await fetch('/uploadTempImage', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (!response.ok) throw new Error('업로드 실패');
+
+          const data = await response.json();
+          console.log('결과 : ' + JSON.stringify(data));
+          // 서버에서 받은 이미지 URL 삽입
+          const range = quill.getSelection();
+          quill.insertText(range.index, '\n');
+          quill.insertEmbed(range.index + 1, 'image', data.url);
+          quill.setSelection(range.index + 2);
+
+        } catch (err) {
+          alert('이미지 업로드 중 오류가 발생했습니다.');
+          console.error(err);
+        }
+      };
+    }
+
+    // 폼 제출 시 validation 및 hidden input 설정
+    document.getElementById('inquiryForm').onsubmit = function(e) {
+      const html = quill.root.innerHTML;
+      document.getElementById('hiddenContent').value = html;
+
+      // 제목 빈값 검사
+      if (!document.getElementById('title').value.trim()) {
+        alert('제목을 입력하세요.');
+        e.preventDefault();
+        return false;
+      }
+
+      // 담당자 선택 검사
+      if (!document.getElementById('manager').value) {
+        alert('담당 담당자를 선택하세요.');
+        e.preventDefault();
+        return false;
+      }
+
+      // 프로젝트 선택 검사
+      if (!document.getElementById('project').value) {
+        alert('프로젝트 유형을 선택하세요.');
+        e.preventDefault();
+        return false;
+      }
+
+      // 내용 빈값 검사
+      if (quill.getLength() <= 1) {
+        alert('내용을 입력하세요.');
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    // 모달 외부 클릭 시 닫기
+    document.getElementById('addManagerModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeAddManagerModal();
+      }
+    });
+
+    // --- 연락처 하이픈 ---
+    function formatPhoneNumber(phoneNumber) {
+        const cleaned = phoneNumber.replace(/\D/g, '');
+        if (cleaned.length <= 2) {
+            return cleaned;
+        } else if (cleaned.length <= 3) {
+            return cleaned;
+        } else if (cleaned.length <= 4) {
+            return cleaned.slice(0, 2) + '-' + cleaned.slice(2);
+        } else if (cleaned.length <= 6) {
+            return cleaned.slice(0, 2) + '-' + cleaned.slice(2);
+        } else if (cleaned.length <= 7) {
+            return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 5) + '-' + cleaned.slice(5);
+        } else if (cleaned.length <= 8) {
+            if (cleaned.startsWith('02')) {
+                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 6) + '-' + cleaned.slice(6);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
+            }
+        } else if (cleaned.length <= 9) {
+            if (cleaned.startsWith('02')) {
+                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 5) + '-' + cleaned.slice(5);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
+            }
+        } else if (cleaned.length <= 10) {
+            if (cleaned.startsWith('02')) {
+                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 6) + '-' + cleaned.slice(6);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
+            }
+        } else {
+            return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 7) + '-' + cleaned.slice(7, 11);
+        }
+    }
+
+    // 연락처 하이픈 자동 입력 적용
+    document.addEventListener('DOMContentLoaded', function () {
+        const telInput = document.getElementById('newManagertel');
+
+        if (telInput) {
+            telInput.addEventListener('input', function (e) {
+                const cursorPosition = e.target.selectionStart;
+                const oldValue = e.target.value;
+                const newValue = formatPhoneNumber(oldValue);
+                e.target.value = newValue;
+
+                // 커서 위치 보정
+                const diff = newValue.length - oldValue.length;
+                if (diff > 0) {
+                    e.target.setSelectionRange(cursorPosition + diff, cursorPosition + diff);
+                }
+            });
+
+            telInput.addEventListener('keydown', function (e) {
+                const cursorPosition = e.target.selectionStart;
+                const value = e.target.value;
+                if (e.key === 'Backspace' && cursorPosition > 0 && value[cursorPosition - 1] === '-') {
+                    e.preventDefault();
+                    const newValue = value.substring(0, cursorPosition - 2) + value.substring(cursorPosition);
+                    e.target.value = formatPhoneNumber(newValue);
+                    e.target.setSelectionRange(cursorPosition - 2, cursorPosition - 2);
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

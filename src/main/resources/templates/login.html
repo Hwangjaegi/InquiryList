@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>DIDIM-Login</title>
+    <link href="/image/didimIcon.png" rel="icon" type="image/png">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+
+<!-- 가입 성공 및 실패 처리 -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let successMessage = /*[[${successMessage}]]*/ null;
+    let errorMessage = /*[[${errorMessage}]]*/ null;
+    let loginErrorMessage = /*[[${loginErrorMessage}]]*/ null;
+
+    if (successMessage !== null) {
+        alert(successMessage);
+    }
+
+    if (errorMessage !== null) {
+        alert(errorMessage);
+    }
+    if (loginErrorMessage !== null) {
+        alert(loginErrorMessage);
+    }
+    /*]]>*/
+</script>
+
+<div class="container" id="container">
+    <!-- FORM SECTION -->
+    <div class="row">
+        <!-- SIGN UP -->
+        <div class="col align-items-center flex-col sign-up">
+            <div class="form-wrapper align-items-center">
+                <!-- 회원가입 폼 -->
+                <form action="/signup" class="form sign-up" method="post">
+                    <div class="input-group">
+                        <i class='bx bxs-customerCode'></i>
+                        <input name="customerCode" placeholder="CustomerCode" required type="text">
+                    </div>
+                    <div class="input-group">
+                        <i class='bx bxs-user'></i>
+                        <input name="username" placeholder="Username" required type="text">
+                    </div>
+                    <div class="input-group">
+                        <i class='bx bxs-lock-alt'></i>
+                        <input name="password" placeholder="Password" required type="password">
+                    </div>
+                    <div class="input-group">
+                        <i class='bx bxs-lock-alt'></i>
+                        <input name="name" placeholder="Name" required type="text">
+                    </div>
+                    <div class="input-group">
+                        <i class='bx bx-mail-send'></i>
+                        <input name="email" placeholder="Email" required type="email">
+                    </div>
+                    <div class="input-group">
+                        <i class='bx bxs-lock-alt'></i>
+                        <input id="phoneInput" maxlength="13" name="tel" placeholder="Tel (Ex: 031-123-4567 , 010-1234-5678)" required type="text">
+                    </div>
+                    <input name="role" type="hidden" value="USER">
+<!--                    <div class="input-group">-->
+<!--                        <label for="role">권한</label>-->
+<!--                        <select id="role" name="role" required>-->
+<!--                            <option value="USER">일반유저</option>-->
+<!--                            <option value="ADMIN">관리자</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+                    <button type="submit">Sign up</button>
+                    <!-- 아래 문장 유지 -->
+                    <p>
+                        <span>Already have an account?</span>
+                        <b class="pointer" onclick="toggle()">Sign in here</b>
+                    </p>
+                </form>
+            </div>
+
+        </div>
+        <!-- END SIGN UP -->
+        <!-- SIGN IN -->
+        <div class="col align-items-center flex-col sign-in">
+            <div class="form-wrapper align-items-center">
+                <form action="/signin" class="form sign-in" method="post">
+                    <div class="input-group">
+                        <i class='bx bxs-user'></i>
+                        <input name="customerCode" placeholder="고객코드" required type="text">
+                    </div>
+                    <div class="input-group">
+                        <i class='bx bxs-user'></i>
+                        <input name="username" placeholder="아이디" required type="text">
+                    </div>
+                    <div class="input-group">
+                        <i class='bx bxs-lock-alt'></i>
+                        <input name="password" placeholder="비밀번호" required type="password">
+                    </div>
+                    <button type="submit">
+                        Sign in
+                    </button>
+                    <p>
+                        <b>
+                            Forgot password?
+                        </b>
+                    </p>
+                    <p>
+                <span>
+                    Don't have an account?
+                </span>
+                        <b class="pointer" onclick="toggle()">
+                            Sign up here
+                        </b>
+                    </p>
+                </form>
+            </div>
+            <div class="form-wrapper">
+            </div>
+        </div>
+        <!-- END SIGN IN -->
+    </div>
+    <!-- END FORM SECTION -->
+    <!-- CONTENT SECTION -->
+    <div class="row content-row">
+        <!-- SIGN IN CONTENT -->
+        <div class="col align-items-center flex-col">
+            <div class="text sign-in">
+                <h2>
+                    Welcome <br>
+                    DIDIM Solution
+                </h2>
+
+            </div>
+            <div class="img sign-in">
+
+            </div>
+        </div>
+        <!-- END SIGN IN CONTENT -->
+        <!-- SIGN UP CONTENT -->
+        <div class="col align-items-center flex-col">
+            <div class="img sign-up">
+
+            </div>
+            <div class="text sign-up">
+                <h2>
+                    Join with us
+                </h2>
+
+            </div>
+        </div>
+        <!-- END SIGN UP CONTENT -->
+    </div>
+    <!-- END CONTENT SECTION -->
+</div>
+
+<!-- 전화번호 자동 하이픈 추가 스크립트 -->
+<script>
+    function formatPhoneNumber(phoneNumber) {
+        // 숫자만 추출
+        const cleaned = phoneNumber.replace(/\D/g, '');
+
+        // 길이에 따라 포맷 적용
+        if (cleaned.length <= 2) {
+            return cleaned;
+        } else if (cleaned.length <= 3) {
+            return cleaned;
+        } else if (cleaned.length <= 4) {
+            return cleaned.slice(0, 2) + '-' + cleaned.slice(2);
+        } else if (cleaned.length <= 6) {
+            return cleaned.slice(0, 2) + '-' + cleaned.slice(2);
+        } else if (cleaned.length <= 7) {
+            return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 5) + '-' + cleaned.slice(5);
+        } else if (cleaned.length <= 8) {
+            // 8자리: 지역번호 3자리 + 국번 4자리 + 번호 1자리 (02-1234-5)
+            if (cleaned.startsWith('02')) {
+                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 6) + '-' + cleaned.slice(6);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
+            }
+        } else if (cleaned.length <= 9) {
+            // 9자리: 지역번호 2자리 + 국번 3자리 + 번호 4자리 (02-123-4567)
+            //       또는 지역번호 3자리 + 국번 3자리 + 번호 3자리 (031-123-4567)
+            if (cleaned.startsWith('02')) {
+                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 5) + '-' + cleaned.slice(5);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
+            }
+        } else if (cleaned.length <= 10) {
+            // 10자리: 지역번호 2자리 + 국번 4자리 + 번호 4자리 (02-1234-5678)
+            //        또는 지역번호 3자리 + 국번 3자리 + 번호 4자리 (031-123-4567)
+            if (cleaned.startsWith('02')) {
+                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 6) + '-' + cleaned.slice(6);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
+            }
+        } else {
+            // 11자리: 휴대폰 번호 (010-1234-5678) 또는 지역번호 3자리 + 국번 4자리 + 번호 4자리
+            if (cleaned.startsWith('010') || cleaned.startsWith('011') || cleaned.startsWith('016') ||
+                cleaned.startsWith('017') || cleaned.startsWith('018') || cleaned.startsWith('019')) {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 7) + '-' + cleaned.slice(7, 11);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 7) + '-' + cleaned.slice(7, 11);
+            }
+        }
+    }
+
+    // 페이지 로드 시 이벤트 리스너 추가
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.getElementById('phoneInput');
+
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function(e) {
+                const cursorPosition = e.target.selectionStart;
+                const oldValue = e.target.value;
+                const newValue = formatPhoneNumber(e.target.value);
+
+                e.target.value = newValue;
+
+                // 커서 위치 조정 (하이픈 추가로 인한 위치 변경 보정)
+                const diff = newValue.length - oldValue.length;
+                if (diff > 0) {
+                    e.target.setSelectionRange(cursorPosition + diff, cursorPosition + diff);
+                }
+            });
+
+            // 키보드 이벤트 처리 (백스페이스 등)
+            phoneInput.addEventListener('keydown', function(e) {
+                // 백스페이스로 하이픈 삭제 시 앞 숫자도 함께 삭제
+                if (e.key === 'Backspace') {
+                    const cursorPosition = e.target.selectionStart;
+                    const value = e.target.value;
+
+                    if (cursorPosition > 0 && value[cursorPosition - 1] === '-') {
+                        e.preventDefault();
+                        const newValue = value.substring(0, cursorPosition - 2) + value.substring(cursorPosition);
+                        e.target.value = formatPhoneNumber(newValue);
+                        e.target.setSelectionRange(cursorPosition - 2, cursorPosition - 2);
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<script th:src="@{/js/index.js}"></script>
+</body>
+</html>
