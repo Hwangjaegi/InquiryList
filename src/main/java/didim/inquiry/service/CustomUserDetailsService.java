@@ -19,8 +19,19 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+    public UserDetails loadUserByUsername(String usernameWithCustomerCode) throws UsernameNotFoundException {
+        String[] parts = usernameWithCustomerCode.split("\\|");
+
+        if (parts.length != 2) {
+            throw new UsernameNotFoundException("아이디 또는 고객코드 형식이 올바르지 않습니다.");
+        }
+
+        String username = parts[0];
+        String customerCode = parts[1];
+
+        System.out.println("username : " + username + " / customerCode : " + customerCode);
+
+        User user = userRepository.findByUsernameAndCustomerCode(username,customerCode)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 계정입니다: " + username));
 
         if (user.getDeleteFlag()) {

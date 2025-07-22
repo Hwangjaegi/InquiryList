@@ -13,31 +13,25 @@ import java.util.List;
 
 @Getter @Setter
 public class CustomUserDetails implements UserDetails {
-    private String username;
-    private String password;
-    private String customerCode;
-    private List<GrantedAuthority> authorities;
+    private final User user;
 
-    public CustomUserDetails(User user){
-        System.out.println("CustomUserDetails (username : " + user.getUsername() + " / password : " + user.getPassword() + " / customerCode : " + user.getCustomerCode() );
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-        this.customerCode = user.getCustomerCode();
-        this.authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
+    public CustomUserDetails(User user) {
+        this.user = user;
     }
 
+    // 필요에 따라 메서드 구현
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return Collections.singleton(new SimpleGrantedAuthority(user.getRole()));
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return user.getUsername(); // customerCode는 여기에 포함할 필요 없음
     }
 }

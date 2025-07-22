@@ -6,14 +6,18 @@ import didim.inquiry.domain.Manager;
 import didim.inquiry.domain.Project;
 import didim.inquiry.domain.User;
 import didim.inquiry.dto.CustomerDto;
+import didim.inquiry.dto.ProjectDto;
 import didim.inquiry.service.AdminService;
 import didim.inquiry.service.ManagerService;
 import didim.inquiry.service.ProjectService;
 import didim.inquiry.service.UserService;
+import didim.inquiry.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import didim.inquiry.repository.CustomerRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +28,12 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Controller
 public class AdminController extends BaseController {
@@ -33,12 +42,14 @@ public class AdminController extends BaseController {
     private final UserService userService;
     private final ManagerService managerService;
     private final ProjectService projectService;
+    private final CustomerService customerService;
 
-    public AdminController(AdminService adminService, UserService userService, ManagerService managerService, ProjectService projectService) {
+    public AdminController(AdminService adminService, UserService userService, ManagerService managerService, ProjectService projectService, CustomerService customerService) {
         this.adminService = adminService;
         this.userService = userService;
         this.managerService = managerService;
         this.projectService = projectService;
+        this.customerService = customerService;
     }
 
     //관리자 화면 표시
@@ -53,7 +64,7 @@ public class AdminController extends BaseController {
         try {
             User user = getCurrentUser();
 
-            // 관리자인 경우
+            // 어드민인 경우
             if ("ADMIN".equals(user.getRole())) {
                 Pageable pageable = PageRequest.of(page, size);
 
@@ -78,6 +89,26 @@ public class AdminController extends BaseController {
                 model.addAttribute("newCustomer", newCustomer);
                 model.addAttribute("searchKeyword", search);
                 return "admin/adminConsole";
+            }
+
+            // 관리자인 경우
+            if ("MANAGER".equals(user.getRole())) {
+                Pageable pageable = PageRequest.of(page, size);
+
+                Page<User> userListByCustomerCode;
+                if (search != null && !search.trim().isEmpty()) {
+                    userListByCustomerCode = userService.searchUsersByCustomerCode(user.getCustomerCode(), search, pageable);
+                } else {
+                    userListByCustomerCode = userService.getUsersByCustomerCode(user.getCustomerCode(),pageable);
+                }
+
+                Long totalUser = userService.getUsersCountByCustomerCode(user.getCustomerCode());
+
+                model.addAttribute("userList", userListByCustomerCode);
+                model.addAttribute("currentUserId",user.getId());
+                model.addAttribute("totalUser", totalUser);
+                model.addAttribute("searchKeyword", search);
+                return "admin/managerConsole";
             }
 
             // 일반 사용자
@@ -190,8 +221,8 @@ public class AdminController extends BaseController {
             Pageable pageable = PageRequest.of(page, size);
 
             Page<Project> projectList = searchKeyword == null || searchKeyword.isEmpty()
-                    ? projectService.getProjectList(user.getId(), pageable)
-                    : projectService.getProjectBySearchList(user.getId(), searchKeyword, pageable);
+                    ? projectService.getAllProjects(pageable)
+                    : projectService.getAllProjectsBySearch(searchKeyword, pageable);
 
 
             model.addAttribute("projectList", projectList);
@@ -208,6 +239,47 @@ public class AdminController extends BaseController {
         }
     }
 
+    @GetMapping("/admin/projectListAdmin")
+    public String adminProjectList(@RequestParam(value = "page", defaultValue = "0") int page,
+                                  @RequestParam(value = "size", defaultValue = "10") int size,
+                                  @RequestParam(value = "search", required = false) String searchKeyword,
+                                  Model model,
+                                  RedirectAttributes redirectAttributes) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+            Page<Project> projectList = (searchKeyword == null || searchKeyword.isEmpty())
+                    ? projectService.getAllProjects(pageable)
+                    : projectService.getAllProjectsBySearch(searchKeyword, pageable);
+            model.addAttribute("projectList", projectList.getContent());
+            model.addAttribute("currentPage", projectList.getNumber());
+            model.addAttribute("totalPages", projectList.getTotalPages());
+            model.addAttribute("pageSize", projectList.getSize());
+            model.addAttribute("searchKeyword", searchKeyword);
+            // 전체 customerCode 리스트
+            model.addAttribute("customerList", customerService.findAll());
+            return "admin/adminProjectList";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "프로젝트 목록 조회 중 오류가 발생했습니다: " + e.getMessage());
+            return "redirect:/admin/console";
+        }
+    }
+
+    @PostMapping("/admin/projectAdd")
+    public String addProject(@RequestParam Long customerId,
+                            @RequestParam String projectSubject,
+                            RedirectAttributes redirectAttributes) {
+        try {
+            Customer customer = customerService.findById(customerId);
+            ProjectDto dto = new ProjectDto();
+            dto.setProjectSubject(projectSubject);
+            projectService.saveProjectWithCustomer(dto, customer);
+            redirectAttributes.addFlashAttribute("successMessage", "프로젝트가 성공적으로 추가되었습니다.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "프로젝트 추가 중 오류가 발생했습니다: " + e.getMessage());
+        }
+        return "redirect:/admin/projectListAdmin";
+    }
+
     @GetMapping("/admin/customerList")
     public String customerList(
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -218,11 +290,12 @@ public class AdminController extends BaseController {
         try {
             User userCheck = getCurrentUser();
             Pageable pageable = PageRequest.of(page, size);
+            List<String> roles = Arrays.asList("USER", "MANAGER");
             Page<User> userPage = searchKeyword == null || searchKeyword.isEmpty()
-                    ? userService.getUsersByRole("USER", pageable)
-                    : userService.searchUsersByRoleAndKeyword("USER", searchKeyword, pageable);
+                    ? userService.getUsersByRole(roles, pageable)
+                    : userService.searchUsersByRoleAndKeyword(roles, searchKeyword, pageable);
 
-            long totalUsers = userService.getUsersCount();
+            long totalUsers = userService.getUsersCountByRoles(roles);
             System.out.println("총개수 : " + totalUsers);
             long newUsers = userPage.getContent().stream()
                     .filter(user -> user.getCreatedAt() != null &&
@@ -305,5 +378,13 @@ public class AdminController extends BaseController {
             redirectAttributes.addFlashAttribute("errorMessage", "알 수없는 오류가 발생했습니다.");
             return "redirect:/admin/customerList";
         }
+    }
+
+    @GetMapping("/admin/myInfo")
+    public String myInfo(Model model) {
+        User user = getCurrentUser();
+        model.addAttribute("user", user);
+        model.addAttribute("role", user.getRole());
+        return "admin/myInfo";
     }
 }

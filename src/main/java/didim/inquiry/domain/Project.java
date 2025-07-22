@@ -20,23 +20,22 @@ public class Project {
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
-    public Project(){
-
-    }
+    public Project(){}
 
     //정적 팩토리 메서드 사용
-    public static Project from(ProjectDto dto){
+    public static Project from(ProjectDto dto, Customer customer){
         Project project = new Project();
         project.setSubject(dto.getProjectSubject());
-        project.setUser(dto.getUser());
+        project.setCustomer(customer);
         return project;
     }
 
-    public void updateFrom(ProjectDto projectDto){
+    public void updateFrom(ProjectDto projectDto, Customer customer){
         this.subject = projectDto.getProjectSubject();
+        this.customer = customer;
     }
 
     @PrePersist

@@ -1,6 +1,6 @@
 package didim.inquiry.controller;
 
-import ch.qos.logback.core.joran.conditional.IfAction;
+import didim.inquiry.controller.absClass.BaseController;
 import didim.inquiry.domain.*;
 import didim.inquiry.dto.ManagerDto;
 import didim.inquiry.dto.ProjectDto;
@@ -36,7 +36,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
-public class InquiryController {
+public class InquiryController extends BaseController {
 
     private final InquiryService inquiryService;
     private final UserService userService;
@@ -55,16 +55,12 @@ public class InquiryController {
     @GetMapping("/inquiryList")
     public String inquiryList(Model model, HttpServletRequest request,
                               @RequestParam(defaultValue = "0") int page) {
+
         System.out.println("=== 디버깅 정보 ===");
         System.out.println("요청 시간: " + new Date());
         System.out.println("세션 ID: " + request.getSession().getId());
         System.out.println("요청 URL: " + request.getRequestURL());
         System.out.println("Authentication: " + SecurityContextHolder.getContext().getAuthentication());
-
-//        System.out.println("Referer:" + request.getHeader("Referer"));
-//        System.out.println("User-Agent: " + request.getHeader("User-Agent"));
-//        System.out.println("X-Requested-With : " + request.getHeader("X-Request-With"));
-//        Thread.dumpStack();
 
         String username = SecurityUtil.getCurrentUsername();
         System.out.println("SecurityUtil username: " + username);
@@ -123,24 +119,21 @@ public class InquiryController {
 
     @GetMapping("/inquiryWriteForm")
     public String inquiryWriteForm(Model model, RedirectAttributes redirectAttributes) {
-        String username = SecurityUtil.getCurrentUsername();
-        User user;
-        try {
-            user = userService.getUserByUsername(username);
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "존재하지 않는 계정입니다.");
-            return "redirect:/login";
-        }
+
+        User user = getCurrentUser();
 
         //계정정보 확인 후 해당 유저에 해당하는 관리자 및 프로젝트 리스트 가져오기
-        //user_id -> Manager List 가져온다음 -> 드롭다운 표시
-        List<Manager> managerList = managerService.getManagerList(user.getId());
+        //user_customerCode -> UserList 가져온다음 -> 드롭다운 표시
+        List<User> managerList = userService.getUsersByCustomerCodeList(user.getCustomerCode());
         managerList.forEach(manager -> {
             System.out.println("매니저 정보 : " + manager.getName());
         });
 
-        //user_id -> Project List 가져온다음 -> 드롭다운 표시
-        List<Project> projectList = projectService.getProjectList(user.getId());
+        //customerId -> Project List 가져온다음 -> 드롭다운 표시
+        String customerCode = user.getCustomerCode();
+        List<Project> projectList = (customerCode != null && !customerCode.isBlank()) ?
+            projectService.getProjectListByCustomerCode(customerCode, org.springframework.data.domain.Pageable.unpaged()).getContent() :
+            List.of();
         projectList.forEach(project -> {
             System.out.println("프로젝트 정보 : " + project.getSubject());
         });

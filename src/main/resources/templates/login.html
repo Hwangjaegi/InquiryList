@@ -22,6 +22,7 @@
     if (errorMessage !== null) {
         alert(errorMessage);
     }
+    <!-- 시큐리티 로그인 에러 -->
     if (loginErrorMessage !== null) {
         alert(loginErrorMessage);
     }
@@ -58,16 +59,17 @@
                     </div>
                     <div class="input-group">
                         <i class='bx bxs-lock-alt'></i>
-                        <input id="phoneInput" maxlength="13" name="tel" placeholder="Tel (Ex: 031-123-4567 , 010-1234-5678)" required type="text">
+                        <input id="phoneInput" maxlength="13" name="tel"
+                               placeholder="Tel (Ex: 031-123-4567 , 010-1234-5678)" required type="text">
                     </div>
                     <input name="role" type="hidden" value="USER">
-<!--                    <div class="input-group">-->
-<!--                        <label for="role">권한</label>-->
-<!--                        <select id="role" name="role" required>-->
-<!--                            <option value="USER">일반유저</option>-->
-<!--                            <option value="ADMIN">관리자</option>-->
-<!--                        </select>-->
-<!--                    </div>-->
+                    <!--                    <div class="input-group">-->
+                    <!--                        <label for="role">권한</label>-->
+                    <!--                        <select id="role" name="role" required>-->
+                    <!--                            <option value="USER">일반유저</option>-->
+                    <!--                            <option value="ADMIN">관리자</option>-->
+                    <!--                        </select>-->
+                    <!--                    </div>-->
                     <button type="submit">Sign up</button>
                     <!-- 아래 문장 유지 -->
                     <p>
@@ -82,19 +84,20 @@
         <!-- SIGN IN -->
         <div class="col align-items-center flex-col sign-in">
             <div class="form-wrapper align-items-center">
-                <form action="/signin" class="form sign-in" method="post">
+                <form action="/signin" class="form sign-in" id="sign-in-form" method="post">
                     <div class="input-group">
                         <i class='bx bxs-user'></i>
-                        <input name="customerCode" placeholder="고객코드" required type="text">
+                        <input id="customerCodeInput" placeholder="고객코드" required type="text">
                     </div>
                     <div class="input-group">
                         <i class='bx bxs-user'></i>
-                        <input name="username" placeholder="아이디" required type="text">
+                        <input id="usernameInput"  placeholder="아이디" required type="text">
                     </div>
                     <div class="input-group">
                         <i class='bx bxs-lock-alt'></i>
                         <input name="password" placeholder="비밀번호" required type="password">
                     </div>
+                    <input id="combinedUsername" name="username" type="hidden">
                     <button type="submit">
                         Sign in
                     </button>
@@ -238,6 +241,31 @@
                 }
             });
         }
+
+
+        const signInForm = document.getElementById('sign-in-form');
+        const usernameInput = document.getElementById('usernameInput');
+        const customerCodeInput = document.getElementById('customerCodeInput');
+        const combinedUsernameInput = document.getElementById('combinedUsername');
+
+        signInForm.addEventListener('submit', function (e) {
+            // username|customerCode 형식으로 조합하여 히든 필드에 설정
+            combinedUsernameInput.value = `${usernameInput.value}|${customerCodeInput.value}`;
+        });
+
+        // 로그인 후 뒤로가기 시 캐싱 데이터 초기화
+        window.addEventListener('pageshow', function(event) {
+            usernameInput.value = '';
+            customerCodeInput.value = '';
+            combinedUsernameInput.value = '';
+        });
+
+
+        // 로그인 후 뒤로가기 시 캐싱 데이터 초기화
+        window.addEventListener('pageshow', function(event){
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('customerCodeInput').value = '';
+        });
     });
 </script>
 

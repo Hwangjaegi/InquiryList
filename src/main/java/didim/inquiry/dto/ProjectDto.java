@@ -28,7 +28,6 @@ public class ProjectDto {
         projectDto.setProjectSubject(project.getSubject());
         projectDto.setCreatedAt(project.getCreatedAt());
         projectDto.setUpdatedAt(project.getUpdatedAt());
-        projectDto.setUser(project.getUser());
 
         return projectDto;
     }

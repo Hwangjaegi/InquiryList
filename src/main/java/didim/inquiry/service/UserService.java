@@ -1,6 +1,7 @@
 package didim.inquiry.service;
 
 import didim.inquiry.domain.User;
+import didim.inquiry.dto.UserDto;
 import didim.inquiry.repository.AdminRepository;
 import didim.inquiry.repository.UserRepository;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,13 +37,15 @@ public class UserService {
             return false;
         }
 
-        // 고객코드가 같은 유저에서 아이디가 같은경우 true
+        // 고객코드가 같은 유저 중 아이디가 같은경우 true (아이디 중복체크)
         if (userRepository.findByUsernameAndCustomerCode(user.getUsername() , user.getCustomerCode()).isPresent()){ //isPresent : 객체의 값이 존재하는지 확인
             return false;
         }
 
         // 고객코드로 처음 가입한 사람은 관리자 권한 부여
-
+        if (!userRepository.findByCustomerCode(user.getCustomerCode()).isPresent()){
+            user.setRole("MANAGER");
+        }
 
         //가입된 정보가 없을 경우 패스워드 암호화 처리 후 가입처리
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -59,14 +63,14 @@ public class UserService {
         return userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("로그인한 계정 정보가 존재하지 않습니다."));
     }
 
-    public Page<User> getUsersByRole(String role , Pageable pageable) {
-        return userRepository.findAllByRoleOrderByIdDesc(role , pageable);
+    // 다중 role 지원
+    public Page<User> getUsersByRole(List<String> roles, Pageable pageable) {
+        return userRepository.findAllByRoleInOrderByIdDesc(roles, pageable);
     }
 
-    //계정아이디 또는 이메일로 검색도 가능한 메서드명
-    public Page<User> searchUsersByRoleAndKeyword(String role, String keyword, Pageable pageable) {
-        return userRepository.findAllByRoleAndUsernameContainingOrEmailContainingOrderByIdDesc(
-                role, keyword, keyword , pageable);
+    // 다중 role 지원
+    public Page<User> searchUsersByRoleAndKeyword(List<String> roles, String keyword, Pageable pageable) {
+        return userRepository.findAllByRoleInAndUsernameContainingOrEmailContainingOrderByIdDesc(roles, keyword, keyword, pageable);
     }
 
     //실제론 삭제하지 않고 DeleteFlag를 true로 바꾼다.
@@ -83,5 +87,66 @@ public class UserService {
 
     public long getUsersCount() {
         return userRepository.count();
+    }
+    // ADMIN을 제외한 역할 카운트
+    public long getUsersCountByRoles(List<String> roles) {
+        return userRepository.countByRoleIn(roles);
+    }
+
+    public Page<User> searchUsersByCustomerCode(String customerCode, String search, Pageable pageable) {
+        return userRepository.searchByCustomerCodeAndNameOrTelOrEmail(customerCode,search,pageable);
+    }
+
+    public Page<User> getUsersByCustomerCode(String customerCode, Pageable pageable) {
+        return userRepository.findAllByCustomerCode(customerCode,pageable);
+    }
+
+    public List<User> getUsersByCustomerCodeList(String customerCode) {
+        return userRepository.findAllByCustomerCode(customerCode);
+    }
+
+    public Long getUsersCountByCustomerCode(String customerCode) {
+        return userRepository.countByCustomerCode(customerCode);
+    }
+
+    public UserDto updateUser(UserDto userDto) {
+        // userRepository에서 user 찾아서 정보 수정 후 저장
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new IllegalArgumentException("회원 정보가 존재하지 않습니다."));
+        System.out.println("user name : " + user.getName());
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        user.setTel(userDto.getTel());
+        user.setRole(userDto.getRole());
+        return new UserDto(userRepository.save(user));
+
+    }
+
+    public void deleteUser(Long id) {
+        // userRepository에서 user 삭제
+        userRepository.deleteById(id);
+    }
+
+    public void softDeleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+                System.out.println("user name : " + user.getName());
+        user.setDeleteFlag(true);
+        userRepository.save(user);
+    }
+
+    public void restoreUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+        user.setDeleteFlag(false);
+        userRepository.save(user);
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }
