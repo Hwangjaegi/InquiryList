@@ -65,6 +65,128 @@
         .pagination-button.active { background: linear-gradient(45deg, #a8e6cf, #7fcdcd); color: white; border: none; box-shadow: 0 4px 15px rgba(168,230,207,0.3); }
         .pagination-button.disabled { color: #999; pointer-events: none; background: rgba(255,255,255,0.5); opacity: 0.5; }
         .pagination-nav { display: flex; align-items: center; gap: 4px; font-size: 0.85rem; }
+        .message-alert {
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: slideInRight 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+        }
+        .message-success {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: white;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+        .message-error {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+        .message-icon {
+            font-size: 1.1rem;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 600px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-title {
+            margin: 0;
+            color: #4a9b8e;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #999;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(168, 230, 207, 0.2);
+            color: #4a9b8e;
+        }
+
+        .modal-body {
+            padding: 10px 0;
+        }
+
+        .form-row {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #a8e6cf;
+            box-shadow: 0 0 0 3px rgba(168,230,207,0.2);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 15px;
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .modal.show {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -94,18 +216,16 @@
         <div class="content-card">
             <div class="form-section">
                 <h3>프로젝트 추가</h3>
-                <form th:action="@{/admin/projectAdd}" method="post" id="addProjectForm">
-                    <div class="form-group">
-                        <label for="customerCode" class="form-label">고객코드</label>
-                        <select class="form-input" id="customerCode" name="customerId" required>
-                            <option value="" disabled selected>고객코드를 선택하세요</option>
-                            <option th:each="customer : ${customerList}" th:value="${customer.id}" th:text="${customer.code}"></option>
-                        </select>
-                        <label for="projectSubject" class="form-label">프로젝트명</label>
+                <form id="addProjectForm" method="post" th:action="@{/admin/projectAdd}">
+                    <div class="form-group" style="align-items: center;">
+                        <label class="form-label" for="projectSubject">프로젝트명</label>
                         <input class="form-input" id="projectSubject" name="projectSubject" placeholder="프로젝트 제목" required type="text">
-                    </div>
-                    <div class="form-group" style="justify-content: flex-end;">
-                        <button class="btn btn-primary" type="submit">추가</button>
+                        <label class="form-label" for="customerCode">고객코드</label>
+                        <select class="form-input" id="customerCode" name="customerId" required>
+                            <option disabled selected value="">고객코드를 선택하세요</option>
+                            <option th:each="customer : ${customerList}" th:text="${customer.code}" th:value="${customer.id}"></option>
+                        </select>
+                        <button class="btn btn-primary" style="margin-left: 10px;" type="submit">추가</button>
                     </div>
                     <div class="message-alert message-success" th:if="${successMessage}">
                         <span class="message-icon">✅</span>
@@ -125,6 +245,7 @@
                             <th>프로젝트명</th>
                             <th>고객코드</th>
                             <th>등록일</th>
+                            <th>관리</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -133,6 +254,10 @@
                             <td th:text="${project.subject}">프로젝트 제목</td>
                             <td th:text="${project.customer != null ? project.customer.code : ''}">CUST001</td>
                             <td th:text="${#temporals.format(project.createdAt, 'yyyy-MM-dd HH:mm')}">2024-07-01 12:00</td>
+                            <td class="project-actions">
+                                <button class="btn btn-edit" th:attr="data-id=${project.id}" type="button">수정</button>
+                                <button class="btn btn-delete" th:attr="data-id=${project.id}" type="button">삭제</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -178,5 +303,132 @@
         </div>
     </main>
 </div>
+<!-- 프로젝트 수정 모달  -->
+<div class="modal" id="editProjectModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">프로젝트 수정</h3>
+            <button class="modal-close" onclick="closeEditProjectModal()">×</button>
+        </div>
+        <form id="editProjectForm" method="post" th:action="@{/admin/updateProject}">
+            <div class="modal-body">
+                <div class="form-row">
+                    <input id="editProjectId" name="projectId" type="hidden">
+                    <label class="form-label">프로젝트명</label>
+                    <input class="form-input" id="editProjectSubject" name="projectSubject" required type="text">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">고객코드</label>
+                    <select class="form-input" id="editCustomerCode" name="customerId" required>
+                        <option disabled value="">고객코드를 선택하세요</option>
+                        <option th:each="customer : ${customerList}" th:text="${customer.code}" th:value="${customer.id}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeEditProjectModal()" type="button">취소</button>
+                <button class="btn btn-primary" type="submit">저장</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 프로젝트 삭제 확인 모달 -->
+<div class="modal" id="deleteProjectModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">프로젝트 삭제</h3>
+            <button class="modal-close" onclick="closeDeleteProjectModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <p>정말로 <strong id="deleteProjectName"></strong> (고객코드: <span id="deleteProjectCustomerCode"></span>) 프로젝트를 삭제하시겠습니까?</p>
+            <p style="color: #f44336; font-size: 0.9rem; margin-top: 10px;">이 작업은 되돌릴 수 없습니다.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeDeleteProjectModal()" type="button">취소</button>
+            <button class="btn btn-danger" onclick="confirmDeleteProject()" type="button">삭제</button>
+        </div>
+    </div>
+</div>
+<script>
+    // 메시지 알림 자동 사라짐 (message-alert만 사라지게)
+    setTimeout(() => {
+        document.querySelectorAll('.message-alert').forEach(alert => {
+            alert.style.opacity = '0';
+            alert.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+                alert.remove();
+            }, 300);
+        });
+    }, 4000);
+
+    // 프로젝트 수정 모달 핸들러
+    let currentEditProjectId = null;
+
+    // 수정 버튼에 이벤트 위임
+    // (동적으로 생성되는 경우에도 동작)
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('btn-edit')) {
+            const tr = e.target.closest('tr');
+            const id = e.target.getAttribute('data-id');
+            const subject = tr.querySelector('td:nth-child(2)').textContent.trim();
+            const customerCode = tr.querySelector('td:nth-child(3)').textContent.trim();
+            openEditProjectModal(id, subject, customerCode);
+        }
+    });
+
+    function openEditProjectModal(id, subject, customerCode) {
+        currentEditProjectId = id;
+        document.getElementById('editProjectId').value = id;
+        document.getElementById('editProjectSubject').value = subject;
+        // 고객코드 select에서 해당 값 선택
+        const select = document.getElementById('editCustomerCode');
+        for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].text === customerCode) {
+                select.selectedIndex = i;
+                break;
+            }
+        }
+        document.getElementById('editProjectModal').classList.add('show');
+    }
+
+    function closeEditProjectModal() {
+        document.getElementById('editProjectModal').classList.remove('show');
+        currentEditProjectId = null;
+    }
+
+    // 삭제 버튼 이벤트 위임
+    let currentDeleteProjectId = null;
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('btn-delete')) {
+            const tr = e.target.closest('tr');
+            const id = e.target.getAttribute('data-id');
+            const subject = tr.querySelector('td:nth-child(2)').textContent.trim();
+            const customerCode = tr.querySelector('td:nth-child(3)').textContent.trim();
+            openDeleteProjectModal(id, subject, customerCode);
+        }
+    });
+
+    function openDeleteProjectModal(id, subject, customerCode) {
+        currentDeleteProjectId = id;
+        document.getElementById('deleteProjectName').textContent = subject;
+        document.getElementById('deleteProjectCustomerCode').textContent = customerCode;
+        document.getElementById('deleteProjectModal').classList.add('show');
+    }
+
+    function closeDeleteProjectModal() {
+        document.getElementById('deleteProjectModal').classList.remove('show');
+        currentDeleteProjectId = null;
+    }
+
+    function confirmDeleteProject() {
+        if (!currentDeleteProjectId) return;
+        // 폼 생성 후 POST 전송
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/admin/deleteProject/${currentDeleteProjectId}`;
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 </body>
 </html> 

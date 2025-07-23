@@ -338,12 +338,16 @@
             box-shadow: none;
         }
 
-        .user-id {
+        .user-id,
+        .user-name,
+        .user-tel,
+        .user-email {
             font-size: 1.2rem;
             font-weight: 700;
             color: #4a9b8e;
             min-width: 120px;
             flex-shrink: 0;
+            margin-right: 20px;
         }
 
         .user-info {
@@ -375,17 +379,11 @@
             color: white;
         }
 
-        .user-email {
-            color: #666;
-            font-size: 0.9rem;
-            font-style: italic;
-            line-height: 1.4;
-        }
-
         .user-actions {
             display: flex;
             gap: 8px;
-            flex-shrink: 0;
+            align-items: center;
+            justify-content: center; /* 이 줄 추가! */
         }
 
         .search-container {
@@ -777,6 +775,68 @@
             margin-bottom: 10px;
             padding-left: 10px;
         }
+
+        .user-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(168, 230, 207, 0.15);
+            margin-bottom: 30px;
+        }
+
+        .user-table th, .user-table td {
+            padding: 16px 12px;
+            text-align: center;
+            font-size: 1.05rem;
+        }
+
+        .user-table th {
+            background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+            color: #fff;
+            font-weight: 700;
+            border-bottom: 2px solid #a8e6cf;
+        }
+
+        .user-table tr {
+            transition: background 0.2s;
+        }
+
+        .user-table tr:not(.deactivated):hover {
+            background: rgba(168, 230, 207, 0.15);
+        }
+
+        .user-table tr.deactivated {
+            background: rgba(200, 200, 200, 0.3);
+            color: #999;
+            opacity: 0.7;
+        }
+
+        .user-table tr.deactivated .status-badge {
+            background: linear-gradient(135deg, #bdbdbd, #9e9e9e);
+        }
+
+        .user-customer-code,
+        .user-name,
+        .user-id,
+        .user-email,
+        .user-tel {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4a9b8e;
+        }
+
+        .user-role {
+            text-align: center;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -845,7 +905,7 @@
                 <div class="search-icon">🔍</div>
                 <form id="searchForm" method="get" th:action="@{/admin/customerList}">
                     <input class="search-input" name="search"
-                           placeholder="사용자 ID 또는 이메일로 검색..."
+                           placeholder="고객코드 , 이름 , 아이디 ,이메일 , 전화번호 , 권한으로 검색..."
                            th:value="${searchKeyword}"
                            type="text">
                 </form>
@@ -859,28 +919,44 @@
                     <div class="empty-state-subtext">status가 USER인 사용자가 없습니다</div>
                 </div>
 
-                <div class="user-item" th:classappend="${user.deleteFlag} ? 'deactivated'" th:each="user : ${userList}">
-                    <div class="user-id" th:text="${user.username}">USER001</div>
-                    <div class="user-info">
-                        <div class="user-status">
-                            <span class="status-badge status-user">USER</span>
-                        </div>
-                        <div class="user-email" th:text="${user.email}">user@example.com</div>
-                    </div>
-                    <div class="user-actions">
-                        <button class="btn btn-restore" onclick="handleRestoreClick(this)"
-                                th:attr="data-id=${user.id}, data-username=${user.username}"
-                                th:if="${user.deleteFlag}">
-                            복원
-                        </button>
-                        <button class="btn btn-delete"
-                                onclick="handleDeleteClick(this)"
-                                th:attr="data-id=${user.id}, data-username=${user.username}"
-                                th:if="${!user.deleteFlag}">
-                            삭제
-                        </button>
-                    </div>
-                </div>
+                <table class="user-table" th:if="${!#lists.isEmpty(userList)}">
+                    <thead>
+                        <tr>
+                            <th>고객코드</th>
+                            <th>이름</th>
+                            <th>아이디</th>
+                            <th>이메일</th>
+                            <th>전화번호</th>
+                            <th>권한</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:classappend="${user.deleteFlag} ? 'deactivated'" th:each="user : ${userList}">
+                            <td class="user-customer-code" th:text="${user.customerCode}">CUST001</td>
+                            <td class="user-name" th:text="${user.name}">홍길동</td>
+                            <td class="user-id" th:text="${user.username}">USER001</td>
+                            <td class="user-email" th:text="${user.email}">user@example.com</td>
+                            <td class="user-tel" th:text="${user.tel}">010-1234-1234</td>
+                            <td class="user-role">
+                                <span class="status-badge status-user" th:text="${user.role}">USER</span>
+                            </td>
+                            <td class="user-actions">
+                                <button class="btn btn-restore" onclick="handleRestoreClick(this)"
+                                        th:attr="data-id=${user.id}, data-username=${user.username}"
+                                        th:if="${user.deleteFlag}">
+                                    복원
+                                </button>
+                                <button class="btn btn-delete"
+                                        onclick="handleDeleteClick(this)"
+                                        th:attr="data-id=${user.id}, data-username=${user.username}"
+                                        th:if="${!user.deleteFlag}">
+                                    삭제
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <!-- 페이징 UI -->
                 <div class="pagination" th:if="${totalPages > 1}">

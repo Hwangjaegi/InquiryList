@@ -56,4 +56,14 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Long countByCustomerCode(String customerCode);
     // ADMIN을 제외한 역할 카운트
     Long countByRoleIn(List<String> roles);
+
+    @Query("SELECT u FROM User u WHERE u.role <> 'ADMIN' AND (" +
+            "LOWER(u.customerCode) LIKE LOWER(CONCAT('%', :search , '%')) OR " +
+            "LOWER(u.name) LIKE LOWER(CONCAT('%', :search , '%')) OR " +
+            "LOWER(u.username) LIKE LOWER(CONCAT('%', :search , '%')) OR " +
+            "u.tel LIKE CONCAT('%', :search , '%') OR " +
+            "LOWER(u.email) LIKE LOWER(CONCAT('%', :search , '%')) OR " +
+            "LOWER(u.role) LIKE LOWER(CONCAT('%', :search , '%'))" +
+            ") ORDER BY u.createdAt DESC")
+    Page<User> searchAllFieldsExcludeAdmin(@Param("search") String search, Pageable pageable);
 }

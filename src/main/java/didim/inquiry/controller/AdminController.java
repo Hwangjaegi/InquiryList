@@ -280,6 +280,35 @@ public class AdminController extends BaseController {
         return "redirect:/admin/projectListAdmin";
     }
 
+    @PostMapping("/admin/updateProject")
+    public String updateProject(@RequestParam Long projectId,
+                                @RequestParam String projectSubject,
+                                @RequestParam Long customerId,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            ProjectDto dto = new ProjectDto();
+            dto.setProjectId(projectId);
+            dto.setProjectSubject(projectSubject);
+            Customer customer = customerService.findById(customerId);
+            projectService.updateProject(dto, customer);
+            redirectAttributes.addFlashAttribute("successMessage", "프로젝트가 성공적으로 수정되었습니다.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "프로젝트 수정 중 오류가 발생했습니다: " + e.getMessage());
+        }
+        return "redirect:/admin/projectListAdmin";
+    }
+
+    @PostMapping("/admin/deleteProject/{id}")
+    public String deleteProject(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            projectService.deleteProjectById(id);
+            redirectAttributes.addFlashAttribute("successMessage", "프로젝트가 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "프로젝트 삭제 중 오류가 발생했습니다: " + e.getMessage());
+        }
+        return "redirect:/admin/projectListAdmin";
+    }
+
     @GetMapping("/admin/customerList")
     public String customerList(
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -288,24 +317,22 @@ public class AdminController extends BaseController {
             Model model,
             RedirectAttributes redirectAttributes) {
         try {
-            User userCheck = getCurrentUser();
             Pageable pageable = PageRequest.of(page, size);
-            List<String> roles = Arrays.asList("USER", "MANAGER");
-            Page<User> userPage = searchKeyword == null || searchKeyword.isEmpty()
-                    ? userService.getUsersByRole(roles, pageable)
-                    : userService.searchUsersByRoleAndKeyword(roles, searchKeyword, pageable);
+            Page<User> userPage;
+            if (searchKeyword == null || searchKeyword.isEmpty()) {
+                // ADMIN을 제외한 모든 사용자
+                List<String> roles = Arrays.asList("USER", "MANAGER");
+                userPage = userService.getUsersByRole(roles, pageable);
+            } else {
+                // ADMIN을 제외하고 모든 필드로 검색
+                userPage = userService.searchAllFieldsExcludeAdmin(searchKeyword, pageable);
+            }
 
-            long totalUsers = userService.getUsersCountByRoles(roles);
-            System.out.println("총개수 : " + totalUsers);
+            long totalUsers = userService.getUsersCountByRoles(Arrays.asList("USER", "MANAGER"));
             long newUsers = userPage.getContent().stream()
                     .filter(user -> user.getCreatedAt() != null &&
                             user.getCreatedAt().isAfter(LocalDateTime.now().minusMonths(1)))
                     .count();
-
-            System.out.println("currentPage: " + userPage.getNumber());
-            System.out.println("totalPages: " + userPage.getTotalPages());
-            System.out.println("pageSize: " + size);
-            System.out.println("searchKeyword: " + searchKeyword);
 
             model.addAttribute("userList", userPage.getContent());
             model.addAttribute("totalUsers", totalUsers);
@@ -316,7 +343,7 @@ public class AdminController extends BaseController {
             model.addAttribute("searchKeyword", searchKeyword);
 
             return "admin/adminCustomerList";
-        } catch (UsernameNotFoundException e) {
+        } catch (Exception e) {
             System.err.println("Not Found Error: " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/login";
