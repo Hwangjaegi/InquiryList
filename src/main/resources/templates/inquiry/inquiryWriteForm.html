@@ -139,39 +139,22 @@
             <input id="title" name="title" placeholder="문의 제목을 입력하세요" required type="text"/>
         </div>
         <br>
-        <!-- 담당자 선택 -->
+        <!-- 이름/연락처/이메일: 로그인 유저 정보 표시 -->
         <div class="form-row">
             <div class="form-group">
-                <label for="manager">담당자</label>
-                <select id="manager" name="managerId" required>
-                    <option value="">담당자를 선택하세요</option>
-                    <option th:data-email="${manager.email}"
-                            th:data-tel="${manager.tel}"
-                            th:each="manager : ${managerList}"
-                            th:text="${manager.name}"
-                            th:value="${manager.id}">
-                    </option>
-                </select>
+                <label for="userName">이름</label>
+                <input class="readonly-field" id="userName" name="userName" readonly th:value="${user.name}" type="text" />
             </div>
-            <button class="add-manager-btn" onclick="openAddManagerModal()" type="button">
-                담당자 추가
-            </button>
-        </div>
-        <br>
-        <!-- 연락처 정보 -->
-        <div class="form-row">
             <div class="form-group">
-                <label for="managertel">담당자 연락처</label>
-                <input class="readonly-field" id="managertel" name="managerTel"
-                       placeholder="담당자 선택 시 자동 입력" readonly type="text"/>
+                <label for="userTel">연락처</label>
+                <input class="readonly-field" id="userTel" name="userTel" readonly th:value="${user.tel}" type="text" />
             </div>
-            <br>
             <div class="form-group">
-                <label for="managerEmail">담당자 이메일</label>
-                <input class="readonly-field" id="managerEmail" name="managerEmail"
-                       placeholder="담당자 선택 시 자동 입력" readonly type="email"/>
+                <label for="userEmail">이메일</label>
+                <input class="readonly-field" id="userEmail" name="userEmail" readonly th:value="${user.email}" type="email" />
             </div>
         </div>
+        <!-- 기존 담당자 선택/추가/연락처/이메일 영역 삭제 -->
 
         <!-- 프로젝트 선택 -->
         <div class="form-group">
@@ -225,23 +208,6 @@
                 <label for="newManagerEmail">이메일</label>
                 <input id="newManagerEmail" name="email" placeholder="이메일" required type="email"/>
             </div>
-            <!-- 개인정보 수집 및 이용 동의 -->
-            <div class="form-group" style="margin-top: 30px;">
-                <label style="font-weight: 600; color: #4a9b8e;">개인정보 수집 및 이용 동의 <span style="color:red">*</span></label>
-                <div style="border: 1px solid #a8e6cf; border-radius: 6px; padding: 15px; max-height: 180px; overflow-y: auto; background-color: #f8f9fa; font-size: 0.95rem; line-height: 1.6;">
-                    디딤솔루션코리아는 문의 접수 및 처리, 사후관리 등을 위해 아래와 같은 개인정보를 수집 및 이용합니다. <br><br>
-                    <strong>1. 수집 항목:</strong> 이름, 연락처, 이메일 <br>
-                    <strong>2. 이용 목적:</strong> 문의 응대 및 결과 회신 <br>
-                    <strong>3. 보유 기간:</strong> 수집일로부터 1년간 보관 후 파기 <br><br>
-                    위와 같은 개인정보 수집 및 이용에 동의하실 경우 아래 체크박스를 선택해 주세요. 동의를 거부하실 경우 문의 작성이 제한될 수 있습니다.
-                </div>
-                <div style="margin-top: 15px;">
-                    <label style="display: inline-flex; align-items: center; cursor: pointer; width: auto;">
-                        <input id="privacyAgreement" name="privacyAgreement" required style="margin-right: 8px; width: auto; flex-shrink: 0;" type="checkbox">
-                        <span style="color: #333;">개인정보 수집 및 이용에 동의합니다.</span>
-                    </label>
-                </div>
-            </div>
 
             <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
                 <button onclick="closeAddManagerModal()"
@@ -280,173 +246,60 @@
       }
     });
 
-    // 담당자 선택 시 연락처 정보 자동 입력
-    document.getElementById('manager').addEventListener('change', function() {
-      const selectedOption = this.options[this.selectedIndex];
-      const tel = selectedOption.getAttribute('data-tel') || '';
-      const email = selectedOption.getAttribute('data-email') || '';
-
-      document.getElementById('managertel').value = tel;
-      document.getElementById('managerEmail').value = email;
-    });
-
-    // 담당자 추가 모달 관련 함수
-    function openAddManagerModal() {
-      document.getElementById('addManagerModal').style.display = 'block';
-      updateSubmitButtonState(); // 모달 열 때 버튼 상태 업데이트
-    }
-
-    function closeAddManagerModal() {
-      document.getElementById('addManagerModal').style.display = 'none';
-      document.getElementById('addManagerForm').reset();
-      updateSubmitButtonState(); // 모달 닫을 때 버튼 상태 업데이트
-    }
-
-    // 개인정보 동의 체크박스 상태에 따른 제출 버튼 활성화/비활성화
-    function updateSubmitButtonState() {
-      const checkbox = document.getElementById('privacyAgreement');
-      const submitBtn = document.getElementById('addManagerSubmitBtn');
-
-      if (checkbox && submitBtn) {
-        submitBtn.disabled = !checkbox.checked;
-      }
-    }
-
-    // 체크박스 변경 시 제출 버튼 상태 업데이트
-    document.addEventListener('DOMContentLoaded', function() {
-      const checkbox = document.getElementById('privacyAgreement');
-      if (checkbox) {
-        checkbox.addEventListener('change', updateSubmitButtonState);
-      }
-    });
-
-    // 담당자 추가 폼 제출
-    document.getElementById('addManagerForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      const formData = new FormData(this);
-      const managerData = {
-        managerName: formData.get('name'),
-        managerTel: formData.get('tel'),
-        managerEmail: formData.get('email')
-      };
-
-      try {
-        const response = await fetch('/addManagerApi', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(managerData)
-        });
-
-        if (!response.ok) throw new Error('담당자 추가 실패');
-
-        const newManager = await response.json();
-
-        // 드롭다운에 새 담당자 추가
-        const managerSelect = document.getElementById('manager');
-        const newOption = document.createElement('option');
-        newOption.value = newManager.managerId;
-        newOption.textContent = newManager.managerName;
-        newOption.setAttribute('data-tel', newManager.managerTel);
-        newOption.setAttribute('data-email', newManager.managerEmail);
-        managerSelect.appendChild(newOption);
-
-        // 새로 추가된 담당자 선택
-        managerSelect.value = newManager.managerId;
-        document.getElementById('managertel').value = newManager.managerTel;
-        document.getElementById('managerEmail').value = newManager.managerEmail;
-
-        closeAddManagerModal();
-        alert('담당자가 성공적으로 추가되었습니다.');
-
-      } catch (error) {
-        alert('담당자 추가 중 오류가 발생했습니다.');
-        console.error(error);
-      }
-    });
-
     // 이미지 업로드 핸들러
     function imageHandler() {
       const input = document.createElement('input');
       input.setAttribute('type', 'file');
       input.setAttribute('accept', 'image/*');
       input.click();
-
       input.onchange = async () => {
         const file = input.files[0];
         if (!file) return;
-
-        // FormData 생성
         const formData = new FormData();
         formData.append('image', file);
-
         try {
-          // 서버에 업로드 요청
           const response = await fetch('/uploadTempImage', {
             method: 'POST',
             body: formData
           });
-
           if (!response.ok) throw new Error('업로드 실패');
-
           const data = await response.json();
-          console.log('결과 : ' + JSON.stringify(data));
-          // 서버에서 받은 이미지 URL 삽입
           const range = quill.getSelection();
           quill.insertText(range.index, '\n');
           quill.insertEmbed(range.index + 1, 'image', data.url);
           quill.setSelection(range.index + 2);
-
         } catch (err) {
           alert('이미지 업로드 중 오류가 발생했습니다.');
           console.error(err);
         }
       };
     }
-
     // 폼 제출 시 validation 및 hidden input 설정
     document.getElementById('inquiryForm').onsubmit = function(e) {
       const html = quill.root.innerHTML;
+      alert('html : ' + html);
       document.getElementById('hiddenContent').value = html;
-
-      // 제목 빈값 검사
       if (!document.getElementById('title').value.trim()) {
         alert('제목을 입력하세요.');
         e.preventDefault();
         return false;
       }
-
-      // 담당자 선택 검사
-      if (!document.getElementById('manager').value) {
-        alert('담당 담당자를 선택하세요.');
-        e.preventDefault();
-        return false;
-      }
-
-      // 프로젝트 선택 검사
       if (!document.getElementById('project').value) {
         alert('프로젝트 유형을 선택하세요.');
         e.preventDefault();
         return false;
       }
-
-      // 내용 빈값 검사
       if (quill.getLength() <= 1) {
         alert('내용을 입력하세요.');
         e.preventDefault();
         return false;
       }
     };
-
-    // 모달 외부 클릭 시 닫기
     document.getElementById('addManagerModal').addEventListener('click', function(e) {
       if (e.target === this) {
         closeAddManagerModal();
       }
     });
-
     // --- 연락처 하이픈 ---
     function formatPhoneNumber(phoneNumber) {
         const cleaned = phoneNumber.replace(/\D/g, '');
@@ -482,37 +335,6 @@
             return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 7) + '-' + cleaned.slice(7, 11);
         }
     }
-
-    // 연락처 하이픈 자동 입력 적용
-    document.addEventListener('DOMContentLoaded', function () {
-        const telInput = document.getElementById('newManagertel');
-
-        if (telInput) {
-            telInput.addEventListener('input', function (e) {
-                const cursorPosition = e.target.selectionStart;
-                const oldValue = e.target.value;
-                const newValue = formatPhoneNumber(oldValue);
-                e.target.value = newValue;
-
-                // 커서 위치 보정
-                const diff = newValue.length - oldValue.length;
-                if (diff > 0) {
-                    e.target.setSelectionRange(cursorPosition + diff, cursorPosition + diff);
-                }
-            });
-
-            telInput.addEventListener('keydown', function (e) {
-                const cursorPosition = e.target.selectionStart;
-                const value = e.target.value;
-                if (e.key === 'Backspace' && cursorPosition > 0 && value[cursorPosition - 1] === '-') {
-                    e.preventDefault();
-                    const newValue = value.substring(0, cursorPosition - 2) + value.substring(cursorPosition);
-                    e.target.value = formatPhoneNumber(newValue);
-                    e.target.setSelectionRange(cursorPosition - 2, cursorPosition - 2);
-                }
-            });
-        }
-    });
 </script>
 </body>
 </html>

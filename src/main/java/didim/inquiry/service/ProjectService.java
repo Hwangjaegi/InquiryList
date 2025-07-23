@@ -71,4 +71,12 @@ public class ProjectService {
         if (customer == null) return Page.empty();
         return projectRepository.findByCustomerIdOrderByCreatedAtDesc(customer.getId(), pageable);
     }
+
+    public Page<Project> getAllProjectsByCustomerId(Long customerCodeId, Pageable pageable) {
+        return projectRepository.findByCustomerIdOrderByCreatedAtDesc(customerCodeId , pageable);
+    }
+
+    public Page<Project> getAllProjectsByCustomerIdAndSearch(Long customerCodeId, String searchKeyword, Pageable pageable) {
+        return projectRepository.findByCustomerIdAndSubjectContainingOrderByCreatedAtDesc(customerCodeId,searchKeyword,pageable);
+    }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,6 +19,9 @@ public class Customer {
     private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Project> projects;
 
     //데이터 입력시 자동 당일 날짜 , 상태 활성화값 입력 , 수정시는 변경X
     @PrePersist

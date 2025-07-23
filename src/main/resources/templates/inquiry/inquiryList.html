@@ -927,29 +927,20 @@
     <div class="search-bar">
         <form action="/searchInquiries" class="search-form" id="searchForm" method="get">
             <input name="page" type="hidden" value="0"/>
-            <input class="search-input" name="title" placeholder="제목으로 검색..." th:value="${searchInquiry?.title ?: ''}" type="text">
-            <input class="search-input" name="writer" placeholder="작성자로 검색..." th:value="${searchInquiry?.writer ?: ''}" type="text">
+            <input class="search-input" name="keyword" placeholder="제목, 담당자, 작성자 검색..." th:value="${searchInquiry?.keyword ?: ''}" type="text">
             <input class="month-input" name="yearMonth" placeholder="년월 선택" th:value="${searchInquiry?.yearMonth ?: ''}" type="month">
-            <div class="status-filter">
-                <div class="status-filter-toggle">
-                    <span>답변 상태</span>
-                    <i class="fas fa-chevron-down"></i>
+            <div class="status-checkboxes" style="display: flex; flex-direction: row; gap: 16px; align-items: center;">
+                <div class="checkbox-item">
+                    <input id="status-pending" name="status" th:checked="${searchInquiry?.status != null and #strings.contains(searchInquiry.status, '답변 대기중')}" type="checkbox" value="답변 대기중">
+                    <label for="status-pending">답변 대기중</label>
                 </div>
-                <div class="status-filter-dropdown">
-                    <div class="status-checkboxes">
-                        <div class="checkbox-item">
-                            <input id="status-pending" name="status" th:checked="${searchInquiry?.status != null and #strings.contains(searchInquiry.status, '답변 대기중')}" type="checkbox" value="답변 대기중">
-                            <label for="status-pending">답변 대기중</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input id="status-processing" name="status" th:checked="${searchInquiry?.status != null and #strings.contains(searchInquiry.status, '답변완료')}" type="checkbox" value="답변완료">
-                            <label for="status-processing">답변완료</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input id="status-complete" name="status" th:checked="${searchInquiry?.status != null and #strings.contains(searchInquiry.status, '처리완료')}" type="checkbox" value="처리완료">
-                            <label for="status-complete">처리완료</label>
-                        </div>
-                    </div>
+                <div class="checkbox-item">
+                    <input id="status-processing" name="status" th:checked="${searchInquiry?.status != null and #strings.contains(searchInquiry.status, '답변완료')}" type="checkbox" value="답변완료">
+                    <label for="status-processing">답변완료</label>
+                </div>
+                <div class="checkbox-item">
+                    <input id="status-complete" name="status" th:checked="${searchInquiry?.status != null and #strings.contains(searchInquiry.status, '처리완료')}" type="checkbox" value="처리완료">
+                    <label for="status-complete">처리완료</label>
                 </div>
             </div>
             <button class="search-button" type="submit">
@@ -985,19 +976,19 @@
                     <div class="content-label">
                         <i class="fas fa-user"></i> 담당자
                     </div>
-                    <div class="content-value" th:text="${inquiry.manager.name}">작성자</div>
+                    <div class="content-value" th:text="${inquiry.writer.name}">작성자</div>
                 </div>
                 <div class="content-section">
                     <div class="content-label">
                         <i class="fas fa-phone"></i> 연락처
                     </div>
-                    <div class="content-value" th:text="${inquiry.manager.tel}">010-1234-5678</div>
+                    <div class="content-value" th:text="${inquiry.writer.tel}">010-1234-5678</div>
                 </div>
                 <div class="content-section">
                     <div class="content-label">
                         <i class="fas fa-envelope"></i> 이메일
                     </div>
-                    <div class="content-value" th:text="${inquiry.manager.email}">test@example.com</div>
+                    <div class="content-value" th:text="${inquiry.writer.email}">test@example.com</div>
                 </div>
                 <div class="content-section">
                     <div class="content-label">
@@ -1018,7 +1009,7 @@
                     <div style="margin-bottom: 15px;" th:each="answer : ${inquiry.answers}">
                         <div class="content-label" th:style="${answer.user.id == inquiry.writer.id} ? 'justify-content: flex-start; text-align: left;' : 'justify-content: flex-end; text-align: right;'">
                             <i class="fas fa-reply"></i>
-                            <span th:if="${answer.user.id == inquiry.writer.id}" th:text="${answer.inquiry.manager.name} + ' 답글'">답글</span>
+                            <span th:if="${answer.user.id == inquiry.writer.id}" th:text="${answer.inquiry.writer.name} + ' 답글'">답글</span>
                             <span th:if="${answer.user.id != inquiry.writer.id}" th:text="${answer.user.name} + ' 답글'">답글2</span>
                         </div>
                         <div class="inquiry-text" th:if="${answer.user.id == inquiry.writer.id}" th:utext="${answer.content}"></div>
@@ -1059,18 +1050,18 @@
             pageSize=5,
             startPage=${(currentPage / pageSize) * pageSize},
             endPage=${startPage + pageSize - 1 > totalPages - 1 ? totalPages - 1 : startPage + pageSize - 1}">
-            <a class="pagination-button" th:href="${searchInquiry != null} ? @{/searchInquiries(page=0, title=${searchInquiry.title ?: ''}, writer=${searchInquiry.writer ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=0)}" th:if="${startPage > 0}">
+            <a class="pagination-button" th:href="${searchInquiry != null} ? @{/searchInquiries(page=0, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=0)}" th:if="${startPage > 0}">
                 <i class="fas fa-angle-double-left"></i>
             </a>
-            <a class="pagination-button" th:href="${searchInquiry != null} ? @{/searchInquiries(page=${startPage - 1}, title=${searchInquiry.title ?: ''}, writer=${searchInquiry.writer ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${startPage - 1})}" th:if="${startPage > 0}">
+            <a class="pagination-button" th:href="${searchInquiry != null} ? @{/searchInquiries(page=${startPage - 1}, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${startPage - 1})}" th:if="${startPage > 0}">
                 <i class="fas fa-chevron-left"></i> 이전
             </a>
-            <a class="pagination-button" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(startPage, endPage)}" th:href="${searchInquiry != null} ? @{/searchInquiries(page=${page}, title=${searchInquiry.title ?: ''}, writer=${searchInquiry.writer ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${page})}" th:text="${page + 1}">
+            <a class="pagination-button" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(startPage, endPage)}" th:href="${searchInquiry != null} ? @{/searchInquiries(page=${page}, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${page})}" th:text="${page + 1}">
             </a>
-            <a class="pagination-button" th:href="${searchInquiry != null} ? @{/searchInquiries(page=${endPage + 1}, title=${searchInquiry.title ?: ''}, writer=${searchInquiry.writer ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${endPage + 1})}" th:if="${endPage < totalPages - 1}">
+            <a class="pagination-button" th:href="${searchInquiry != null} ? @{/searchInquiries(page=${endPage + 1}, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${endPage + 1})}" th:if="${endPage < totalPages - 1}">
                 다음 <i class="fas fa-chevron-right"></i>
             </a>
-            <a class="pagination-button" th:href="${searchInquiry != null} ? @{/searchInquiries(page=${totalPages - 1}, title=${searchInquiry.title ?: ''}, writer=${searchInquiry.writer ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${totalPages - 1})}" th:if="${endPage < totalPages - 1}">
+            <a class="pagination-button" th:href="${searchInquiry != null} ? @{/searchInquiries(page=${totalPages - 1}, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${totalPages - 1})}" th:if="${endPage < totalPages - 1}">
                 <i class="fas fa-angle-double-right"></i>
             </a>
         </th:block>

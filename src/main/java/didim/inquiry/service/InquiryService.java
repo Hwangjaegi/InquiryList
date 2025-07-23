@@ -106,4 +106,27 @@ public class InquiryService {
             );
         }
     }
+
+    public Page<Inquiry> searchInquiries(String keyword, String yearMonth, List<String> statuses, String role, String username, Pageable pageable) {
+        if (statuses == null || statuses.isEmpty()) {
+            statuses = null;
+        }
+        if (keyword != null && !keyword.isBlank()) {
+            keyword = keyword.trim();
+        } else {
+            keyword = null;
+        }
+        java.time.LocalDateTime start = null;
+        java.time.LocalDateTime end = null;
+        if (yearMonth != null && !yearMonth.isBlank()) {
+            java.time.YearMonth ym = java.time.YearMonth.parse(yearMonth, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM"));
+            start = ym.atDay(1).atStartOfDay();
+            end = ym.atEndOfMonth().atTime(23, 59, 59);
+        }
+        if ("ADMIN".equals(role)) {
+            return inquiryRepository.findInquiriesByKeywordForAdmin(keyword, statuses, start, end, pageable);
+        } else {
+            return inquiryRepository.findInquiriesByKeywordForUser(keyword, statuses, start, end, username, pageable);
+        }
+    }
 }

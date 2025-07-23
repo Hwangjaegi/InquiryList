@@ -68,4 +68,27 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
     @Query(value = "SELECT tick_number FROM inquiry WHERE tick_number LIKE CONCAT(:year, '%') ORDER BY tick_number DESC LIMIT 1", nativeQuery = true)
     String findLastTickNumber(@Param("year") String year);
 
+    @EntityGraph(attributePaths = {"answers", "answers.user"})
+    @Query("SELECT i FROM Inquiry i JOIN i.writer w " +
+            "WHERE ( :keyword IS NULL OR " +
+            "LOWER(i.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(w.name) LIKE LOWER(CONCAT('%', :keyword, '%')) ) " +
+            "AND (:statuses IS NULL OR i.status IN :statuses) " +
+            "AND (:start IS NULL OR i.createdAt >= :start) " +
+            "AND (:end IS NULL OR i.createdAt <= :end) " +
+            "ORDER BY i.createdAt DESC")
+    Page<Inquiry> findInquiriesByKeywordForAdmin(@Param("keyword") String keyword, @Param("statuses") List<String> statuses, @Param("start") java.time.LocalDateTime start, @Param("end") java.time.LocalDateTime end, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"answers", "answers.user"})
+    @Query("SELECT i FROM Inquiry i JOIN i.writer w " +
+            "WHERE ( :keyword IS NULL OR " +
+            "LOWER(i.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(w.name) LIKE LOWER(CONCAT('%', :keyword, '%')) ) " +
+            "AND (:statuses IS NULL OR i.status IN :statuses) " +
+            "AND (:start IS NULL OR i.createdAt >= :start) " +
+            "AND (:end IS NULL OR i.createdAt <= :end) " +
+            "AND w.username = :username " +
+            "ORDER BY i.createdAt DESC")
+    Page<Inquiry> findInquiriesByKeywordForUser(@Param("keyword") String keyword, @Param("statuses") List<String> statuses, @Param("start") java.time.LocalDateTime start, @Param("end") java.time.LocalDateTime end, @Param("username") String username, Pageable pageable);
+
 }

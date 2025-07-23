@@ -12,10 +12,15 @@ public class CustomerService {
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
+
     public List<Customer> findAll() {
         return customerRepository.findAll();
     }
     public Customer findById(Long id) {
         return customerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("고객코드를 찾을 수 없습니다."));
     }
-} 
+
+    public Customer getCustomer(String customerCode) {
+        return customerRepository.findByCode(customerCode);
+    }
+}

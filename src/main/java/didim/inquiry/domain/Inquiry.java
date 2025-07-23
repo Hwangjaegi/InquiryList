@@ -28,16 +28,8 @@ public class Inquiry {
     private User writer;          //작성자 이름 또는 ID
 
     @ManyToOne
-    @JoinColumn(name = "manager_id" , nullable = false)
-    private Manager manager;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id" , nullable = false)
+    @JoinColumn(name = "project_id")
     private Project project;
-
-    @ManyToOne
-    @JoinColumn(name = "assignee_id")
-    private User assignee;        //담당자 이름 또는 ID
 
     @OneToMany(mappedBy = "inquiry" , cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers = new ArrayList<>();

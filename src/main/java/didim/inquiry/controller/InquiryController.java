@@ -119,26 +119,14 @@ public class InquiryController extends BaseController {
 
     @GetMapping("/inquiryWriteForm")
     public String inquiryWriteForm(Model model, RedirectAttributes redirectAttributes) {
-
         User user = getCurrentUser();
-
-        //계정정보 확인 후 해당 유저에 해당하는 관리자 및 프로젝트 리스트 가져오기
-        //user_customerCode -> UserList 가져온다음 -> 드롭다운 표시
-        List<User> managerList = userService.getUsersByCustomerCodeList(user.getCustomerCode());
-        managerList.forEach(manager -> {
-            System.out.println("매니저 정보 : " + manager.getName());
-        });
-
-        //customerId -> Project List 가져온다음 -> 드롭다운 표시
+        // 로그인 유저 정보만 모델에 추가
+        model.addAttribute("user", user);
+        // customerId -> Project List 가져온다음 -> 드롭다운 표시
         String customerCode = user.getCustomerCode();
         List<Project> projectList = (customerCode != null && !customerCode.isBlank()) ?
             projectService.getProjectListByCustomerCode(customerCode, org.springframework.data.domain.Pageable.unpaged()).getContent() :
             List.of();
-        projectList.forEach(project -> {
-            System.out.println("프로젝트 정보 : " + project.getSubject());
-        });
-
-        model.addAttribute("managerList", managerList);
         model.addAttribute("projectList", projectList);
         return "inquiry/inquiryWriteForm";
     }
@@ -177,46 +165,33 @@ public class InquiryController extends BaseController {
 
     @PostMapping("/inquiryWrite")
     public String inquiryWrite(Inquiry inquiry,
-                               ManagerDto managerDto,
                                ProjectDto projectDto,
                                RedirectAttributes redirectAttributes) {
-
         System.out.println("이쪽들어옴!");
+        System.out.println(inquiry.getContent());
         String username = SecurityUtil.getCurrentUsername();
-
         try {
-            //로그인 사용자 유저 정보 확인
             User findUser = userService.getUserByUsername(username);
-            //로그인 사용자 id를 inquiey의 fk로 저장
+            //로그인 사용자 id를 inquiry의 fk로 저장
             inquiry.setWriter(findUser);
             inquiry.setCreatedAt(LocalDateTime.now());
             inquiry.setStatus("답변 대기중");
-
-            //관리자 조회
-            System.out.println("매니저아이디 : " + managerDto.getManagerId());
-            Manager selectedManager = managerService.getSelectedManager(managerDto.getManagerId());
-            inquiry.setManager(selectedManager);
-
             //프로젝트 조회
             Project selectedProject = projectService.getProject(projectDto.getProjectId());
             inquiry.setProject(selectedProject);
-
             //문의에 이미지가 존재한다면 이미지 경로 변경 및 위치 변경
             String content = inquiry.getContent();
             if (content != null && content.contains("<img")) {
-                //inquery의 content내 이미지태그의 임시저장이미지폴더 경로를 실제 저장경로로 변경 및 파일 이동 처리
                 String updatedContent = moveImageFromTempToPosts(inquiry.getContent());
                 inquiry.setContent(updatedContent);
             }
             //inquiry 레코드 생성
             inquiryService.saveInquiry(inquiry);
-
             redirectAttributes.addFlashAttribute("successMessage", "문의가 성공적으로 등록되었습니다.");
         } catch (Exception e) {
             System.err.println("문의 저장 중 오류 발생 : " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "문의 저장 중 오류가 발생했습니다. 다시 시도해주세요!");
         }
-
         return "redirect:/inquiryList";
     }
 
@@ -282,28 +257,25 @@ public class InquiryController extends BaseController {
                                   BindingResult result,
                                   Model model,
                                   @RequestParam(defaultValue = "0") int page) {
-        // 1. 로그인한 계정 정보 확인
         String username = SecurityUtil.getCurrentUsername();
         if (username == null) {
-            System.out.println("username이 null입니다 - 로그인 페이지로 리다이렉트");
             return "redirect:/login?error=true";
         }
-
-        // 2. 에러 처리 ?
         if (result.hasErrors()) {
             model.addAttribute("inquiries", Page.empty());
             return "inquiry/inquiryList";
         }
-
-        // 3. 로그인한 계정의 권한 조회
         User findUser = userService.getUserByUsername(username);
         String role = findUser.getRole();
-
-        // 4. 페이지당 10개 문의 조회 (페이징 적용)
-        Pageable pageable = PageRequest.of(page, 10); // 페이지당 10개
-        Page<Inquiry> inquiries = inquiryService.getInquiryBySearch(searchInquiry, role, username, pageable);
-
-        // 5. 문의 내용 줄바꿈 기호 <br>로 변경
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Inquiry> inquiries = inquiryService.searchInquiries(
+            searchInquiry.getKeyword(),
+            searchInquiry.getYearMonth(),
+            searchInquiry.getStatus(),
+            role,
+            username,
+            pageable
+        );
         inquiries.forEach(inquiry -> {
             String content = inquiry.getContent();
             if (content != null) {
@@ -317,11 +289,8 @@ public class InquiryController extends BaseController {
                 inquiry.getAnswers().sort(Comparator.comparing(Answer::getRepliedAt));
             }
         });
-
-        // 6. 모델에 데이터 추가
         model.addAttribute("inquiries", inquiries);
         model.addAttribute("role", role);
-        // 검색 조건을 모델에 추가하여 템플릿에서 재사용
         model.addAttribute("searchInquiry", searchInquiry);
         return "inquiry/inquiryList";
     }

@@ -17,7 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import didim.inquiry.repository.CustomerRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,10 +29,6 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.List;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Controller
 public class AdminController extends BaseController {
@@ -185,15 +180,13 @@ public class AdminController extends BaseController {
     }
 
     //코드삭제
-    @PostMapping("deleteCode/{id}")
+    @PostMapping("/admin/deleteCode/{id}")
     public String deleteCustomerCode(
             @PathVariable Long id,
             RedirectAttributes redirectAttributes,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "search", required = false) String search) {
-
-        System.out.println("삭제 코드 값 : " + id);
 
         //해당 고객코드가 없을 경우 예외처리 후 삭제
         try {
@@ -219,10 +212,12 @@ public class AdminController extends BaseController {
         try {
             User user = getCurrentUser();
             Pageable pageable = PageRequest.of(page, size);
+            String customerCode = user.getCustomerCode();
+            Customer customer = customerService.getCustomer(customerCode);
 
             Page<Project> projectList = searchKeyword == null || searchKeyword.isEmpty()
-                    ? projectService.getAllProjects(pageable)
-                    : projectService.getAllProjectsBySearch(searchKeyword, pageable);
+                    ? projectService.getAllProjectsByCustomerId(customer.getId(),pageable)
+                    : projectService.getAllProjectsByCustomerIdAndSearch(customer.getId(),searchKeyword, pageable);
 
 
             model.addAttribute("projectList", projectList);

@@ -1059,7 +1059,7 @@
         }
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = `/deleteCode/${currentDeleteId}?page=${currentPage}&search=${encodeURIComponent(searchKeyword)}`;
+        form.action = `/admin/deleteCode/${currentDeleteId}?page=${currentPage}&search=${encodeURIComponent(searchKeyword)}`;
         document.body.appendChild(form);
         form.submit();
     }
