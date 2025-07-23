@@ -284,6 +284,9 @@ public class AdminController extends BaseController {
     public String updateProject(@RequestParam Long projectId,
                                 @RequestParam String projectSubject,
                                 @RequestParam Long customerId,
+                                @RequestParam(value = "page", defaultValue = "0") int page,
+                                @RequestParam(value = "search", required = false) String search,
+                                @RequestParam(value = "size", defaultValue = "10") int size,
                                 RedirectAttributes redirectAttributes) {
         try {
             ProjectDto dto = new ProjectDto();
@@ -295,18 +298,24 @@ public class AdminController extends BaseController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "프로젝트 수정 중 오류가 발생했습니다: " + e.getMessage());
         }
-        return "redirect:/admin/projectListAdmin";
+        String url = "/admin/projectListAdmin?page=" + page + "&size=" + size + (search != null && !search.isEmpty() ? "&search=" + URLEncoder.encode(search, StandardCharsets.UTF_8) : "");
+        return "redirect:" + url;
     }
 
     @PostMapping("/admin/deleteProject/{id}")
-    public String deleteProject(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String deleteProject(@PathVariable Long id,
+                                @RequestParam(value = "page", defaultValue = "0") int page,
+                                @RequestParam(value = "search", required = false) String search,
+                                @RequestParam(value = "size", defaultValue = "10") int size,
+                                RedirectAttributes redirectAttributes) {
         try {
             projectService.deleteProjectById(id);
             redirectAttributes.addFlashAttribute("successMessage", "프로젝트가 성공적으로 삭제되었습니다.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "프로젝트 삭제 중 오류가 발생했습니다: " + e.getMessage());
         }
-        return "redirect:/admin/projectListAdmin";
+        String url = "/admin/projectListAdmin?page=" + page + "&size=" + size + (search != null && !search.isEmpty() ? "&search=" + URLEncoder.encode(search, StandardCharsets.UTF_8) : "");
+        return "redirect:" + url;
     }
 
     @GetMapping("/admin/customerList")

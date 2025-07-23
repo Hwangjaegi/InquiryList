@@ -49,7 +49,7 @@
         .stat-label { color: #666; font-size: 0.9rem; }
         .project-list { margin-top: 30px; }
         .project-table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.9); border-radius: 12px; overflow: hidden; border: 1px solid rgba(168,230,207,0.3); box-shadow: 0 8px 25px rgba(168,230,207,0.2); }
-        .project-table th, .project-table td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(168,230,207,0.3); }
+        .project-table th, .project-table td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(168,230,207,0.3); font-weight: 600; color: #4a9b8e;}
         .project-table th { background: linear-gradient(135deg, #a8e6cf, #7fcdcd); color: white; font-weight: 600; font-size: 1rem; }
         .project-table tr { transition: all 0.3s ease; }
         .project-table tr:hover { background: rgba(168,230,207,0.1); transform: translateY(-2px); }
@@ -92,44 +92,52 @@
         }
         /* Modal Styles */
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
-            left: 0;
+            display: flex;
+            visibility: hidden;
+            opacity: 0;
+            position: fixed;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            padding-top: 60px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            align-items: center;
+            justify-content: center;
         }
-
+        .modal.show {
+            display: flex;
+            visibility: visible;
+            opacity: 1;
+        }
         .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto; /* 15% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-            max-width: 600px;
-            border-radius: 10px;
-            position: relative;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid rgba(168, 230, 207, 0.3);
+            box-shadow: 0 20px 60px rgba(168, 230, 207, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
         }
-
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 25px;
             padding-bottom: 15px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(168, 230, 207, 0.3);
         }
-
         .modal-title {
-            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
             color: #4a9b8e;
         }
-
         .modal-close {
             background: none;
             border: none;
@@ -140,52 +148,66 @@
             border-radius: 50%;
             transition: all 0.3s ease;
         }
-
         .modal-close:hover {
             background: rgba(168, 230, 207, 0.2);
             color: #4a9b8e;
         }
-
         .modal-body {
-            padding: 10px 0;
+            margin-bottom: 25px;
         }
-
+        .modal-footer {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            padding-top: 15px;
+            border-top: 1px solid rgba(168, 230, 207, 0.3);
+        }
         .form-row {
-            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
         }
-
         .form-label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-size: 0.9rem;
+            font-weight: 600;
+            color: #4a9b8e;
+            font-size: 0.95rem;
         }
-
         .form-input {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ccc;
+            padding: 12px 15px;
+            border: 1px solid rgba(168, 230, 207, 0.5);
             border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            font-family: inherit;
         }
-
         .form-input:focus {
             outline: none;
             border-color: #a8e6cf;
-            box-shadow: 0 0 0 3px rgba(168,230,207,0.2);
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 0 3px rgba(168, 230, 207, 0.2);
         }
-
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            padding-top: 15px;
-            margin-top: 20px;
-            border-top: 1px solid #eee;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .modal.show {
-            display: block;
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
@@ -361,11 +383,17 @@
         });
     }, 4000);
 
+    // 쿼리스트링 파싱 유틸
+    function getQueryParam(name) {
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name) || '';
+    }
+    const currentPage = getQueryParam('page') || '0';
+    const currentSearch = getQueryParam('search') || '';
+    const currentSize = getQueryParam('size') || '10';
+
     // 프로젝트 수정 모달 핸들러
     let currentEditProjectId = null;
-
-    // 수정 버튼에 이벤트 위임
-    // (동적으로 생성되는 경우에도 동작)
     document.addEventListener('click', function(e) {
         if (e.target && e.target.classList.contains('btn-edit')) {
             const tr = e.target.closest('tr');
@@ -375,7 +403,6 @@
             openEditProjectModal(id, subject, customerCode);
         }
     });
-
     function openEditProjectModal(id, subject, customerCode) {
         currentEditProjectId = id;
         document.getElementById('editProjectId').value = id;
@@ -388,9 +415,24 @@
                 break;
             }
         }
+        // 페이지/검색/사이즈 hidden input 추가
+        setEditProjectHiddenInputs();
         document.getElementById('editProjectModal').classList.add('show');
     }
-
+    function setEditProjectHiddenInputs() {
+        let form = document.getElementById('editProjectForm');
+        ['editPage','editSearch','editSize'].forEach(id => {
+            let el = document.getElementById(id);
+            if (el) el.remove();
+        });
+        let page = document.createElement('input');
+        page.type = 'hidden'; page.name = 'page'; page.id = 'editPage'; page.value = currentPage;
+        let search = document.createElement('input');
+        search.type = 'hidden'; search.name = 'search'; search.id = 'editSearch'; search.value = currentSearch;
+        let size = document.createElement('input');
+        size.type = 'hidden'; size.name = 'size'; size.id = 'editSize'; size.value = currentSize;
+        form.appendChild(page); form.appendChild(search); form.appendChild(size);
+    }
     function closeEditProjectModal() {
         document.getElementById('editProjectModal').classList.remove('show');
         currentEditProjectId = null;
@@ -407,25 +449,39 @@
             openDeleteProjectModal(id, subject, customerCode);
         }
     });
-
     function openDeleteProjectModal(id, subject, customerCode) {
         currentDeleteProjectId = id;
         document.getElementById('deleteProjectName').textContent = subject;
         document.getElementById('deleteProjectCustomerCode').textContent = customerCode;
+        setDeleteProjectHiddenInputs();
         document.getElementById('deleteProjectModal').classList.add('show');
     }
-
+    function setDeleteProjectHiddenInputs() {
+        let modal = document.getElementById('deleteProjectModal');
+        ['deletePage','deleteSearch','deleteSize'].forEach(id => {
+            let el = document.getElementById(id);
+            if (el) el.remove();
+        });
+        let page = document.createElement('input');
+        page.type = 'hidden'; page.name = 'page'; page.id = 'deletePage'; page.value = currentPage;
+        let search = document.createElement('input');
+        search.type = 'hidden'; search.name = 'search'; search.id = 'deleteSearch'; search.value = currentSearch;
+        let size = document.createElement('input');
+        size.type = 'hidden'; size.name = 'size'; size.id = 'deleteSize'; size.value = currentSize;
+        // 삭제 폼은 JS로 생성하므로, confirmDeleteProject에서 사용
+        window._deleteProjectHiddenInputs = [page, search, size];
+    }
     function closeDeleteProjectModal() {
         document.getElementById('deleteProjectModal').classList.remove('show');
         currentDeleteProjectId = null;
     }
-
     function confirmDeleteProject() {
         if (!currentDeleteProjectId) return;
         // 폼 생성 후 POST 전송
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = `/admin/deleteProject/${currentDeleteProjectId}`;
+        (window._deleteProjectHiddenInputs||[]).forEach(input => form.appendChild(input));
         document.body.appendChild(form);
         form.submit();
     }

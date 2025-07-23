@@ -727,6 +727,40 @@
         }
         .nav-section { margin-bottom: 20px; }
         .nav-section-title { color: #4a9b8e; font-size: 1rem; font-weight: 600; margin-bottom: 10px; padding-left: 10px; }
+        .project-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.9);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(168,230,207,0.3);
+            box-shadow: 0 8px 25px rgba(168,230,207,0.2);
+        }
+        .project-table th, .project-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(168,230,207,0.3);
+            font-weight: 600;
+            color: #4a9b8e;
+        }
+        .project-table th {
+            background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .project-table tr {
+            transition: all 0.3s ease;
+        }
+        .project-table tr:hover {
+            background: rgba(168,230,207,0.1);
+            transform: translateY(-2px);
+        }
+        .project-table .project-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
     </style>
 </head>
 <body>
@@ -766,15 +800,15 @@
             <div class="stats">
                 <div class="stat-card">
                     <div class="stat-number" th:text="${totalCustomer}">0</div>
-                    <div class="stat-label">총 고객 수</div>
+                    <div class="stat-label">총 고객코드 수</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" th:text="${activeCustomer}">0</div>
-                    <div class="stat-label">활성 고객</div>
+                    <div class="stat-label">총 활성코드 수</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" th:text="${newCustomer}">0</div>
-                    <div class="stat-label">신규 고객 (이번 달)</div>
+                    <div class="stat-label">신규 고객코드 수 (이번 달)</div>
                 </div>
             </div>
 
@@ -832,27 +866,33 @@
                         등록된 고객이 없습니다. 위의 폼을 사용하여 새로운 고객 코드를 생성해보세요.
                     </div>
                 </div>
-
-                <div class="customer-item" th:each="customer : ${customers.getContent()}">
-                    <div class="customer-code" th:text="${customer.code}">CU001</div>
-                    <div class="customer-info">
-                        <div class="customer-status">
-                            <span class="status-badge status-active" th:if="${customer.status == 'ACTIVE'}">활성</span>
-                            <span class="status-badge status-inactive" th:if="${customer.status == 'INACTIVE'}">비활성</span>
-                        </div>
-                        <div class="customer-description" th:text="${customer.description}">코드 설명</div>
-                    </div>
-                    <div class="customer-actions">
-                        <button class="btn btn-edit"
-                                th:attr="data-id=${customer.id},data-code=${customer.code},data-description=${customer.description},data-status=${customer.status}">
-                            수정
-                        </button>
-                        <button class="btn btn-delete"
-                                th:attr="data-id=${customer.id},data-code=${customer.code}">
-                            삭제
-                        </button>
-                    </div>
-                </div>
+                <table class="project-table" th:if="${!#lists.isEmpty(customers.getContent())}">
+                    <thead>
+                        <tr>
+                            <th>고객코드</th>
+                            <th>코드설명</th>
+                            <th>활성</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="customer : ${customers.getContent()}">
+                            <td th:text="${customer.code}">CU001</td>
+                            <td th:text="${customer.description}">설명</td>
+                            <td>
+                                <span class="status-badge status-active" th:if="${customer.status == 'ACTIVE'}">활성</span>
+                                <span class="status-badge status-inactive" th:if="${customer.status == 'INACTIVE'}">비활성</span>
+                            </td>
+                            <td class="project-actions">
+                                <button class="btn btn-edit" type="button"
+                                        th:data-id="${customer.id}" th:data-code="${customer.code}" th:data-description="${customer.description}" th:data-status="${customer.status}">수정</button>
+                                <button class="btn btn-delete" type="button"
+                                        th:data-id="${customer.id}" th:data-code="${customer.code}">삭제</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
                 <!-- 페이징 UI -->
                 <div class="pagination" th:if="${customers.getTotalPages() > 1}">

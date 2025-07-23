@@ -6,10 +6,8 @@ import didim.inquiry.repository.ProjectRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import didim.inquiry.domain.Customer;
-import didim.inquiry.service.CustomerService;
+
 
 @Service
 public class ProjectService {
