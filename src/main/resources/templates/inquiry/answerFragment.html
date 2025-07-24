@@ -1,0 +1,11 @@
+<!-- 답글 1개 렌더링용 Thymeleaf fragment -->
+<div style="margin-bottom: 15px;">
+    <div class="content-label" th:style="${isWriter} ? 'justify-content: flex-start; text-align: left;' : 'justify-content: flex-end; text-align: right;'">
+        <i class="fas fa-reply"></i>
+        <span th:text="${answer.user.name} + ' 답글'">답글</span>
+    </div>
+    <div th:if="${isWriter}" class="inquiry-text" th:utext="${answer.content}"></div>
+    <span th:if="${isWriter}" class="answer-date left-date" th:text="${answer.repliedAt != null ? #temporals.format(answer.repliedAt, 'yyyy-MM-dd HH:mm') : ''}"></span>
+    <div th:if="${!isWriter}" class="answer-text" th:utext="${answer.content}"></div>
+    <span th:if="${!isWriter}" class="answer-date" th:text="${answer.repliedAt != null ? #temporals.format(answer.repliedAt, 'yyyy-MM-dd HH:mm') : ''}"></span>
+</div> 
