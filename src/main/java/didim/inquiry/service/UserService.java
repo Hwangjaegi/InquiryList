@@ -43,8 +43,12 @@ public class UserService {
         }
 
         // 고객코드로 처음 가입한 사람은 관리자 권한 부여
-        if (!userRepository.findByCustomerCode(user.getCustomerCode()).isEmpty()){
-            user.setRole("MANAGER");
+        if (userRepository.findByCustomerCode(user.getCustomerCode()).isEmpty()){
+            if (user.getUsername().equals("admin") && user.getCustomerCode().equals("D000001")){
+                user.setRole("ADMIN");
+            }else{
+                user.setRole("MANAGER");
+            }
         }
 
         //가입된 정보가 없을 경우 패스워드 암호화 처리 후 가입처리

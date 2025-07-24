@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class CustomerDto {
     private Long id;
     private String code;
-    private String description;
+    private String company;
     private String status;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
@@ -27,7 +27,7 @@ public class CustomerDto {
     public CustomerDto(Customer customer){
         this.id = customer.getId();
         this.code = customer.getCode();
-        this.description = customer.getDescription();
+        this.company = customer.getCompany();
         this.status = customer.getStatus();
         this.createAt = customer.getCreatedAt();
         this.updateAt = customer.getUpdatedAt();

@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Repository
 public interface AdminRepository extends JpaRepository<Customer , Long> {
@@ -17,7 +16,7 @@ public interface AdminRepository extends JpaRepository<Customer , Long> {
     boolean existsByCodeAndStatus(String code, String status);
 
     Page<Customer> findAllByOrderByCreatedAtDesc(Pageable pageable);
-    Page<Customer> findByCodeContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String search, String search2 , Pageable pageable);
+    Page<Customer> findByCodeContainingIgnoreCaseOrCompanyContainingIgnoreCase(String search, String search2 , Pageable pageable);
 
     long countByStatusIgnoreCase(String active);
 

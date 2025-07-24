@@ -33,15 +33,14 @@ public class AdminService {
 
         Customer customer = new Customer();
         customer.setCode(customerDto.getCode());
-        customer.setDescription(customerDto.getDescription());
+        customer.setCompany(customerDto.getCompany());
         adminRepository.save(customer);
     }
 
     //어드민콘솔 고객코드관리 리스트 가져오기
     public Page<Customer> getCustomerCodeList(String search , Pageable pageable) {
         if (search != null && !search.trim().isEmpty()) {
-            return adminRepository.findByCodeContainingIgnoreCaseOrDescriptionContainingIgnoreCase(search , search , pageable);
-
+            return adminRepository.findByCodeContainingIgnoreCaseOrCompanyContainingIgnoreCase(search , search , pageable);
         } else {
             return adminRepository.findAllByOrderByCreatedAtDesc(pageable);
         }
@@ -56,7 +55,7 @@ public class AdminService {
 
         //2. 필드 수정
         customer.setCode(customerDto.getCode());
-        customer.setDescription(customerDto.getDescription());
+        customer.setCompany(customerDto.getCompany());
         customer.setStatus(customerDto.getStatus());
     }
 

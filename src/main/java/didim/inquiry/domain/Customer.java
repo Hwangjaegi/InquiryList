@@ -15,7 +15,7 @@ public class Customer {
     private Long id;
     @Column(unique = true) // 코드 중복 방지
     private String code;
-    private String description;
+    private String company;
     private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

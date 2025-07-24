@@ -756,7 +756,9 @@
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-title">관리 메뉴</div>
-                <a class="menu-item active" th:href="@{/admin/myInfo}">🙍‍♂️ 내정보</a>
+                <a class="menu-item" th:href="@{/admin/myInfo}">🙍‍♂️ 내정보</a>
+                <a class="menu-item active" th:href="@{/admin/console}">👥 담당자 목록</a>
+                <a class="menu-item" th:href="@{/admin/projectList}">📋 프로젝트 목록</a>
             </div>
             <div class="nav-section">
                 <div class="nav-section-title">기타</div>
@@ -766,7 +768,104 @@
         </nav>
     </aside>
 
+    <main class="main-content">
+        <div class="header">
+            <h1>담당자 목록</h1>
+            <p>나의 담당자 정보를 확인할 수 있습니다.</p>
+        </div>
 
+        <div class="content-card">
+            <!-- 통계 섹션 -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" th:text="${totalUser}">0</div>
+                    <div class="stat-label">등록된 담당자</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM')}">2024-01</div>
+                    <div class="stat-label">현재 월</div>
+                </div>
+            </div>
+
+            <!-- 검색 -->
+            <div class="search-container">
+                <div class="search-icon">🔍</div>
+                <form id="searchForm" method="get" th:action="@{/admin/console(page=0)}">
+                    <input class="search-input" name="search" placeholder="담당자 이름, 전화번호, 이메일로 검색..." th:value="${searchKeyword}" type="text">
+                </form>
+            </div>
+
+            <!-- 담당자 목록 -->
+            <div class="manager-list">
+                <div class="empty-state" th:if="${totalUser == 0}">
+                    <div class="empty-state-icon">👥</div>
+                    <div class="empty-state-text">등록된 담당자가 없습니다</div>
+                    <div class="empty-state-subtext">새 담당자를 추가하려면 관리자에게 문의하세요.</div>
+                </div>
+
+                <table class="manager-table" th:unless="${totalUser == 0}">
+                    <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>전화번호</th>
+                        <th>이메일</th>
+                        <th>등록일</th>
+                        <th>권한</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:classappend="${user.deleteFlag} ? 'disabled-row' : ''" th:data-id="${user.id}"
+                        th:each="user : ${userList}">
+                        <td th:text="${user.name}">담당자 이름</td>
+                        <td th:text="${user.tel}">010-1234-5678</td>
+                        <td th:text="${user.email}">email@example.com</td>
+                        <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd')}">2024-01-01</td>
+                        <td th:text="${user.role}">USER</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- 페이징 섹션 -->
+                <div class="pagination" th:if="${userList.totalPages > 1}">
+                    <th:block th:with="
+                        pageGroupSize=5,
+                        currentGroupIndex=${userList.number / pageGroupSize},
+                        startPage=${currentGroupIndex * pageGroupSize},
+                        endPage=${(startPage + pageGroupSize - 1) < (userList.totalPages - 1) ? (startPage + pageGroupSize - 1) : (userList.totalPages - 1)},
+                        hasPrevGroup=${currentGroupIndex > 0},
+                        hasNextGroup=${endPage < (userList.totalPages - 1)},
+                        prevGroupStartPage=${(currentGroupIndex - 1) * pageGroupSize},
+                        nextGroupStartPage=${(currentGroupIndex + 1) * pageGroupSize}">
+                        <a class="pagination-button"
+                           th:classappend="${userList.number == 0} ? 'disabled'"
+                           th:href="@{/admin/console(page=0, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                            <span class="pagination-nav"><<</span>
+                        </a>
+                        <a class="pagination-button"
+                           th:classappend="${!hasPrevGroup} ? 'disabled'"
+                           th:href="@{/admin/console(page=${prevGroupStartPage}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                            <span class="pagination-nav">이전</span>
+                        </a>
+                        <a class="pagination-button"
+                           th:classappend="${page == userList.number} ? 'active'"
+                           th:each="page : ${#numbers.sequence(startPage, endPage)}"
+                           th:href="@{/admin/console(page=${page}, size=${userList.pageable.pageSize}, search=${searchKeyword})}"
+                           th:text="${page + 1}">1</a>
+                        <a class="pagination-button"
+                           th:classappend="${!hasNextGroup} ? 'disabled'"
+                           th:href="@{/admin/console(page=${nextGroupStartPage}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                            <span class="pagination-nav">다음</span>
+                        </a>
+                        <a class="pagination-button"
+                           th:classappend="${userList.number == (userList.totalPages - 1)} ? 'disabled'"
+                           th:href="@{/admin/console(page=${userList.totalPages - 1}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                            <span class="pagination-nav">>></span>
+                        </a>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </main>
 </div>
 
 

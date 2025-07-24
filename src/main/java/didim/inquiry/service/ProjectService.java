@@ -23,16 +23,6 @@ public class ProjectService {
         this.customerService = customerService;
     }
 
-//    public Page<Project> getProjectBySearchList(Long user_id , String search , Pageable pageable) {
-//        return projectRepository.findByUserIdAndSubjectContainingOrderByCreatedAtDesc(user_id, search, pageable);
-//    }
-//    public Page<Project> getProjectList(Long user_id , Pageable pageable) {
-//        return projectRepository.findByUserIdOrderByCreatedAtDesc(user_id , pageable);
-//    }
-//    public List<Project> getProjectList(Long user_id ) {
-//        return projectRepository.findByUserIdOrderByCreatedAtDesc(user_id);
-//    }
-
     public Project getProject(long projectId) {
         return projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 프로젝트 입니다."));
     }

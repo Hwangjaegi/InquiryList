@@ -346,7 +346,7 @@
             color: white;
         }
 
-        .customer-description {
+        .customer-company {
             color: #666;
             font-size: 0.9rem;
             font-style: italic;
@@ -820,7 +820,7 @@
                         <input name="code" placeholder="고객 코드 입력 (예: CU001)" required type="text">
                     </div>
                     <div class="form-group">
-                        <textarea name="description" placeholder="코드 설명을 입력하세요" rows="3"></textarea>
+                        <textarea name="company" placeholder="회사명을 입력하세요." rows="3"></textarea>
                     </div>
                     <div class="form-group">
                         <div class="form-button-container">
@@ -848,7 +848,7 @@
                 <div class="search-icon">🔍</div>
                 <form id="searchForm" method="get" th:action="@{/admin/console(page=0)}">
                     <input class="search-input" name="search"
-                           placeholder="고객 코드 또는 설명으로 검색..."
+                           placeholder="고객 코드 또는 회사명으로 검색..."
                            th:value="${searchKeyword}"
                            type="text">
                 </form>
@@ -878,14 +878,14 @@
                     <tbody>
                         <tr th:each="customer : ${customers.getContent()}">
                             <td th:text="${customer.code}">CU001</td>
-                            <td th:text="${customer.description}">설명</td>
+                            <td th:text="${customer.company}">설명</td>
                             <td>
                                 <span class="status-badge status-active" th:if="${customer.status == 'ACTIVE'}">활성</span>
                                 <span class="status-badge status-inactive" th:if="${customer.status == 'INACTIVE'}">비활성</span>
                             </td>
                             <td class="project-actions">
                                 <button class="btn btn-edit" type="button"
-                                        th:data-id="${customer.id}" th:data-code="${customer.code}" th:data-description="${customer.description}" th:data-status="${customer.status}">수정</button>
+                                        th:data-id="${customer.id}" th:data-code="${customer.code}" th:data-company="${customer.company}" th:data-status="${customer.status}">수정</button>
                                 <button class="btn btn-delete" type="button"
                                         th:data-id="${customer.id}" th:data-code="${customer.code}">삭제</button>
                             </td>
@@ -965,7 +965,7 @@
                 </div>
                 <div class="form-row">
                     <label class="form-label">설명</label>
-                    <textarea class="form-input" id="editDescription" name="description" rows="3"></textarea>
+                    <textarea class="form-input" id="editcompany" name="company" rows="3"></textarea>
                 </div>
                 <div class="form-row">
                     <label class="form-label">상태</label>
@@ -1007,22 +1007,22 @@
     const currentPage = [[${customers.getNumber()}]];
     const searchKeyword = [[${searchKeyword != null ? searchKeyword : ''}]];
 
-    function openEditModal(id, code, description, status) {
+    function openEditModal(id, code, company, status) {
         if (!id || !code) {
-            console.error('Invalid data for edit modal:', { id, code, description, status });
+            console.error('Invalid data for edit modal:', { id, code, company, status });
             return;
         }
         currentEditId = id;
         document.getElementById('editId').value = id;
         document.getElementById('editCode').value = code;
-        document.getElementById('editDescription').value = description || '';
+        document.getElementById('editcompany').value = company || '';
         document.getElementById('editStatus').value = status || 'ACTIVE';
         document.getElementById('editPage').value = currentPage;
         document.getElementById('editSearch').value = searchKeyword;
 
         const modal = document.getElementById('editModal');
         modal.classList.add('show');
-        console.log('Edit modal opened:', { id, code, description, status });
+        console.log('Edit modal opened:', { id, code, company, status });
     }
 
     function closeEditModal() {
@@ -1082,13 +1082,13 @@
             const button = event.currentTarget;
             const id = button.dataset.id;
             const code = button.dataset.code;
-            const description = button.dataset.description || '';
+            const company = button.dataset.company || '';
             const status = button.dataset.status || 'ACTIVE';
 
-            console.log('Button clicked:', { id, code, description, status });
+            console.log('Button clicked:', { id, code, company, status });
 
             if (button.classList.contains('btn-edit')) {
-                openEditModal(id, code, description, status);
+                openEditModal(id, code, company, status);
             } else if (button.classList.contains('btn-delete')) {
                 openDeleteModal(id, code);
             }

@@ -2,7 +2,6 @@ package didim.inquiry.controller;
 
 import didim.inquiry.controller.absClass.BaseController;
 import didim.inquiry.domain.Customer;
-import didim.inquiry.domain.Manager;
 import didim.inquiry.domain.Project;
 import didim.inquiry.domain.User;
 import didim.inquiry.dto.CustomerDto;
@@ -105,7 +104,21 @@ public class AdminController extends BaseController {
 
             // 일반 사용자
             if ("USER".equals(user.getRole())) {
+                Pageable pageable = PageRequest.of(page, size);
 
+                Page<User> userListByCustomerCode;
+                if (search != null && !search.trim().isEmpty()) {
+                    userListByCustomerCode = userService.searchUsersByCustomerCode(user.getCustomerCode(), search, pageable);
+                } else {
+                    userListByCustomerCode = userService.getUsersByCustomerCode(user.getCustomerCode(),pageable);
+                }
+
+                Long totalUser = userService.getUsersCountByCustomerCode(user.getCustomerCode());
+
+                model.addAttribute("userList", userListByCustomerCode);
+                model.addAttribute("currentUserId",user.getId());
+                model.addAttribute("totalUser", totalUser);
+                model.addAttribute("searchKeyword", search);
                 return "admin/userConsole";
             }
         } catch (UsernameNotFoundException e) {
@@ -127,7 +140,7 @@ public class AdminController extends BaseController {
     public String createCustomerCode(@ModelAttribute CustomerDto customerDto, RedirectAttributes redirectAttributes, Model model) {
         //1. Dto에 요청 파라미터 값 담기
         System.out.println("code : " + customerDto.getCode());
-        System.out.println("설명 : " + customerDto.getDescription());
+        System.out.println("설명 : " + customerDto.getCompany());
 
         //2. DB에 저장 , 존재하는 코드일시 예외발생시켜 Try-Catch로 예외처리
         try {
@@ -150,7 +163,7 @@ public class AdminController extends BaseController {
             @RequestParam(value = "search", required = false) String search) {
 
         System.out.println("수정코드 : " + customerDto.getCode());
-        System.out.println("수정설명 : " + customerDto.getDescription());
+        System.out.println("수정설명 : " + customerDto.getCompany());
         System.out.println("수정상태 : " + customerDto.getStatus());
 
         //1. 수정 파라미터 받아서 업데이트
@@ -291,7 +304,8 @@ public class AdminController extends BaseController {
             projectService.deleteProjectById(id);
             redirectAttributes.addFlashAttribute("successMessage", "프로젝트가 성공적으로 삭제되었습니다.");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "프로젝트 삭제 중 오류가 발생했습니다: " + e.getMessage());
+            System.err.println("프로젝트 삭제중 문제발생 : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "문의가 등록된 프로젝트는 삭제 할 수 없습니다.");
         }
         String url = "/admin/projectListAdmin?page=" + page + "&size=" + size + (search != null && !search.isEmpty() ? "&search=" + URLEncoder.encode(search, StandardCharsets.UTF_8) : "");
         return "redirect:" + url;
@@ -396,10 +410,17 @@ public class AdminController extends BaseController {
     }
 
     @GetMapping("/admin/myInfo")
-    public String myInfo(Model model) {
-        User user = getCurrentUser();
-        model.addAttribute("user", user);
-        model.addAttribute("role", user.getRole());
-        return "admin/myInfo";
+    public String myInfo(Model model,
+                         RedirectAttributes redirectAttributes) {
+        try {
+            User user = getCurrentUser();
+            model.addAttribute("user", user);
+            model.addAttribute("role", user.getRole());
+            return "admin/myInfo";
+        }catch (UsernameNotFoundException e){
+            System.err.println("User Not Found Error : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/login";
+        }
     }
 }

@@ -733,7 +733,7 @@
                 <div class="empty-state" th:if="${#lists.isEmpty(projectList.content)}">
                     <div class="empty-state-icon">📋</div>
                     <div class="empty-state-text">등록된 프로젝트가 없습니다</div>
-                    <div class="empty-state-subtext">위의 폼을 사용하여 새로운 프로젝트를 추가해보세요</div>
+                    <div class="empty-state-subtext">관리자에게 문의하세요.</div>
                 </div>
 
                 <table class="project-table" th:unless="${#lists.isEmpty(projectList.content)}">
@@ -1036,23 +1036,6 @@
             const statNumber = document.querySelector('.stat-number');
             const currentCount = parseInt(statNumber.textContent) || 0;
             statNumber.textContent = currentCount + delta;
-        }
-
-        // 빈 상태 확인 (삭제 시 SSR로 처리하므로 사용 안 함)
-        function checkEmptyState() {
-            const tbody = document.querySelector('.project-table tbody');
-            if (tbody && tbody.children.length === 0) {
-                const projectList = document.querySelector('.project-list');
-                const emptyState = document.createElement('div');
-                emptyState.className = 'empty-state';
-                emptyState.innerHTML = `
-                    <div class="empty-state-icon">📋</div>
-                    <div class="empty-state-text">등록된 프로젝트가 없습니다</div>
-                    <div class="empty-state-subtext">위의 폼을 사용하여 새로운 프로젝트를 추가해보세요</div>
-                `;
-                projectList.innerHTML = '';
-                projectList.appendChild(emptyState);
-            }
         }
     });
 </script>

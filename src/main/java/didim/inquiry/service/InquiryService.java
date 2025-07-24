@@ -57,7 +57,7 @@ public class InquiryService {
         inquiry.setStatus("처리완료");
     }
 
-    //검색을 통한 조회 처리 (어드민일경우 , 일반유저일경우)
+    // /inquiryList 조회 시 admin의 경우 답변상태 필터링 후 검색결과 가져오기 위해 추가
     public Page<Inquiry> getInquiryBySearch(SearchInquiryDto searchInquiry, String role, String username , Pageable pageable) {
         List<String> statuses = searchInquiry.getStatus();
         if (statuses == null || statuses.isEmpty()) {
@@ -96,6 +96,7 @@ public class InquiryService {
         }
     }
 
+    // 일반적인 사용자 및 어드민이 검색필터를 통해 검색한 결과를 가져오는 메서드
     public Page<Inquiry> searchInquiries(String keyword, String yearMonth, List<String> statuses, String role, String username, Pageable pageable) {
         if (statuses == null || statuses.isEmpty()) {
             statuses = null;
@@ -105,12 +106,14 @@ public class InquiryService {
         } else {
             keyword = null;
         }
-        java.time.LocalDateTime start = null;
-        java.time.LocalDateTime end = null;
+        LocalDateTime start = null;
+        LocalDateTime end = null;
         if (yearMonth != null && !yearMonth.isBlank()) {
-            java.time.YearMonth ym = java.time.YearMonth.parse(yearMonth, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM"));
+            System.out.println("yearmonth : "  + yearMonth);
+            YearMonth ym = YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
             start = ym.atDay(1).atStartOfDay();
             end = ym.atEndOfMonth().atTime(23, 59, 59);
+            System.out.println("start : " + start + "end : " + end);
         }
         if ("ADMIN".equals(role)) {
             return inquiryRepository.findInquiriesByKeywordForAdmin(keyword, statuses, start, end, pageable);
