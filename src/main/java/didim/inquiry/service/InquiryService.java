@@ -45,17 +45,6 @@ public class InquiryService {
         return inquiryRepository.findAllWithAnswers(pageable);
     }
 
-    //유저 아이디로 문의조회 -> inquiry도메인에 User Writer필드가있고 이는 User에 username필드가 있으면 이를 연관해 Id를 참조하여 조회
-    public List<Inquiry> getInquiriesByUsername(String username){
-        return inquiryRepository.findByWriter_Username(username);
-    }
-
-    //유저 아이디로 문의조회 -> inquiry도메인에 User Writer필드가있고 이는 User에 username필드가 있으면 이를 연관해 Id를 참조하여 조회
-    public Page<Inquiry> getInquiriesByAnswersByUsername(String username , Pageable pageable){
-//        return inquiryRepository.findWithAnswersByUsername(username);
-        return inquiryRepository.findInquiriesByAnswersWithUserByUsername(username,pageable);
-    }
-
     //문의 id로 문의 조회
     public Optional<Inquiry> getInquiryById(Long id){
         return inquiryRepository.findById(id);

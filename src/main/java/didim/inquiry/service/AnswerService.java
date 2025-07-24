@@ -19,4 +19,12 @@ public class AnswerService {
     public void saveAnswer(Answer answer){
         answerRepository.save(answer);
     }
+
+    public Optional<Answer> getAnswerById(Long id) {
+        return answerRepository.findById(id);
+    }
+
+    public Optional<Answer> getAnswerWithInquiryAndWriterById(Long id) {
+        return answerRepository.findWithInquiryAndWriterById(id);
+    }
 }

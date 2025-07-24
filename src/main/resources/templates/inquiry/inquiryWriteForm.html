@@ -158,9 +158,8 @@
 
         <!-- 프로젝트 선택 -->
         <div class="form-group">
-            <label for="project">문의선택</label>
+            <label for="project">문의 및 프로젝트 선택</label>
             <select id="project" name="projectId" required>
-                <option value="">기타문의</option>
                 <option th:each="project : ${projectList}"
                         th:text="${project.subject}"
                         th:value="${project.id}">
@@ -277,7 +276,6 @@
     // 폼 제출 시 validation 및 hidden input 설정
     document.getElementById('inquiryForm').onsubmit = function(e) {
       const html = quill.root.innerHTML;
-      alert('html : ' + html);
       document.getElementById('hiddenContent').value = html;
       if (!document.getElementById('title').value.trim()) {
         alert('제목을 입력하세요.');

@@ -51,7 +51,7 @@
             box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
         }
         .container {
-            max-width: 1000px;
+            max-width: 1300px;
             margin: 0 auto;
         }
         .header {
@@ -262,7 +262,7 @@
         .inquiry-header {
             display: flex;
             flex-direction: column;
-            padding: 25px 30px;
+            padding: 20px 30px;
             cursor: pointer;
             background: linear-gradient(90deg, rgba(0, 184, 148, 0.05), rgba(85, 239, 196, 0.05));
             border-bottom: 1px solid rgba(0, 184, 148, 0.1);
@@ -272,6 +272,8 @@
             flex-direction: column;
             gap: 8px;
             width: 100%;
+            position: relative;
+            bottom: 14px;
         }
         .inquiry-meta {
             display: flex;
@@ -282,7 +284,8 @@
         }
         .write-date {
             position: relative;
-            top: 18px;
+            font-size: 15px;
+            top: 5px;
         }
         .ticket-number {
             font-size: 1rem;
@@ -297,16 +300,47 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
+            gap: 10px;
+        }
+        .inquiry-title-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .inquiry-title-group .label {
+            background: #f0fdfa;
+            color: #00997b;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            padding: 4px 14px;
+            margin-right: 0;
+            border: 1px solid #b2f2e5;
+            letter-spacing: 0.5px;
+        }
+        .inquiry-title-group .main-title {
+            color: #222;
+            font-size: 1.18rem;
+            font-weight: 700;
+            margin-left: 8px;
+            letter-spacing: 0.2px;
         }
         .inquiry-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #2d3436;
-            line-height: 1.4;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #222;
         }
-        .inquiry-left {
-            position: relative;
-            bottom: 10px;
+        .inquiry-meta-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.98rem;
+            color: #636e72;
+        }
+        .inquiry-meta-info i {
+            color: #00b894;
+            margin-right: 3px;
         }
         .inquiry-right {
             display: flex;
@@ -702,6 +736,19 @@
             transform: none;
             box-shadow: none;
         }
+        .reply-btn-row {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        .inquiry-divider {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #e0f7fa 0%, #b2dfdb 50%, #e0f7fa 100%);
+            border: none;
+            margin: 28px 0 18px 0;
+            opacity: 0.8;
+        }
         @media (max-width: 768px) {
             body {
                 padding: 15px;
@@ -777,11 +824,6 @@
             .answer-text {
                 max-width: 90%;
             }
-            .complete-button {
-                margin-left: 0;
-                margin-top: 10px;
-                width: 100%;
-            }
             .pagination {
                 flex-wrap: wrap;
                 gap: 8px;
@@ -794,6 +836,14 @@
             .modal-content {
                 width: 95%;
                 padding: 20px;
+            }
+            .inquiry-title-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .inquiry-title-group .main-title {
+                margin-left: 0;
             }
         }
     </style>
@@ -825,6 +875,15 @@
         });
         if (!isActive) {
             content.classList.add("active");
+            // reply-form 스크롤 이동 및 textarea 포커스
+            const replyForm = content.querySelector('.reply-form');
+            if (replyForm) {
+                replyForm.scrollIntoView({ behavior: "smooth", block: "center" });
+                const textarea = replyForm.querySelector('textarea');
+                if (textarea) {
+                    setTimeout(() => textarea.focus(), 400);
+                }
+            }
         }
     }
 
@@ -957,14 +1016,15 @@
                 <div class="inquiry-left">
                     <div class="inquiry-meta">
                         <span class="write-date" th:text="${#temporals.format(inquiry.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span>
-                        <span class="ticket-number" th:text="'티켓 번호: ' + ${inquiry.tickNumber}">티켓 번호</span>
                     </div>
                     <div class="title-row">
-                        <div class="inquiry-title">
-                            <span th:text="${inquiry.title}">제목</span>
+                        <div class="inquiry-title-group">
+                            <span class="ticket-number label" th:text="${inquiry.tickNumber}">티켓 번호</span>
+                            <span class="inquiry-project label" th:text="${inquiry.project.subject}">프로젝트</span>
+                            <span class="inquiry-manager label" th:text="${inquiry.writer.name}">담당자</span>
+                            <span class="inquiry-title main-title" th:text="${inquiry.title}">제목</span>
                         </div>
                         <div class="inquiry-right">
-                            <span class="inquiry-answerer" th:if="${!#lists.isEmpty(inquiry.answers)}" th:text="'답변자: ' + ${inquiry.answers[0].user.name}" title="답변자">답변자</span>
                             <div class="inquiry-status" th:classappend="${inquiry.status == '답변 대기중' ? ' status-pending' : (inquiry.status == '답변완료' ? ' status-processing' : (inquiry.status == '처리완료' ? ' status-complete' : ''))}" th:text="${inquiry.status}"></div>
                             <span class="answer-count" th:text="${#lists.size(inquiry.answers)}" title="답글 개수">0 답글</span>
                         </div>
@@ -972,29 +1032,31 @@
                 </div>
             </div>
             <div class="inquiry-content">
-                <div class="content-section">
-                    <div class="content-label">
-                        <i class="fas fa-user"></i> 담당자
+                <div class="content-section-group" style="display: flex; flex-direction: row; gap: 60px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <div class="content-section">
+                        <div class="content-label">
+                            <i class="fas fa-user"></i> 담당자
+                        </div>
+                        <div class="content-value" th:text="${inquiry.writer.name}">작성자</div>
                     </div>
-                    <div class="content-value" th:text="${inquiry.writer.name}">작성자</div>
-                </div>
-                <div class="content-section">
-                    <div class="content-label">
-                        <i class="fas fa-phone"></i> 연락처
+                    <div class="content-section">
+                        <div class="content-label">
+                            <i class="fas fa-phone"></i> 연락처
+                        </div>
+                        <div class="content-value" th:text="${inquiry.writer.tel}">010-1234-5678</div>
                     </div>
-                    <div class="content-value" th:text="${inquiry.writer.tel}">010-1234-5678</div>
-                </div>
-                <div class="content-section">
-                    <div class="content-label">
-                        <i class="fas fa-envelope"></i> 이메일
+                    <div class="content-section">
+                        <div class="content-label">
+                            <i class="fas fa-envelope"></i> 이메일
+                        </div>
+                        <div class="content-value" th:text="${inquiry.writer.email}">test@example.com</div>
                     </div>
-                    <div class="content-value" th:text="${inquiry.writer.email}">test@example.com</div>
-                </div>
-                <div class="content-section">
-                    <div class="content-label">
-                        <i class="fas fa-folder"></i> 프로젝트
+                    <div class="content-section">
+                        <div class="content-label">
+                            <i class="fas fa-folder"></i> 문의 및 프로젝트
+                        </div>
+                        <div class="content-value" th:text="${inquiry.project.subject}">테스트프로젝트</div>
                     </div>
-                    <div class="content-value" th:text="${inquiry.project.subject}">테스트프로젝트</div>
                 </div>
                 <div class="content-section">
                     <div class="content-label">
@@ -1005,18 +1067,22 @@
                         문의 내용이 표시됩니다.
                     </div>
                 </div>
-                <div class="content-section answer-list" th:if="${!#lists.isEmpty(inquiry.answers)}">
-                    <div style="margin-bottom: 15px;" th:each="answer : ${inquiry.answers}">
-                        <div class="content-label" th:style="${answer.user.id == inquiry.writer.id} ? 'justify-content: flex-start; text-align: left;' : 'justify-content: flex-end; text-align: right;'">
-                            <i class="fas fa-reply"></i>
-                            <span th:if="${answer.user.id == inquiry.writer.id}" th:text="${answer.inquiry.writer.name} + ' 답글'">답글</span>
-                            <span th:if="${answer.user.id != inquiry.writer.id}" th:text="${answer.user.name} + ' 답글'">답글2</span>
+                <div class="inquiry-divider"></div>
+                <!-- 답글 리스트: 답글이 없어도 항상 .answer-list가 렌더링 -->
+                <div class="content-section answer-list">
+                    <th:block th:if="${!#lists.isEmpty(inquiry.answers)}">
+                        <div style="margin-bottom: 15px;" th:each="answer : ${inquiry.answers}">
+                            <div class="content-label" th:style="${answer.user.id == inquiry.writer.id} ? 'justify-content: flex-start; text-align: left;' : 'justify-content: flex-end; text-align: right;'">
+                                <i class="fas fa-reply"></i>
+                                <span th:if="${answer.user.id == inquiry.writer.id}" th:text="${answer.inquiry.writer.name} + ' 답글'">답글</span>
+                                <span th:if="${answer.user.id != inquiry.writer.id}" th:text="${answer.user.name} + ' 답글'">답글2</span>
+                            </div>
+                            <div class="inquiry-text" th:if="${answer.user.id == inquiry.writer.id}" th:utext="${answer.content}"></div>
+                            <span class="answer-date left-date" th:if="${answer.user.id == inquiry.writer.id}" th:text="${answer.repliedAt != null ? #temporals.format(answer.repliedAt, 'yyyy-MM-dd HH:mm') : ''}"></span>
+                            <div class="answer-text" th:if="${answer.user.id != inquiry.writer.id}" th:utext="${answer.content}"></div>
+                            <span class="answer-date" th:if="${answer.user.id != inquiry.writer.id}" th:text="${answer.repliedAt != null ? #temporals.format(answer.repliedAt, 'yyyy-MM-dd HH:mm') : ''}"></span>
                         </div>
-                        <div class="inquiry-text" th:if="${answer.user.id == inquiry.writer.id}" th:utext="${answer.content}"></div>
-                        <span class="answer-date left-date" th:if="${answer.user.id == inquiry.writer.id}" th:text="${answer.repliedAt != null ? #temporals.format(answer.repliedAt, 'yyyy-MM-dd HH:mm') : ''}"></span>
-                        <div class="answer-text" th:if="${answer.user.id != inquiry.writer.id}" th:utext="${answer.content}"></div>
-                        <span class="answer-date" th:if="${answer.user.id != inquiry.writer.id}" th:text="${answer.repliedAt != null ? #temporals.format(answer.repliedAt, 'yyyy-MM-dd HH:mm') : ''}"></span>
-                    </div>
+                    </th:block>
                 </div>
                 <form action="/answerWrite" class="reply-form" method="post" onclick="event.stopPropagation();"
                       th:if="${inquiry.status != '처리완료' and (role == 'ADMIN' or !#lists.isEmpty(inquiry.answers))}">
@@ -1025,11 +1091,11 @@
                         <i class="fas fa-reply"></i> 답글 작성
                     </label>
                     <textarea name="content" placeholder="답글을 입력해주세요..." required="required" rows="4"></textarea>
-                    <div style="display: flex; gap: 10px;">
+                    <div class="reply-btn-row">
                         <button class="reply-button" type="submit">
                             <i class="fas fa-paper-plane"></i> 답글 전송
                         </button>
-                        <button class="complete-button" th:if="${role == 'ADMIN'}" th:onclick="|openCompleteModal(${inquiry.id})|" type="button">
+                        <button class="complete-button" th:if="${role == 'ADMIN' && inquiry.status != '처리완료'}" th:onclick="|openCompleteModal(${inquiry.id})|" type="button">
                             <i class="fas fa-check-circle"></i> 처리 완료
                         </button>
                     </div>
@@ -1089,6 +1155,43 @@
         document.getElementById('searchForm').reset();
         window.location.href = '/searchInquiries?page=0';
     }
+    // 답글 AJAX 전송
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.reply-form').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(form);
+                fetch('/answerWriteAjax', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        // 답글 리스트에 추가 (answerHtml fragment)
+                        const answerList = form.closest('.inquiry-content').querySelector('.answer-list');
+                        if (answerList && data.answerHtml) {
+                            const temp = document.createElement('div');
+                            temp.innerHTML = data.answerHtml;
+                            answerList.appendChild(temp.firstElementChild);
+                        }
+                        form.reset();
+                        // 2. 상태 텍스트/배경색 변경
+                        const card = form.closest('.inquiry-card');
+                        const statusDiv = card.querySelector('.inquiry-status');
+                        if (statusDiv) {
+                            statusDiv.textContent = '답변완료';
+                            statusDiv.classList.remove('status-pending');
+                            statusDiv.classList.add('status-processing');
+                        }
+
+                    } else {
+                        alert(data.message || '답글 등록 실패');
+                    }
+                });
+            });
+        });
+    });
 </script>
 </body>
 </html>

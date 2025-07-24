@@ -37,13 +37,13 @@ public class UserService {
             return false;
         }
 
-        // 고객코드가 같은 유저 중 아이디가 같은경우 true (아이디 중복체크)
-        if (userRepository.findByUsernameAndCustomerCode(user.getUsername() , user.getCustomerCode()).isPresent()){ //isPresent : 객체의 값이 존재하는지 확인
+        // user에서 아이디가 중복되면 가입 못하게 방지
+        if (userRepository.findByUsername(user.getUsername()).isPresent()){ //isPresent : 객체의 값이 존재하는지 확인
             return false;
         }
 
         // 고객코드로 처음 가입한 사람은 관리자 권한 부여
-        if (!userRepository.findByCustomerCode(user.getCustomerCode()).isPresent()){
+        if (!userRepository.findByCustomerCode(user.getCustomerCode()).isEmpty()){
             user.setRole("MANAGER");
         }
 
@@ -142,8 +142,7 @@ public class UserService {
     }
 
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     public User save(User user) {

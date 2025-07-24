@@ -6,6 +6,10 @@ import didim.inquiry.service.UserService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Collections;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,6 +76,14 @@ public class UserController extends BaseController{
 
         model.addAttribute("successMessage","회원가입이 완료되었습니다.");
         return "login";
+    }
+
+    //중복체크
+    @GetMapping("/api/check-username")
+    @ResponseBody
+    public Map<String, Boolean> checkUsername(@RequestParam String username) {
+        boolean exists = userService.findByUsername(username) != null;
+        return Collections.singletonMap("exists", exists);
     }
 
     //시큐리티 로그아웃 후 재 로그인시 에러 확인 후 처리

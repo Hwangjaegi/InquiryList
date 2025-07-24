@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project , Long> {
@@ -22,4 +23,5 @@ public interface ProjectRepository extends JpaRepository<Project , Long> {
     Page<Project> findByCustomerIdAndSubjectContainingOrderByCreatedAtDesc(Long customerId, String search, Pageable pageable);
     Page<Project> findAllByOrderByCreatedAtDesc(Pageable pageable);
     Page<Project> findAllBySubjectContainingOrderByCreatedAtDesc(String search, Pageable pageable);
+    Optional<Project> findBySubject(String subject);
 }

@@ -2,14 +2,13 @@ package didim.inquiry.controller;
 
 import didim.inquiry.controller.absClass.BaseController;
 import didim.inquiry.domain.*;
-import didim.inquiry.dto.ManagerDto;
 import didim.inquiry.dto.ProjectDto;
 import didim.inquiry.dto.SearchInquiryDto;
 import didim.inquiry.security.SecurityUtil;
 import didim.inquiry.service.InquiryService;
-import didim.inquiry.service.ManagerService;
 import didim.inquiry.service.ProjectService;
 import didim.inquiry.service.UserService;
+import didim.inquiry.service.AnswerService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -41,15 +40,13 @@ public class InquiryController extends BaseController {
     private final InquiryService inquiryService;
     private final UserService userService;
     private final ProjectService projectService;
-    private final ManagerService managerService;
     @Value("${file.upload}")
     private String uploadDir;
 
-    public InquiryController(InquiryService inquiryService, UserService userService, ProjectService projectService, ManagerService managerService) {
+    public InquiryController(InquiryService inquiryService, UserService userService, ProjectService projectService) {
         this.inquiryService = inquiryService;
         this.userService = userService;
         this.projectService = projectService;
-        this.managerService = managerService;
     }
 
     @GetMapping("/inquiryList")
@@ -120,14 +117,27 @@ public class InquiryController extends BaseController {
     @GetMapping("/inquiryWriteForm")
     public String inquiryWriteForm(Model model, RedirectAttributes redirectAttributes) {
         User user = getCurrentUser();
-        // 로그인 유저 정보만 모델에 추가
         model.addAttribute("user", user);
-        // customerId -> Project List 가져온다음 -> 드롭다운 표시
+
+        // 1. 기타문의 프로젝트는 항상 포함
+        Project etcProject = projectService.getEtcProject(); // subject="기타문의"인 Project
+
+        // 2. 나머지 프로젝트는 customerCode 기준으로 가져옴
         String customerCode = user.getCustomerCode();
         List<Project> projectList = (customerCode != null && !customerCode.isBlank()) ?
-            projectService.getProjectListByCustomerCode(customerCode, org.springframework.data.domain.Pageable.unpaged()).getContent() :
-            List.of();
-        model.addAttribute("projectList", projectList);
+                projectService.getProjectListByCustomerCode(customerCode, Pageable.unpaged()).getContent() :
+                List.of();
+
+        // 3. 기타문의를 맨 앞에 추가 (중복 방지)
+        List<Project> finalList = new ArrayList<>();
+        finalList.add(etcProject);
+        for (Project p : projectList) {
+            if (p.getId() != etcProject.getId()) { // 혹시라도 중복 방지
+                finalList.add(p);
+            }
+        }
+
+        model.addAttribute("projectList", finalList);
         return "inquiry/inquiryWriteForm";
     }
 

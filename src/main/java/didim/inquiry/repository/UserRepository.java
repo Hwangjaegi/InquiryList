@@ -31,11 +31,10 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query("UPDATE User u SET u.deleteFlag = false WHERE u.id = :id")
     void UserDeleteFlagFalseById(@Param("id") Long id);
 
-    //회원가입시 고객코드가 같은 유저중 아이디가 같은지 확인
-    Optional<User> findByUsernameAndCustomerCode(String username, String customerCode);
+
 
     //회원가입 시 고객코드로 가입한 유저가 있는지 확인
-    Optional<User> findByCustomerCode(String customerCode);
+    List<User> findByCustomerCode(String customerCode);
 
     @Query("SELECT u FROM User u WHERE u.customerCode = :customerCode AND " +
             "(" +

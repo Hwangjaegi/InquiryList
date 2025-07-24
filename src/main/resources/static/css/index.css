@@ -237,6 +237,10 @@ body {
     transform: translateX(250%);
 }
 
+.text.sign-up {
+    display: none;
+}
+
 .container.sign-in .text.sign-in h2,
 .container.sign-in .text.sign-in p,
 .container.sign-in .img.sign-in img,

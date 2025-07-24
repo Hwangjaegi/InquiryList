@@ -3,10 +3,13 @@ package didim.inquiry.service;
 import didim.inquiry.domain.Project;
 import didim.inquiry.dto.ProjectDto;
 import didim.inquiry.repository.ProjectRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import didim.inquiry.domain.Customer;
+
+import java.time.LocalDateTime;
 
 
 @Service
@@ -78,5 +81,20 @@ public class ProjectService {
 
     public Page<Project> getAllProjectsByCustomerIdAndSearch(Long customerCodeId, String searchKeyword, Pageable pageable) {
         return projectRepository.findByCustomerIdAndSubjectContainingOrderByCreatedAtDesc(customerCodeId,searchKeyword,pageable);
+    }
+
+    // 서버구동 시 subject='기타문의' 프로젝트가 없으면 자동 생성
+    @PostConstruct
+    public void ensureEtcProjectExists() {
+        if (projectRepository.findBySubject("기타문의").isEmpty()) {
+            Project etc = new Project();
+            etc.setSubject("기타문의");
+            etc.setCreatedAt(LocalDateTime.now());
+            projectRepository.save(etc);
+        }
+    }
+
+    public Project getEtcProject() {
+        return projectRepository.findBySubject("기타문의").orElseThrow(() -> new IllegalStateException("기타문의 프로젝트가 없습니다."));
     }
 }

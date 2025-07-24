@@ -36,45 +36,38 @@
         <div class="col align-items-center flex-col sign-up">
             <div class="form-wrapper align-items-center">
                 <!-- 회원가입 폼 -->
-                <form action="/signup" class="form sign-up" method="post">
+                <form action="/signup" class="form sign-up" id="signupForm" method="post">
                     <div class="input-group">
                         <i class='bx bxs-customerCode'></i>
-                        <input name="customerCode" placeholder="CustomerCode" required type="text">
+                        <input name="customerCode" placeholder="고객코드" required type="text">
                     </div>
-                    <div class="input-group">
+                    <div class="input-group" style="position:relative;">
                         <i class='bx bxs-user'></i>
-                        <input name="username" placeholder="Username" required type="text">
+                        <input autocomplete="off" id="signupUsername" name="username" placeholder="아이디" required type="text">
                     </div>
                     <div class="input-group">
                         <i class='bx bxs-lock-alt'></i>
-                        <input name="password" placeholder="Password" required type="password">
+                        <input name="password" placeholder="비밀번호" required type="password">
                     </div>
                     <div class="input-group">
                         <i class='bx bxs-lock-alt'></i>
-                        <input name="name" placeholder="Name" required type="text">
+                        <input name="name" placeholder="이름" required type="text">
                     </div>
                     <div class="input-group">
                         <i class='bx bx-mail-send'></i>
-                        <input name="email" placeholder="Email" required type="email">
+                        <input name="email" placeholder="이메일" required type="email">
                     </div>
                     <div class="input-group">
                         <i class='bx bxs-lock-alt'></i>
                         <input id="phoneInput" maxlength="13" name="tel"
-                               placeholder="Tel (Ex: 031-123-4567 , 010-1234-5678)" required type="text">
+                               placeholder="전화번호 (Ex: 031-123-4567 , 010-1234-5678)" required type="text">
                     </div>
                     <input name="role" type="hidden" value="USER">
-                    <!--                    <div class="input-group">-->
-                    <!--                        <label for="role">권한</label>-->
-                    <!--                        <select id="role" name="role" required>-->
-                    <!--                            <option value="USER">일반유저</option>-->
-                    <!--                            <option value="ADMIN">관리자</option>-->
-                    <!--                        </select>-->
-                    <!--                    </div>-->
-                    <button type="submit">Sign up</button>
+                    <button id="signupBtn" type="submit">회원가입</button>
                     <!-- 아래 문장 유지 -->
                     <p>
-                        <span>Already have an account?</span>
-                        <b class="pointer" onclick="toggle()">Sign in here</b>
+                        <span>이미 계정이 있으신가요?</span>
+                        <b class="pointer" onclick="toggle()">로그인</b>
                     </p>
                 </form>
             </div>
@@ -99,19 +92,19 @@
                     </div>
                     <input id="combinedUsername" name="username" type="hidden">
                     <button type="submit">
-                        Sign in
+                        로그인
                     </button>
                     <p>
                         <b>
-                            Forgot password?
+                            암호를 잊어버리셨나요?
                         </b>
                     </p>
                     <p>
                 <span>
-                    Don't have an account?
+                    회원가입이 필요하신가요?
                 </span>
                         <b class="pointer" onclick="toggle()">
-                            Sign up here
+                            회원가입
                         </b>
                     </p>
                 </form>
@@ -128,8 +121,7 @@
         <div class="col align-items-center flex-col">
             <div class="text sign-in">
                 <h2>
-                    Welcome <br>
-                    DIDIM Solution
+                    DIDIM SOLUTION
                 </h2>
 
             </div>
@@ -145,9 +137,8 @@
             </div>
             <div class="text sign-up">
                 <h2>
-                    Join with us
+                    회원가입
                 </h2>
-
             </div>
         </div>
         <!-- END SIGN UP CONTENT -->
@@ -265,6 +256,106 @@
         window.addEventListener('pageshow', function(event){
             document.getElementById('usernameInput').value = '';
             document.getElementById('customerCodeInput').value = '';
+        });
+
+        const signupUsernameInput = document.getElementById('signupUsername');
+        const signupPasswordInput = document.querySelector('input[name="password"]');
+        const signupBtn = document.getElementById('signupBtn');
+        let usernameChecked = false;
+        let passwordValid = false;
+        // 메시지 div 동적 생성 (signupBtn 위에, 각각 별도)
+        function getOrCreateMsgDiv(id, color) {
+            let msgDiv = document.getElementById(id);
+            if (!msgDiv) {
+                msgDiv = document.createElement('div');
+                msgDiv.id = id;
+                msgDiv.style.fontSize = '0.95em';
+                msgDiv.style.marginBottom = '4px';
+                msgDiv.style.minHeight = '18px';
+                msgDiv.style.color = color;
+                signupBtn.parentNode.insertBefore(msgDiv, signupBtn);
+            }
+            return msgDiv;
+        }
+        // 아이디 중복확인 (blur)
+        signupUsernameInput.addEventListener('blur', function() {
+            const username = signupUsernameInput.value.trim();
+            const idMsgDiv = getOrCreateMsgDiv('signupIdMsgDiv', 'red');
+            if (!username) {
+                idMsgDiv.textContent = '';
+                usernameChecked = false;
+                signupBtn.disabled = true;
+                return;
+            }
+            fetch(`/api/check-username?username=${encodeURIComponent(username)}`, { method: 'GET' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        idMsgDiv.textContent = '사용할 수 없는 아이디입니다. 다른 아이디를 입력해주세요';
+                        idMsgDiv.style.color = 'red';
+                        usernameChecked = false;
+                        signupBtn.disabled = true;
+                    } else {
+                        idMsgDiv.textContent = '사용할 수 있는 아이디입니다!';
+                        idMsgDiv.style.color = 'green';
+                        usernameChecked = true;
+                        if (passwordValid) signupBtn.disabled = false;
+                    }
+                })
+                .catch(() => {
+                    idMsgDiv.textContent = '서버 오류. 다시 시도하세요.';
+                    idMsgDiv.style.color = 'red';
+                    usernameChecked = false;
+                    signupBtn.disabled = true;
+                });
+        });
+        // username 입력값이 바뀌면 메시지 div는 지우기만 (생성X)
+        signupUsernameInput.addEventListener('input', function() {
+            const idMsgDiv = document.getElementById('signupIdMsgDiv');
+            if (idMsgDiv) idMsgDiv.textContent = '';
+            usernameChecked = false;
+            signupBtn.disabled = true;
+        });
+        // 패스워드 길이 체크 (blur 시점에만 메시지 div 생성/표시)
+        signupPasswordInput.addEventListener('blur', function() {
+            const pwMsgDiv = getOrCreateMsgDiv('signupPwMsgDiv', 'red');
+            const password = signupPasswordInput.value;
+            if (password.length < 8) {
+                pwMsgDiv.textContent = '패스워드는 8자리 이상으로 사용해주세요.';
+                pwMsgDiv.style.color = 'red';
+                pwMsgDiv.style.display = '';
+                passwordValid = false;
+                signupBtn.disabled = true;
+            } else {
+                pwMsgDiv.textContent = '';
+                pwMsgDiv.style.display = 'none'; // 메시지 div 숨김
+                passwordValid = true;
+                if (usernameChecked) signupBtn.disabled = false;
+            }
+        });
+        signupPasswordInput.addEventListener('input', function() {
+            const pwMsgDiv = document.getElementById('signupPwMsgDiv');
+            if (pwMsgDiv) {
+                pwMsgDiv.textContent = '';
+                pwMsgDiv.style.display = 'none'; // 메시지 div 숨김
+            }
+            passwordValid = false;
+            signupBtn.disabled = true;
+        });
+        // 회원가입 submit 시 체크
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            const idMsgDiv = getOrCreateMsgDiv('signupIdMsgDiv', 'red');
+            const pwMsgDiv = getOrCreateMsgDiv('signupPwMsgDiv', 'red');
+            if (!usernameChecked) {
+                e.preventDefault();
+                idMsgDiv.textContent = '아이디 중복확인을 해주세요.';
+                idMsgDiv.style.color = 'red';
+            }
+            if (!passwordValid) {
+                e.preventDefault();
+                pwMsgDiv.textContent = '패스워드는 8자리 이상으로 사용해주세요.';
+                pwMsgDiv.style.color = 'red';
+            }
         });
     });
 </script>

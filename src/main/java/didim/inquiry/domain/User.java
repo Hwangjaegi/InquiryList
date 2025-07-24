@@ -9,6 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(
+        name = "user",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"customerCode","username"})
+        }
+)
 @Getter @Setter
 public class User {
 

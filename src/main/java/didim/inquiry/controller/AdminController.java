@@ -8,7 +8,6 @@ import didim.inquiry.domain.User;
 import didim.inquiry.dto.CustomerDto;
 import didim.inquiry.dto.ProjectDto;
 import didim.inquiry.service.AdminService;
-import didim.inquiry.service.ManagerService;
 import didim.inquiry.service.ProjectService;
 import didim.inquiry.service.UserService;
 import didim.inquiry.service.CustomerService;
@@ -35,14 +34,12 @@ public class AdminController extends BaseController {
 
     private final AdminService adminService;
     private final UserService userService;
-    private final ManagerService managerService;
     private final ProjectService projectService;
     private final CustomerService customerService;
 
-    public AdminController(AdminService adminService, UserService userService, ManagerService managerService, ProjectService projectService, CustomerService customerService) {
+    public AdminController(AdminService adminService, UserService userService, ProjectService projectService, CustomerService customerService) {
         this.adminService = adminService;
         this.userService = userService;
-        this.managerService = managerService;
         this.projectService = projectService;
         this.customerService = customerService;
     }
@@ -108,20 +105,7 @@ public class AdminController extends BaseController {
 
             // 일반 사용자
             if ("USER".equals(user.getRole())) {
-                Pageable pageable = PageRequest.of(page, size);
 
-                Page<Manager> managerList;
-                if (search != null && !search.trim().isEmpty()) {
-                    managerList = managerService.getManagerList(user.getId(), search, pageable);
-                } else {
-                    managerList = managerService.getManagerList(user.getId(), null, pageable);
-                }
-
-                Long totalManager = managerService.getManagerCount();
-
-                model.addAttribute("managerList", managerList);
-                model.addAttribute("totalManager", totalManager);
-                model.addAttribute("searchKeyword", search);
                 return "admin/userConsole";
             }
         } catch (UsernameNotFoundException e) {

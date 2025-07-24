@@ -72,7 +72,8 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
     @Query("SELECT i FROM Inquiry i JOIN i.writer w " +
             "WHERE ( :keyword IS NULL OR " +
             "LOWER(i.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(w.name) LIKE LOWER(CONCAT('%', :keyword, '%')) ) " +
+            "LOWER(w.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "i.tickNumber LIKE CONCAT('%', :keyword, '%') ) " +
             "AND (:statuses IS NULL OR i.status IN :statuses) " +
             "AND (:start IS NULL OR i.createdAt >= :start) " +
             "AND (:end IS NULL OR i.createdAt <= :end) " +
@@ -83,7 +84,8 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
     @Query("SELECT i FROM Inquiry i JOIN i.writer w " +
             "WHERE ( :keyword IS NULL OR " +
             "LOWER(i.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(w.name) LIKE LOWER(CONCAT('%', :keyword, '%')) ) " +
+            "LOWER(w.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "i.tickNumber LIKE CONCAT('%', :keyword, '%') ) " +
             "AND (:statuses IS NULL OR i.status IN :statuses) " +
             "AND (:start IS NULL OR i.createdAt >= :start) " +
             "AND (:end IS NULL OR i.createdAt <= :end) " +

@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         System.out.println("username : " + username + " / customerCode : " + customerCode);
 
-        User user = userRepository.findByUsernameAndCustomerCode(username,customerCode)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 계정입니다: " + username));
 
         if (user.getDeleteFlag()) {

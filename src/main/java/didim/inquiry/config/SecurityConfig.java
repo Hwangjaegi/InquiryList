@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())  // 최신 스타일로 CSRF 비활성화
                 .addFilterBefore(refererFilter, UsernamePasswordAuthenticationFilter.class)  // RefererFilter 추가
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/signup", "/css/**", "/js/**" , "/image/**").permitAll()
+                        .requestMatchers("/api/**" , "/signup", "/css/**", "/js/**" , "/image/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
