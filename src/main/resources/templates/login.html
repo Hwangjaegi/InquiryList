@@ -334,16 +334,22 @@
                 signupBtn.classList.remove('btn-primary');
             }
         }
-        // 아이디 중복확인 (blur)
+        // 아이디 중복확인 (input) → blur에서만 메시지 div 생성/업데이트
+        signupUsernameInput.addEventListener('input', function() {
+            const username = signupUsernameInput.value.trim();
+            let idMsgDiv = document.getElementById('signupIdMsgDiv');
+            if (!username && idMsgDiv) idMsgDiv.remove();
+        });
         signupUsernameInput.addEventListener('blur', function() {
             const username = signupUsernameInput.value.trim();
-            const idMsgDiv = getOrCreateMsgDiv('signupIdMsgDiv', 'red');
+            let idMsgDiv = document.getElementById('signupIdMsgDiv');
             if (!username) {
-                idMsgDiv.textContent = '';
+                if (idMsgDiv) idMsgDiv.remove();
                 usernameChecked = false;
                 signupBtn.disabled = true;
                 return;
             }
+            if (!idMsgDiv) idMsgDiv = getOrCreateMsgDiv('signupIdMsgDiv', 'red');
             fetch(`/api/check-username?username=${encodeURIComponent(username)}`, { method: 'GET' })
                 .then(res => res.json())
                 .then(data => {
@@ -366,18 +372,23 @@
                     signupBtn.disabled = true;
                 });
         });
-        // username 입력값이 바뀌면 메시지 div는 지우기만 (생성X)
-        signupUsernameInput.addEventListener('input', function() {
-            const idMsgDiv = document.getElementById('signupIdMsgDiv');
-            if (idMsgDiv) idMsgDiv.textContent = '';
-            usernameChecked = false;
-            signupBtn.disabled = true;
-            updateSignupBtnState();
-        });
-        // 패스워드 길이 체크 (blur 시점에만 메시지 div 생성/표시)
-        signupPasswordInput.addEventListener('blur', function() {
-            const pwMsgDiv = getOrCreateMsgDiv('signupPwMsgDiv', 'red');
+        // 패스워드 길이 체크 (input → blur에서만 메시지 div 생성/업데이트)
+        signupPasswordInput.addEventListener('input', function() {
             const password = signupPasswordInput.value;
+            let pwMsgDiv = document.getElementById('signupPwMsgDiv');
+            if (!password && pwMsgDiv) pwMsgDiv.remove();
+        });
+        signupPasswordInput.addEventListener('blur', function() {
+            const password = signupPasswordInput.value;
+            let pwMsgDiv = document.getElementById('signupPwMsgDiv');
+            if (!password) {
+                if (pwMsgDiv) pwMsgDiv.remove();
+                passwordValid = false;
+                signupBtn.disabled = true;
+                updateSignupBtnState();
+                return;
+            }
+            if (!pwMsgDiv) pwMsgDiv = getOrCreateMsgDiv('signupPwMsgDiv', 'red');
             if (password.length < 8) {
                 pwMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 패스워드는 8자리 이상으로 사용해주세요.';
                 pwMsgDiv.style.color = 'red';
@@ -391,35 +402,23 @@
                 updateSignupBtnState();
             }
         });
-        signupPasswordInput.addEventListener('input', function() {
-            const pwMsgDiv = document.getElementById('signupPwMsgDiv');
-            if (pwMsgDiv) {
-                pwMsgDiv.textContent = '';
-                pwMsgDiv.style.display = 'none'; // 메시지 div 숨김
-            }
-            passwordValid = false;
-            signupBtn.disabled = true;
-            updateSignupBtnState();
-        });
-        // 비밀번호 확인 체크
+        // 비밀번호 확인 체크 (input/blur)
         signupPasswordConfirmInput.addEventListener('input', function() {
-            checkPasswordMatch();
-            updateSignupBtnState();
+            const pw2 = signupPasswordConfirmInput.value;
+            let pwMatchDiv = document.getElementById('signupPwMatchMsgDiv');
+            if (!pw2 && pwMatchDiv) pwMatchDiv.remove();
         });
         signupPasswordConfirmInput.addEventListener('blur', function() {
-            checkPasswordMatch();
-            updateSignupBtnState();
-        });
-        function checkPasswordMatch() {
             const pw = signupPasswordInput.value;
             const pw2 = signupPasswordConfirmInput.value;
-            const pwMatchDiv = getOrCreateMsgDiv('signupPwMatchMsgDiv', 'red');
+            let pwMatchDiv = document.getElementById('signupPwMatchMsgDiv');
             if (!pw2) {
-                pwMatchDiv.textContent = '';
+                if (pwMatchDiv) pwMatchDiv.remove();
                 passwordMatch = false;
                 signupBtn.disabled = true;
                 return;
             }
+            if (!pwMatchDiv) pwMatchDiv = getOrCreateMsgDiv('signupPwMatchMsgDiv', 'red');
             if (pw !== pw2) {
                 pwMatchDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 비밀번호가 일치하지 않습니다.';
                 pwMatchDiv.style.color = 'red';
@@ -431,16 +430,32 @@
                 passwordMatch = true;
                 updateSignupBtnState();
             }
-        }
-        // 이메일 중복확인 (blur)
+        });
+        // 이메일 입력값이 바뀌면 메시지 div 제거
         const signupEmailInput = document.getElementById('signupEmail');
+        signupEmailInput.addEventListener('input', function() {
+            const email = signupEmailInput.value.trim();
+            let emailMsgDiv = document.getElementById('signupEmailMsgDiv');
+            if (!email && emailMsgDiv) emailMsgDiv.remove();
+        });
+        // 이메일 중복확인 (blur에서만 메시지 div 생성/업데이트)
         signupEmailInput.addEventListener('blur', function() {
             const email = signupEmailInput.value.trim();
-            const emailMsgDiv = getOrCreateMsgDiv('signupEmailMsgDiv', 'red');
+            let emailMsgDiv = document.getElementById('signupEmailMsgDiv');
             if (!email) {
-                emailMsgDiv.textContent = '';
+                if (emailMsgDiv) emailMsgDiv.remove();
                 emailChecked = false;
                 signupBtn.disabled = true;
+                updateSignupBtnState();
+                return;
+            }
+            if (!emailMsgDiv) emailMsgDiv = getOrCreateMsgDiv('signupEmailMsgDiv', 'red');
+            if (!email.includes('@')) {
+                emailMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 올바르지 않은 이메일입니다.';
+                emailMsgDiv.style.color = 'red';
+                emailChecked = false;
+                signupBtn.disabled = true;
+                updateSignupBtnState();
                 return;
             }
             fetch(`/api/check-email?email=${encodeURIComponent(email)}`, { method: 'GET' })
@@ -464,14 +479,6 @@
                     emailChecked = false;
                     signupBtn.disabled = true;
                 });
-        });
-        // 이메일 입력값이 바뀌면 메시지 div는 지우기만 (생성X)
-        signupEmailInput.addEventListener('input', function() {
-            const emailMsgDiv = document.getElementById('signupEmailMsgDiv');
-            if (emailMsgDiv) emailMsgDiv.textContent = '';
-            emailChecked = false;
-            signupBtn.disabled = true;
-            updateSignupBtnState();
         });
         // 회원가입 submit 시 체크 (비밀번호 일치도 추가)
         document.getElementById('signupForm').addEventListener('submit', function(e) {
