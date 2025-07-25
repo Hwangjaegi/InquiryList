@@ -13,17 +13,10 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import didim.inquiry.dto.UserDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
@@ -70,7 +63,7 @@ public class UserController extends BaseController{
         boolean success = userService.signUpUser(user);
 
         if (!success){
-            model.addAttribute("errorMessage" , "고객코드가 유효하지 않거나 존재하는 아이디입니다.");
+            model.addAttribute("errorMessage" , "올바른 요청이 아닙니다.");
             return "login";
         }
 
@@ -83,6 +76,13 @@ public class UserController extends BaseController{
     @ResponseBody
     public Map<String, Boolean> checkUsername(@RequestParam String username) {
         boolean exists = userService.findByUsername(username) != null;
+        return Collections.singletonMap("exists", exists);
+    }
+
+    @GetMapping("/api/check-email")
+    @ResponseBody
+    public Map<String, Boolean> checkEmail(@RequestParam String email) {
+        boolean exists = userService.findByEmail(email) != null;
         return Collections.singletonMap("exists", exists);
     }
 
@@ -117,19 +117,23 @@ public class UserController extends BaseController{
         return "login";
     }
 
-    @PostMapping("/user/update")
+    //관리자가 유저 권한 수정 시 사용
+    @PostMapping("/user/updateRole")
     @ResponseBody
-    public ResponseEntity<?> updateUser(@RequestBody UserDto userDto) {
-        try {
-            System.out.println("id : " + userDto.getId());
-            UserDto updateUser = userService.updateUser(userDto);
-            return ResponseEntity.ok().body(updateUser);
-
-        }catch (IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(e.getMessage());
+    public ResponseEntity<?> updateUserRole(@RequestBody UserDto userDto) {
+        // 로그인한 유저의 권한이 MANAGER인지 확인
+        User currentUser = getCurrentUser();
+        if (!"MANAGER".equals(currentUser.getRole())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
         }
-
+        try {
+            UserDto updatedUser = userService.updateRole(userDto);
+            return ResponseEntity.ok().body(updatedUser);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("권한 수정 중 오류가 발생했습니다: " + e.getMessage());
+        }
     }
 
     @PostMapping("/user/delete/{id}")
@@ -148,7 +152,7 @@ public class UserController extends BaseController{
         if (search != null && !search.isEmpty()) {
             redirectAttributes.addAttribute("search", search);
         }
-        return "redirect:/admin/console";
+        return "redirect:/console";
     }
 
     @PostMapping("/user/restore/{id}")
@@ -166,36 +170,44 @@ public class UserController extends BaseController{
         if (search != null && !search.isEmpty()) {
             redirectAttributes.addAttribute("search", search);
         }
-        return "redirect:/admin/console";
+        return "redirect:/console";
     }
 
+    // 내정보 회원정보수정
     @PostMapping("/user/updateMyInfo")
-    public String updateMyInfo(@RequestParam String name,
-                              @RequestParam String tel,
-                              @RequestParam String email,
+    public String updateMyInfo(@ModelAttribute UserDto userDto,
                               @RequestParam(required = false) String newPassword,
                               @RequestParam(required = false) String confirmPassword,
                               Model model,
                               RedirectAttributes redirectAttributes) {
 
         try {
-            User user = getCurrentUser();
-            user.setName(name);
-            user.setTel(tel);
-            user.setEmail(email);
-            if (newPassword != null && !newPassword.isBlank()) {
-                if (!newPassword.equals(confirmPassword)) {
-                    redirectAttributes.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
-                    return "redirect:/admin/myInfo";
-                }
-                user.setPassword(passwordEncoder.encode(newPassword));
+            // 비밀번호 변경 요청이 없으면 이름, 전화번호, 이메일만 변경
+            if (newPassword == null || newPassword.isBlank()) {
+                userService.updateUserInfoOnly(userDto);
+                redirectAttributes.addFlashAttribute("successMessage", "내 정보가 성공적으로 수정되었습니다.");
+            } else {
+                // 비밀번호 변경 요청이 있으면 기존 로직 수행
+                userService.updateUserWithPassword(userDto, newPassword, confirmPassword);
+                redirectAttributes.addFlashAttribute("successMessage", "내 정보가 성공적으로 수정되었습니다.");
             }
-            userService.save(user);
-            redirectAttributes.addFlashAttribute("successMessage", "내 정보가 성공적으로 수정되었습니다.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "정보 수정 중 오류가 발생했습니다: " + e.getMessage());
         }
-        return "redirect:/admin/myInfo";
+        return "redirect:/myInfo";
     }
 
+    @PostMapping("/user/checkPassword")
+    @ResponseBody
+    public ResponseEntity<?> checkPassword(@RequestParam String currentPassword) {
+        User user = getCurrentUser();
+        boolean matches = passwordEncoder.matches(currentPassword, user.getPassword());
+        if (matches) {
+            return ResponseEntity.ok().body(Collections.singletonMap("valid", true));
+        } else {
+            return ResponseEntity.ok().body(Collections.singletonMap("valid", false));
+        }
+    }
 }

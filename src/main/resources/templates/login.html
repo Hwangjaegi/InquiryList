@@ -5,6 +5,40 @@
     <title>DIDIM-Login</title>
     <link href="/image/didimIcon.png" rel="icon" type="image/png">
     <link rel="stylesheet" th:href="@{/css/index.css}">
+    <style>
+    .btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+    .btn-primary {
+        background: #4caf50;
+        color: #fff;
+    }
+    .btn-primary:hover {
+        background: #388e3c;
+        color: #fff;
+    }
+    .btn-disabled, .btn[disabled] {
+        background: #ccc !important;
+        color: #888 !important;
+        cursor: not-allowed !important;
+        box-shadow: none !important;
+        border: none !important;
+        opacity: 0.7;
+    }
+    </style>
 </head>
 <body>
 
@@ -36,7 +70,7 @@
         <div class="col align-items-center flex-col sign-up">
             <div class="form-wrapper align-items-center">
                 <!-- 회원가입 폼 -->
-                <form action="/signup" class="form sign-up" id="signupForm" method="post">
+                <form class="form sign-up" id="signupForm" method="post" th:action="@{/signup}">
                     <div class="input-group">
                         <i class='bx bxs-customerCode'></i>
                         <input name="customerCode" placeholder="고객코드" required type="text">
@@ -47,7 +81,11 @@
                     </div>
                     <div class="input-group">
                         <i class='bx bxs-lock-alt'></i>
-                        <input name="password" placeholder="비밀번호" required type="password">
+                        <input id="signupPassword" name="password" placeholder="비밀번호" required type="password">
+                    </div>
+                    <div class="input-group">
+                        <i class='bx bxs-lock-alt'></i>
+                        <input id="signupPasswordConfirm" name="passwordConfirm" placeholder="비밀번호 확인" required type="password">
                     </div>
                     <div class="input-group">
                         <i class='bx bxs-lock-alt'></i>
@@ -55,7 +93,7 @@
                     </div>
                     <div class="input-group">
                         <i class='bx bx-mail-send'></i>
-                        <input name="email" placeholder="이메일" required type="email">
+                        <input id="signupEmail" name="email" placeholder="이메일" required type="email">
                     </div>
                     <div class="input-group">
                         <i class='bx bxs-lock-alt'></i>
@@ -63,7 +101,7 @@
                                placeholder="전화번호 (Ex: 031-123-4567 , 010-1234-5678)" required type="text">
                     </div>
                     <input name="role" type="hidden" value="USER">
-                    <button id="signupBtn" type="submit">회원가입</button>
+                    <button class="btn btn-disabled" disabled id="signupBtn" type="submit">회원가입</button>
                     <!-- 아래 문장 유지 -->
                     <p>
                         <span>이미 계정이 있으신가요?</span>
@@ -77,7 +115,7 @@
         <!-- SIGN IN -->
         <div class="col align-items-center flex-col sign-in">
             <div class="form-wrapper align-items-center">
-                <form action="/signin" class="form sign-in" id="sign-in-form" method="post">
+                <form class="form sign-in" id="sign-in-form" method="post" th:action="@{/signin}">
                     <div class="input-group">
                         <i class='bx bxs-user'></i>
                         <input id="customerCodeInput" placeholder="고객코드" required type="text">
@@ -259,10 +297,13 @@
         });
 
         const signupUsernameInput = document.getElementById('signupUsername');
-        const signupPasswordInput = document.querySelector('input[name="password"]');
+        const signupPasswordInput = document.getElementById('signupPassword');
+        const signupPasswordConfirmInput = document.getElementById('signupPasswordConfirm');
         const signupBtn = document.getElementById('signupBtn');
         let usernameChecked = false;
         let passwordValid = false;
+        let passwordMatch = false;
+        let emailChecked = false;
         // 메시지 div 동적 생성 (signupBtn 위에, 각각 별도)
         function getOrCreateMsgDiv(id, color) {
             let msgDiv = document.getElementById(id);
@@ -272,10 +313,26 @@
                 msgDiv.style.fontSize = '0.95em';
                 msgDiv.style.marginBottom = '4px';
                 msgDiv.style.minHeight = '18px';
+                msgDiv.style.display = 'flex';
+                msgDiv.style.alignItems = 'center';
+                msgDiv.style.textAlign = 'left';
+                msgDiv.style.gap = '6px';
                 msgDiv.style.color = color;
                 signupBtn.parentNode.insertBefore(msgDiv, signupBtn);
             }
             return msgDiv;
+        }
+        // 버튼 활성화/비활성화 상태 관리 함수
+        function updateSignupBtnState() {
+            if (usernameChecked && passwordValid && passwordMatch && emailChecked) {
+                signupBtn.disabled = false;
+                signupBtn.classList.remove('btn-disabled');
+                signupBtn.classList.add('btn-primary');
+            } else {
+                signupBtn.disabled = true;
+                signupBtn.classList.add('btn-disabled');
+                signupBtn.classList.remove('btn-primary');
+            }
         }
         // 아이디 중복확인 (blur)
         signupUsernameInput.addEventListener('blur', function() {
@@ -291,19 +348,19 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.exists) {
-                        idMsgDiv.textContent = '사용할 수 없는 아이디입니다. 다른 아이디를 입력해주세요';
+                        idMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 사용할 수 없는 아이디입니다. 다른 아이디를 입력해주세요';
                         idMsgDiv.style.color = 'red';
                         usernameChecked = false;
                         signupBtn.disabled = true;
                     } else {
-                        idMsgDiv.textContent = '사용할 수 있는 아이디입니다!';
+                        idMsgDiv.innerHTML = '<span style="font-size:1.1em; color:green;">✔️</span> 사용할 수 있는 아이디입니다!';
                         idMsgDiv.style.color = 'green';
                         usernameChecked = true;
-                        if (passwordValid) signupBtn.disabled = false;
+                        updateSignupBtnState();
                     }
                 })
                 .catch(() => {
-                    idMsgDiv.textContent = '서버 오류. 다시 시도하세요.';
+                    idMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 서버 오류. 다시 시도하세요.';
                     idMsgDiv.style.color = 'red';
                     usernameChecked = false;
                     signupBtn.disabled = true;
@@ -315,13 +372,14 @@
             if (idMsgDiv) idMsgDiv.textContent = '';
             usernameChecked = false;
             signupBtn.disabled = true;
+            updateSignupBtnState();
         });
         // 패스워드 길이 체크 (blur 시점에만 메시지 div 생성/표시)
         signupPasswordInput.addEventListener('blur', function() {
             const pwMsgDiv = getOrCreateMsgDiv('signupPwMsgDiv', 'red');
             const password = signupPasswordInput.value;
             if (password.length < 8) {
-                pwMsgDiv.textContent = '패스워드는 8자리 이상으로 사용해주세요.';
+                pwMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 패스워드는 8자리 이상으로 사용해주세요.';
                 pwMsgDiv.style.color = 'red';
                 pwMsgDiv.style.display = '';
                 passwordValid = false;
@@ -330,7 +388,7 @@
                 pwMsgDiv.textContent = '';
                 pwMsgDiv.style.display = 'none'; // 메시지 div 숨김
                 passwordValid = true;
-                if (usernameChecked) signupBtn.disabled = false;
+                updateSignupBtnState();
             }
         });
         signupPasswordInput.addEventListener('input', function() {
@@ -341,20 +399,105 @@
             }
             passwordValid = false;
             signupBtn.disabled = true;
+            updateSignupBtnState();
         });
-        // 회원가입 submit 시 체크
+        // 비밀번호 확인 체크
+        signupPasswordConfirmInput.addEventListener('input', function() {
+            checkPasswordMatch();
+            updateSignupBtnState();
+        });
+        signupPasswordConfirmInput.addEventListener('blur', function() {
+            checkPasswordMatch();
+            updateSignupBtnState();
+        });
+        function checkPasswordMatch() {
+            const pw = signupPasswordInput.value;
+            const pw2 = signupPasswordConfirmInput.value;
+            const pwMatchDiv = getOrCreateMsgDiv('signupPwMatchMsgDiv', 'red');
+            if (!pw2) {
+                pwMatchDiv.textContent = '';
+                passwordMatch = false;
+                signupBtn.disabled = true;
+                return;
+            }
+            if (pw !== pw2) {
+                pwMatchDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 비밀번호가 일치하지 않습니다.';
+                pwMatchDiv.style.color = 'red';
+                passwordMatch = false;
+                signupBtn.disabled = true;
+            } else {
+                pwMatchDiv.innerHTML = '<span style="font-size:1.1em; color:green;">✔️</span> 비밀번호가 일치합니다!';
+                pwMatchDiv.style.color = 'green';
+                passwordMatch = true;
+                updateSignupBtnState();
+            }
+        }
+        // 이메일 중복확인 (blur)
+        const signupEmailInput = document.getElementById('signupEmail');
+        signupEmailInput.addEventListener('blur', function() {
+            const email = signupEmailInput.value.trim();
+            const emailMsgDiv = getOrCreateMsgDiv('signupEmailMsgDiv', 'red');
+            if (!email) {
+                emailMsgDiv.textContent = '';
+                emailChecked = false;
+                signupBtn.disabled = true;
+                return;
+            }
+            fetch(`/api/check-email?email=${encodeURIComponent(email)}`, { method: 'GET' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        emailMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 이미 사용중인 이메일입니다. 다른 이메일을 입력해주세요';
+                        emailMsgDiv.style.color = 'red';
+                        emailChecked = false;
+                        signupBtn.disabled = true;
+                    } else {
+                        emailMsgDiv.innerHTML = '<span style="font-size:1.1em; color:green;">✔️</span> 사용할 수 있는 이메일입니다!';
+                        emailMsgDiv.style.color = 'green';
+                        emailChecked = true;
+                        updateSignupBtnState();
+                    }
+                })
+                .catch(() => {
+                    emailMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 서버 오류. 다시 시도하세요.';
+                    emailMsgDiv.style.color = 'red';
+                    emailChecked = false;
+                    signupBtn.disabled = true;
+                });
+        });
+        // 이메일 입력값이 바뀌면 메시지 div는 지우기만 (생성X)
+        signupEmailInput.addEventListener('input', function() {
+            const emailMsgDiv = document.getElementById('signupEmailMsgDiv');
+            if (emailMsgDiv) emailMsgDiv.textContent = '';
+            emailChecked = false;
+            signupBtn.disabled = true;
+            updateSignupBtnState();
+        });
+        // 회원가입 submit 시 체크 (비밀번호 일치도 추가)
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             const idMsgDiv = getOrCreateMsgDiv('signupIdMsgDiv', 'red');
             const pwMsgDiv = getOrCreateMsgDiv('signupPwMsgDiv', 'red');
+            const pwMatchDiv = getOrCreateMsgDiv('signupPwMatchMsgDiv', 'red');
+            const emailMsgDiv = getOrCreateMsgDiv('signupEmailMsgDiv', 'red');
             if (!usernameChecked) {
                 e.preventDefault();
-                idMsgDiv.textContent = '아이디 중복확인을 해주세요.';
+                idMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 아이디 중복확인을 해주세요.';
                 idMsgDiv.style.color = 'red';
             }
             if (!passwordValid) {
                 e.preventDefault();
-                pwMsgDiv.textContent = '패스워드는 8자리 이상으로 사용해주세요.';
+                pwMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 패스워드는 8자리 이상으로 사용해주세요.';
                 pwMsgDiv.style.color = 'red';
+            }
+            if (!passwordMatch) {
+                e.preventDefault();
+                pwMatchDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 비밀번호가 일치하지 않습니다.';
+                pwMatchDiv.style.color = 'red';
+            }
+            if (!emailChecked) {
+                e.preventDefault();
+                emailMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 이메일 중복확인을 해주세요.';
+                emailMsgDiv.style.color = 'red';
             }
         });
     });

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <!-- git push test  -->
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link href="/image/didimIcon.png" rel="icon" type="image/png">
-    <title>어드민-고객코드관리</title>
+    <title>어드민-사용자관리</title>
     <style>
         * {
             margin: 0;
@@ -209,7 +210,6 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
-            pointer-events: auto; /* 사파리 호환성 */
         }
 
         .btn::before {
@@ -271,6 +271,18 @@
             box-shadow: 0 6px 20px rgba(255, 112, 67, 0.4);
         }
 
+        .btn-restore {
+            background: linear-gradient(45deg, #66bb6a, #43a047);
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        .btn-restore:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 187, 106, 0.4);
+        }
+
         .btn-secondary {
             background: linear-gradient(45deg, #9e9e9e, #757575);
             color: white;
@@ -281,11 +293,11 @@
             box-shadow: 0 8px 25px rgba(158, 158, 158, 0.4);
         }
 
-        .customer-list {
+        .user-list {
             margin-top: 30px;
         }
 
-        .customer-item {
+        .user-item {
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid rgba(168, 230, 207, 0.3);
             border-radius: 12px;
@@ -298,28 +310,54 @@
             animation: fadeInUp 0.5s ease forwards;
         }
 
-        .customer-item:hover {
+        .user-item:hover {
             background: rgba(255, 255, 255, 1);
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(168, 230, 207, 0.2);
         }
 
-        .customer-code {
+        .user-item.deactivated {
+            background: rgba(200, 200, 200, 0.5);
+            color: #999;
+            opacity: 0.7;
+        }
+
+        .user-item.deactivated .user-id,
+        .user-item.deactivated .user-email,
+        .user-item.deactivated .user-status {
+            color: #999;
+        }
+
+        .user-item.deactivated .status-badge {
+            background: linear-gradient(135deg, #bdbdbd, #9e9e9e);
+        }
+
+        .user-item.deactivated:hover {
+            background: rgba(200, 200, 200, 0.6);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .user-id,
+        .user-name,
+        .user-tel,
+        .user-email {
             font-size: 1.2rem;
             font-weight: 700;
             color: #4a9b8e;
             min-width: 120px;
             flex-shrink: 0;
+            margin-right: 20px;
         }
 
-        .customer-info {
+        .user-info {
             flex: 1;
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
 
-        .customer-status {
+        .user-status {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -336,32 +374,27 @@
             letter-spacing: 0.5px;
         }
 
-        .status-active {
+        .status-user {
             background: linear-gradient(135deg, #4caf50, #388e3c);
             color: white;
         }
 
-        .status-inactive {
-            background: linear-gradient(135deg, #f44336, #d32f2f);
-            color: white;
-        }
-
-        .customer-company {
-            color: #666;
-            font-size: 0.9rem;
-            font-style: italic;
-            line-height: 1.4;
-        }
-
-        .customer-actions {
+        .user-actions {
             display: flex;
             gap: 8px;
-            flex-shrink: 0;
+            align-items: center;
+            justify-content: center; /* 이 줄 추가! */
         }
 
         .search-container {
             position: relative;
             margin-bottom: 20px;
+        }
+
+        .user-list-subtitle {
+            color: #4a9b8e;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
         }
 
         .search-input {
@@ -394,6 +427,9 @@
             transform: translateY(-50%);
             color: #a8e6cf;
             font-size: 1.2rem;
+        }
+
+        .search-icon:hover {
             cursor: pointer;
         }
 
@@ -489,25 +525,23 @@
         }
 
         .modal {
-            display: flex;
-            visibility: hidden;
-            opacity: 0;
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            -webkit-backdrop-filter: blur(5px); /* 사파리 호환성 */
             backdrop-filter: blur(5px);
             z-index: 1000;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            align-items: center;
-            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .modal.show {
-            visibility: visible;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             opacity: 1;
         }
 
@@ -522,6 +556,10 @@
             box-shadow: 0 20px 60px rgba(168, 230, 207, 0.3);
             transform: scale(0.9);
             transition: transform 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
         }
 
         .modal-header {
@@ -678,17 +716,17 @@
                 padding: 20px;
             }
 
-            .customer-item {
+            .user-item {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 15px;
             }
 
-            .customer-info {
+            .user-info {
                 width: 100%;
             }
 
-            .customer-actions {
+            .user-actions {
                 justify-content: flex-end;
                 width: 100%;
             }
@@ -717,62 +755,115 @@
         }
 
         @media (max-width: 1024px) {
-            .customer-item {
+            .user-item {
                 flex-wrap: wrap;
             }
 
-            .customer-actions {
+            .user-actions {
                 margin-left: auto;
             }
         }
-        .nav-section { margin-bottom: 20px; }
-        .nav-section-title { color: #4a9b8e; font-size: 1rem; font-weight: 600; margin-bottom: 10px; padding-left: 10px; }
-        .project-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(255,255,255,0.9);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(168,230,207,0.3);
-            box-shadow: 0 8px 25px rgba(168,230,207,0.2);
+
+        .nav-section {
+            margin-bottom: 20px;
         }
-        .project-table th, .project-table td {
-            padding: 15px;
+
+        .nav-section-title {
+            color: #4a9b8e;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(168, 230, 207, 0.15);
+            margin-bottom: 30px;
+        }
+
+        .user-table th, .user-table td {
+            padding: 16px 12px;
             text-align: left;
-            border-bottom: 1px solid rgba(168,230,207,0.3);
+            font-size: 1.05rem;
+        }
+
+        .user-table th {
+            background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+            color: #fff;
+            font-weight: 700;
+            border-bottom: 2px solid #a8e6cf;
+        }
+
+        .user-table tr {
+            transition: background 0.2s;
+        }
+
+        .user-table tr:not(.deactivated):hover {
+            background: rgba(168, 230, 207, 0.15);
+        }
+
+        .user-table tr.deactivated {
+            background: rgba(200, 200, 200, 0.3);
+            color: #999;
+            opacity: 0.7;
+        }
+
+        .user-table tr.deactivated .status-badge {
+            background: linear-gradient(135deg, #bdbdbd, #9e9e9e);
+        }
+
+        .user-customer-code,
+        .user-name,
+        .user-id,
+        .user-email,
+        .user-tel {
+            font-size: 1.1rem;
             font-weight: 600;
             color: #4a9b8e;
         }
-        .project-table th {
-            background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
+
+        .user-role {
+            text-align: center;
         }
-        .project-table tr {
-            transition: all 0.3s ease;
-        }
-        .project-table tr:hover {
-            background: rgba(168,230,207,0.1);
-            transform: translateY(-2px);
-        }
-        .project-table .project-actions {
+
+        .user-actions {
             display: flex;
             gap: 8px;
-            justify-content: flex-end;
+            align-items: right;
         }
     </style>
 </head>
 <body>
+<!-- 가입 성공 및 실패 처리 -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let successMessage = /*[[${successMessage}]]*/ null;
+    let errorMessage = /*[[${errorMessage}]]*/ null;
+
+    if (successMessage !== null) {
+        alert(successMessage);
+    }
+
+    if (errorMessage !== null) {
+        alert(errorMessage);
+    }
+    /*]]>*/
+</script>
 <div class="container">
     <aside class="sidebar">
         <h2>관리자페이지</h2>
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-title">관리 메뉴</div>
-                <a class="menu-item" th:href="@{/admin/myInfo}">🙍‍♂️ 내정보</a>
-                <a class="menu-item active" th:href="@{/admin/console}">👥 고객 코드 관리</a>
-                <a class="menu-item" th:href="@{/admin/customerList}">👤 사용자 관리</a>
+                <a class="menu-item" th:href="@{/myInfo}">🙍‍♂️ 내정보</a>
+                <a class="menu-item" th:href="@{/console}">👥 고객 코드 관리</a>
+                <a class="menu-item active" th:href="@{/admin/customerList}">👤 사용자 관리</a>
                 <a class="menu-item" th:href="@{/admin/projectListAdmin}">📋 프로젝트 목록</a>
             </div>
             <div class="nav-section">
@@ -785,8 +876,8 @@
 
     <main class="main-content">
         <div class="header">
-            <h1>고객 코드 관리</h1>
-            <p>고객 코드를 생성, 조회, 삭제할 수 있습니다.</p>
+            <h1>사용자 관리</h1>
+            <p>사용자를 조회하고 관리할 수 있습니다.</p>
         </div>
 
         <div class="content-card">
@@ -799,145 +890,118 @@
             <!-- 통계 섹션 -->
             <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-number" th:text="${totalCustomer}">0</div>
-                    <div class="stat-label">총 고객코드 수</div>
+                    <div class="stat-number" th:text="${totalUsers}">0</div>
+                    <div class="stat-label">총 사용자 수</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" th:text="${activeCustomer}">0</div>
-                    <div class="stat-label">총 활성코드 수</div>
+                    <div class="stat-number" th:text="${newUsers}">0</div>
+                    <div class="stat-label">신규 사용자 (이번 달)</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number" th:text="${newCustomer}">0</div>
-                    <div class="stat-label">신규 고객코드 수 (이번 달)</div>
-                </div>
-            </div>
-
-            <!-- 새 고객 추가 폼 -->
-            <div class="form-section">
-                <h3>새 고객 코드 생성</h3>
-                <form action="/createCode" method="post">
-                    <div class="form-group">
-                        <input name="code" placeholder="고객 코드 입력 (예: CU001)" required type="text">
-                    </div>
-                    <div class="form-group">
-                        <textarea name="company" placeholder="회사명을 입력하세요." rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-button-container">
-                            <button class="btn btn-primary" type="submit">추가</button>
-                            <!-- 메시지 영역 -->
-                            <div th:if="${successMessage != null}">
-                                <div class="message-alert message-success">
-                                    <span class="message-icon">✅</span>
-                                    <span th:text="${successMessage}">성공 메시지</span>
-                                </div>
-                            </div>
-                            <div th:if="${errorMessage != null}">
-                                <div class="message-alert message-error">
-                                    <span class="message-icon">❌</span>
-                                    <span th:text="${errorMessage}">오류 메시지</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
 
             <!-- 검색 -->
+            <h3 class="user-list-subtitle">사용자 목록</h3>
             <div class="search-container">
                 <div class="search-icon">🔍</div>
-                <form id="searchForm" method="get" th:action="@{/admin/console(page=0)}">
+                <form id="searchForm" method="get" th:action="@{/admin/customerList}">
                     <input class="search-input" name="search"
-                           placeholder="고객 코드 또는 회사명으로 검색..."
+                           placeholder="고객코드 , 이름 , 아이디 ,이메일 , 전화번호 , 권한으로 검색..."
                            th:value="${searchKeyword}"
                            type="text">
                 </form>
             </div>
 
-            <!-- 고객 목록 -->
-            <div class="customer-list">
-                <div class="empty-state" th:if="${#lists.isEmpty(customers.getContent())}">
+            <!-- 사용자 목록 -->
+            <div class="user-list">
+                <div class="empty-state" th:if="${#lists.isEmpty(userList)}">
                     <div class="empty-state-icon">📋</div>
-                    <div class="empty-state-text">검색 결과가 없습니다</div>
-                    <div class="empty-state-subtext" th:if="${searchKeyword != null}">
-                        "<span th:text="${searchKeyword}"></span>"에 대한 결과가 없습니다. 다른 키워드로 검색해보세요.
-                    </div>
-                    <div class="empty-state-subtext" th:unless="${searchKeyword != null}">
-                        등록된 고객이 없습니다. 위의 폼을 사용하여 새로운 고객 코드를 생성해보세요.
-                    </div>
+                    <div class="empty-state-text">등록된 사용자가 없습니다</div>
+                    <div class="empty-state-subtext">고객코드를 통해 가입하세요.</div>
                 </div>
-                <table class="project-table" th:if="${!#lists.isEmpty(customers.getContent())}">
+
+                <table class="user-table" th:if="${!#lists.isEmpty(userList)}">
                     <thead>
                         <tr>
                             <th>고객코드</th>
-                            <th>코드설명</th>
-                            <th>활성</th>
+                            <th>이름</th>
+                            <th>아이디</th>
+                            <th>이메일</th>
+                            <th>전화번호</th>
+                            <th>권한</th>
                             <th>관리</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="customer : ${customers.getContent()}">
-                            <td th:text="${customer.code}">CU001</td>
-                            <td th:text="${customer.company}">설명</td>
-                            <td>
-                                <span class="status-badge status-active" th:if="${customer.status == 'ACTIVE'}">활성</span>
-                                <span class="status-badge status-inactive" th:if="${customer.status == 'INACTIVE'}">비활성</span>
+                        <tr th:classappend="${user.deleteFlag} ? 'deactivated'" th:each="user : ${userList}">
+                            <td class="user-customer-code" th:text="${user.customerCode}">CUST001</td>
+                            <td class="user-name" th:text="${user.name}">홍길동</td>
+                            <td class="user-id" th:text="${user.username}">USER001</td>
+                            <td class="user-email" th:text="${user.email}">user@example.com</td>
+                            <td class="user-tel" th:text="${user.tel}">010-1234-1234</td>
+                            <td class="user-role">
+                                <span class="status-badge status-user" th:text="${user.role}">USER</span>
                             </td>
-                            <td class="project-actions">
-                                <button class="btn btn-edit" type="button"
-                                        th:data-id="${customer.id}" th:data-code="${customer.code}" th:data-company="${customer.company}" th:data-status="${customer.status}">수정</button>
-                                <button class="btn btn-delete" type="button"
-                                        th:data-id="${customer.id}" th:data-code="${customer.code}">삭제</button>
+                            <td class="user-actions">
+                                <button class="btn btn-restore" onclick="handleRestoreClick(this)"
+                                        th:attr="data-id=${user.id}, data-username=${user.username}"
+                                        th:if="${user.deleteFlag}">
+                                    복원
+                                </button>
+                                <button class="btn btn-delete"
+                                        onclick="handleDeleteClick(this)"
+                                        th:attr="data-id=${user.id}, data-username=${user.username}"
+                                        th:if="${!user.deleteFlag}">
+                                    삭제
+                                </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
 
                 <!-- 페이징 UI -->
-                <div class="pagination" th:if="${customers.getTotalPages() > 1}">
+                <div class="pagination" th:if="${totalPages > 1}">
                     <th:block th:with="
                         pageGroupSize=5,
-                        currentGroupIndex=${customers.getNumber() / pageGroupSize},
+                        currentGroupIndex=${currentPage / pageGroupSize},
                         startPage=${currentGroupIndex * pageGroupSize},
-                        endPage=${(startPage + pageGroupSize - 1) < (customers.getTotalPages() - 1) ? (startPage + pageGroupSize - 1) : (customers.getTotalPages() - 1)},
+                        endPage=${(startPage + pageGroupSize - 1) < (totalPages - 1) ? (startPage + pageGroupSize - 1) : (totalPages - 1)},
                         hasPrevGroup=${currentGroupIndex > 0},
-                        hasNextGroup=${endPage < (customers.getTotalPages() - 1)},
+                        hasNextGroup=${endPage < (totalPages - 1)},
                         prevGroupStartPage=${(currentGroupIndex - 1) * pageGroupSize},
                         nextGroupStartPage=${(currentGroupIndex + 1) * pageGroupSize}">
 
                         <!-- 첫 페이지 버튼 -->
                         <a class="pagination-button"
-                           th:classappend="${customers.getNumber() == 0} ? 'disabled'"
-                           th:href="@{/admin/console(page=0, size=${customers.getSize()}, search=${searchKeyword})}">
+                           th:classappend="${currentPage == 0} ? 'disabled'"
+                           th:href="@{/admin/customerList(page=0, size=${pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav"><<</span>
                         </a>
 
                         <!-- 이전 그룹 버튼 -->
                         <a class="pagination-button"
                            th:classappend="${!hasPrevGroup} ? 'disabled'"
-                           th:href="@{/admin/console(page=${prevGroupStartPage}, size=${customers.getSize()}, search=${searchKeyword})}">
+                           th:href="@{/admin/customerList(page=${prevGroupStartPage}, size=${pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">이전</span>
                         </a>
 
                         <!-- 페이지 번호들 -->
                         <a class="pagination-button"
-                           th:classappend="${page == customers.getNumber()} ? 'active'"
+                           th:classappend="${page == currentPage} ? 'active'"
                            th:each="page : ${#numbers.sequence(startPage, endPage)}"
-                           th:href="@{/admin/console(page=${page}, size=${customers.getSize()}, search=${searchKeyword})}"
+                           th:href="@{/admin/customerList(page=${page}, size=${pageSize}, search=${searchKeyword})}"
                            th:text="${page + 1}">1</a>
 
                         <!-- 다음 그룹 버튼 -->
                         <a class="pagination-button"
                            th:classappend="${!hasNextGroup} ? 'disabled'"
-                           th:href="@{/admin/console(page=${nextGroupStartPage}, size=${customers.getSize()}, search=${searchKeyword})}">
+                           th:href="@{/admin/customerList(page=${nextGroupStartPage}, size=${pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">다음</span>
                         </a>
 
                         <!-- 마지막 페이지 버튼 -->
                         <a class="pagination-button"
-                           th:classappend="${customers.getNumber() == (customers.getTotalPages() - 1)} ? 'disabled'"
-                           th:href="@{/admin/console(page=${customers.getTotalPages() - 1}, size=${customers.getSize()}, search=${searchKeyword})}">
+                           th:classappend="${currentPage == (totalPages - 1)} ? 'disabled'"
+                           th:href="@{/admin/customerList(page=${totalPages - 1}, size=${pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">>></span>
                         </a>
                     </th:block>
@@ -951,32 +1015,23 @@
 <div class="modal" id="editModal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title">고객 코드 수정</h3>
-            <button class="modal-close" type="button">×</button>
+            <h3 class="modal-title">사용자 수정</h3>
+            <button class="modal-close" onclick="closeEditModal()">×</button>
         </div>
-        <form action="/updateCode" id="editForm" method="post">
+        <form action="/admin/updateUser" id="editForm" method="post">
             <div class="modal-body">
                 <div class="form-row">
                     <input id="editId" name="id" type="hidden">
-                    <input id="editPage" name="page" type="hidden">
-                    <input id="editSearch" name="search" type="hidden">
-                    <label class="form-label">고객 코드</label>
-                    <input class="form-input" id="editCode" name="code" required type="text">
+                    <label class="form-label">사용자 ID</label>
+                    <input class="form-input" id="editUsername" name="username" required type="text">
                 </div>
                 <div class="form-row">
-                    <label class="form-label">설명</label>
-                    <textarea class="form-input" id="editcompany" name="company" rows="3"></textarea>
-                </div>
-                <div class="form-row">
-                    <label class="form-label">상태</label>
-                    <select class="form-input" id="editStatus" name="status">
-                        <option value="ACTIVE">활성</option>
-                        <option value="INACTIVE">비활성</option>
-                    </select>
+                    <label class="form-label">이메일</label>
+                    <input class="form-input" id="editEmail" name="email" required type="email">
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button">취소</button>
+                <button class="btn btn-secondary" onclick="closeEditModal()" type="button">취소</button>
                 <button class="btn btn-primary" type="submit">저장</button>
             </div>
         </form>
@@ -987,171 +1042,169 @@
 <div class="modal" id="deleteModal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title">고객 코드 삭제</h3>
-            <button class="modal-close" type="button">×</button>
+            <h3 class="modal-title">사용자 삭제</h3>
+            <button class="modal-close" onclick="closeDeleteModal()">×</button>
         </div>
         <div class="modal-body">
-            <p>정말로 <strong id="deleteCustomerCode"></strong> 고객 코드를 삭제하시겠습니까?</p>
-            <p style="color: #f44336; font-size: 0.9rem; margin-top: 10px;">이 작업은 되돌릴 수 없습니다.</p>
+            <p>정말로 <strong id="deleteUsername"></strong> 사용자를 삭제하시겠습니까?</p>
+            <p style="color: #f44336; font-size: 0.9rem; margin-top: 10px;">이 작업은 복원 할 수 있습니다.</p>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" type="button">취소</button>
-            <button class="btn btn-danger" type="button">삭제</button>
+            <button class="btn btn-secondary" onclick="closeDeleteModal()" type="button">취소</button>
+            <button class="btn btn-danger" onclick="confirmDelete()" type="button">삭제</button>
         </div>
     </div>
 </div>
 
-<script th:inline="javascript">
+<!-- 복원 확인 모달 -->
+<div class="modal" id="restoreModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">사용자 복원</h3>
+            <button class="modal-close" onclick="closeRestoreModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <p><strong id="restoreUsername"></strong> 사용자를 복원하시겠습니까?</p>
+            <p style="color: #43a047; font-size: 0.9rem; margin-top: 10px;">이 작업은 사용자의 계정을 활성화합니다.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeRestoreModal()" type="button">취소</button>
+            <button class="btn btn-restore" onclick="confirmRestore()" type="button">복원</button>
+        </div>
+    </div>
+</div>
+
+<script>
     let currentEditId = null;
     let currentDeleteId = null;
-    const currentPage = [[${customers.getNumber()}]];
-    const searchKeyword = [[${searchKeyword != null ? searchKeyword : ''}]];
+    let currentRestoreId = null;
 
-    function openEditModal(id, code, company, status) {
-        if (!id || !code) {
-            console.error('Invalid data for edit modal:', { id, code, company, status });
-            return;
-        }
+    function handleEditClick(button) {
+        const id = button.dataset.id;
+        const username = button.dataset.username;
+        const email = button.dataset.email;
+
+        openEditModal(id, username, email);
+    }
+
+    function openEditModal(id, username, email) {
         currentEditId = id;
-        document.getElementById('editId').value = id;
-        document.getElementById('editCode').value = code;
-        document.getElementById('editcompany').value = company || '';
-        document.getElementById('editStatus').value = status || 'ACTIVE';
-        document.getElementById('editPage').value = currentPage;
-        document.getElementById('editSearch').value = searchKeyword;
+        document.getElementById('editId').value = currentEditId;
+        document.getElementById('editUsername').value = username;
+        document.getElementById('editEmail').value = email;
 
         const modal = document.getElementById('editModal');
         modal.classList.add('show');
-        console.log('Edit modal opened:', { id, code, company, status });
     }
 
     function closeEditModal() {
         const modal = document.getElementById('editModal');
         modal.classList.remove('show');
         currentEditId = null;
-        console.log('Edit modal closed');
     }
 
-    function openDeleteModal(id, code) {
-        if (!id || !code) {
-            console.error('Invalid data for delete modal:', { id, code });
-            return;
-        }
+    function handleDeleteClick(button) {
+        const id = button.dataset.id;
+        const username = button.dataset.username;
+
+        openDeleteModal(id, username);
+    }
+
+    function openDeleteModal(id, username) {
         currentDeleteId = id;
-        document.getElementById('deleteCustomerCode').textContent = code;
+        document.getElementById('deleteUsername').textContent = username;
 
         const modal = document.getElementById('deleteModal');
         modal.classList.add('show');
-        console.log('Delete modal opened:', { id, code });
     }
 
     function closeDeleteModal() {
         const modal = document.getElementById('deleteModal');
         modal.classList.remove('show');
         currentDeleteId = null;
-        console.log('Delete modal closed');
     }
 
     function confirmDelete() {
-        if (!currentDeleteId) {
-            console.error('No delete ID set');
-            return;
+        if (currentDeleteId) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/admin/deleteUser/${currentDeleteId}`;
+            document.body.appendChild(form);
+            form.submit();
         }
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = `/admin/deleteCode/${currentDeleteId}?page=${currentPage}&search=${encodeURIComponent(searchKeyword)}`;
-        document.body.appendChild(form);
-        form.submit();
     }
 
-    // 이벤트 리스너 설정
-    document.addEventListener('DOMContentLoaded', () => {
-        // 수정 및 삭제 버튼
-        document.querySelectorAll('.btn-edit').forEach(button => {
-            button.addEventListener('click', handleButtonClick);
-            button.addEventListener('touchstart', handleButtonClick); // 모바일 사파리 호환성
-        });
+    function handleRestoreClick(button) {
+        const id = button.dataset.id;
+        const username = button.dataset.username;
 
-        document.querySelectorAll('.btn-delete').forEach(button => {
-            button.addEventListener('click', handleButtonClick);
-            button.addEventListener('touchstart', handleButtonClick); // 모바일 사파리 호환성
-        });
+        openRestoreModal(id, username);
+    }
 
-        function handleButtonClick(event) {
-            event.preventDefault(); // 기본 이벤트 방지
-            const button = event.currentTarget;
-            const id = button.dataset.id;
-            const code = button.dataset.code;
-            const company = button.dataset.company || '';
-            const status = button.dataset.status || 'ACTIVE';
+    function openRestoreModal(id, username) {
+        currentRestoreId = id;
+        document.getElementById('restoreUsername').textContent = username;
 
-            console.log('Button clicked:', { id, code, company, status });
+        const modal = document.getElementById('restoreModal');
+        modal.classList.add('show');
+    }
 
-            if (button.classList.contains('btn-edit')) {
-                openEditModal(id, code, company, status);
-            } else if (button.classList.contains('btn-delete')) {
-                openDeleteModal(id, code);
-            }
+    function closeRestoreModal() {
+        const modal = document.getElementById('restoreModal');
+        modal.classList.remove('show');
+        currentRestoreId = null;
+    }
+
+    function confirmRestore() {
+        if (currentRestoreId) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/admin/restoreUser/${currentRestoreId}`;
+            document.body.appendChild(form);
+            form.submit();
         }
+    }
 
-        // 모달 닫기 버튼
-        document.querySelectorAll('.modal-close, .btn-secondary').forEach(button => {
-            button.addEventListener('click', () => {
-                closeEditModal();
-                closeDeleteModal();
-            });
-        });
+    window.onclick = function(event) {
+        const editModal = document.getElementById('editModal');
+        const deleteModal = document.getElementById('deleteModal');
+        const restoreModal = document.getElementById('restoreModal');
 
-        // 삭제 확인 버튼
-        document.querySelector('.btn-danger').addEventListener('click', confirmDelete);
+        if (event.target === editModal) {
+            closeEditModal();
+        }
+        if (event.target === deleteModal) {
+            closeDeleteModal();
+        }
+        if (event.target === restoreModal) {
+            closeRestoreModal();
+        }
+    }
 
-        // 모달 외부 클릭으로 닫기
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', event => {
-                if (event.target === modal) {
-                    closeEditModal();
-                    closeDeleteModal();
-                }
-            });
-        });
-
-        // ESC 키로 모달 닫기
-        document.addEventListener('keydown', event => {
-            if (event.key === 'Escape') {
-                closeEditModal();
-                closeDeleteModal();
-            }
-        });
-
-        // 검색 입력 및 아이콘
-        const searchInput = document.querySelector('.search-input');
-        const searchForm = document.getElementById('searchForm');
-        searchInput.addEventListener('keydown', event => {
-            if (event.key === 'Enter' && searchInput.value.trim().length >= 2) {
-                event.preventDefault();
-                searchForm.submit();
-            }
-        });
-
-        document.querySelector('.search-icon').addEventListener('click', () => {
-            if (searchInput.value.trim().length >= 2) {
-                searchForm.submit();
-            }
-        });
-
-        // 메시지 알림 자동 사라짐
-        setTimeout(() => {
-            document.querySelectorAll('.message-alert').forEach(alert => {
-                alert.style.opacity = '0';
-                alert.style.transform = 'translateX(20px)';
-                setTimeout(() => {
-                    if (alert.parentNode) {
-                        alert.parentNode.remove();
-                    }
-                }, 300);
-            });
-        }, 4000);
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeEditModal();
+            closeDeleteModal();
+            closeRestoreModal();
+        }
     });
+
+    document.querySelector('.search-icon').addEventListener('click', function() {
+        document.getElementById('searchForm').submit();
+    });
+
+    setTimeout(() => {
+        const messageAlerts = document.querySelectorAll('.message-alert');
+        messageAlerts.forEach(alert => {
+            alert.style.opacity = '0';
+            alert.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.parentNode.remove();
+                }
+            }, 300);
+        });
+    }, 4000);
 </script>
 </body>
 </html>

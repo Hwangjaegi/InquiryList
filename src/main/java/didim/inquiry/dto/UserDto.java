@@ -13,6 +13,7 @@ public class UserDto {
     private Long id;
     private String username;    //아이디
     private String password;    //패스워드
+    private String currentPassword; //현재 패스워드 검증용
     private String name;        //이름
     private String tel;         //전화번호
     private String email;       //이메일
@@ -28,6 +29,7 @@ public class UserDto {
         this.name = user.getName();
         this.tel = user.getTel();
         this.email = user.getEmail();
+        this.password = user.getPassword();
         this.role = user.getRole();
         this.deleteFlag = user.getDeleteFlag();
     }

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="/image/didimIcon.png" rel="icon" type="image/png">
+    <title>내정보</title>
+    <style>
+        /* 기존 스타일 복사 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Noto Sans KR", sans-serif; background: linear-gradient(135deg, #f0fdfa 0%, #ecfdf5 25%, #f0fdf4 50%, #f7fee7 75%, #fffbeb 100%); min-height: 100vh; color: #333; }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { width: 250px; background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); border-right: 1px solid rgba(168,230,207,0.3); padding: 20px; transition: all 0.3s ease; }
+        .sidebar h2 { color: #4a9b8e; margin-bottom: 30px; text-align: center; font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .menu-item {
+            display: block;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            background: rgba(168, 230, 207, 0.2);
+            border: 1px solid rgba(168, 230, 207, 0.3);
+            border-radius: 10px;
+            color: #4a9b8e;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+        }
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(168, 230, 207, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        .menu-item:hover::before {
+            left: 100%;
+        }
+        .menu-item:hover {
+            background: rgba(168, 230, 207, 0.4);
+            transform: translateX(5px);
+            color: #2d6a5d;
+        }
+        .menu-item.active {
+            background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+            color: white;
+            box-shadow: 0 4px 15px rgba(168, 230, 207, 0.3);
+        }
+        .menu-item-logout {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: white;
+        }
+        .menu-item-logout:hover {
+            background: linear-gradient(45deg, #ff8787, #f76c6c);
+            transform: translateX(5px);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+        .menu-item-logout::before {
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.3), transparent);
+        }
+        .menu-item-logout:hover::before {
+            left: 100%;
+        }
+        .nav-section {
+            margin-bottom: 20px;
+        }
+        .nav-section-title {
+            color: #4a9b8e;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+        .main-content { flex: 1; padding: 30px; background: rgba(255,255,255,0.3); backdrop-filter: blur(5px); }
+        .header { background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border-radius: 15px; padding: 20px; margin-bottom: 30px; border: 1px solid rgba(168,230,207,0.3); }
+        .header h1 { color: #4a9b8e; font-size: 2rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header p { color: #666; font-size: 1.1rem; }
+        .content-card { background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border-radius: 15px; padding: 30px; border: 1px solid rgba(168,230,207,0.3); box-shadow: 0 8px 32px rgba(168,230,207,0.15); max-width: 500px; margin: 0 auto; }
+        .form-section { margin-bottom: 30px; }
+        .form-section h3 { color: #4a9b8e; margin-bottom: 20px; font-size: 1.3rem; }
+        .form-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .form-label { font-weight: 600; color: #4a9b8e; font-size: 0.95rem; }
+        .form-input { padding: 12px 15px; border: 1px solid rgba(168,230,207,0.5); border-radius: 8px; background: rgba(255,255,255,0.9); color: #333; font-size: 1rem; transition: all 0.3s ease; font-family: inherit; }
+        .form-input:focus { outline: none; border-color: #a8e6cf; background: rgba(255,255,255,1); box-shadow: 0 0 0 3px rgba(168,230,207,0.2); }
+        .btn { padding: 12px 25px; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; position: relative; overflow: hidden; text-decoration: none; display: inline-block; text-align: center; }
+        .btn-primary { background: linear-gradient(45deg, #a8e6cf, #7fcdcd); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(168,230,207,0.4); }
+        .btn-secondary { background: linear-gradient(45deg, #9e9e9e, #757575); color: white; }
+        .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(158,158,158,0.4); }
+        .message-alert { padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; animation: slideInRight 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1); white-space: nowrap; margin-bottom: 10px; }
+        .message-success { background: linear-gradient(135deg, #4caf50, #388e3c); color: white; border: 1px solid rgba(76,175,80,0.3); }
+        .message-error { background: linear-gradient(135deg, #f44336, #d32f2f); color: white; border: 1px solid rgba(244,67,54,0.3); }
+        .message-icon { font-size: 1.1rem; }
+        .btn-disabled, .btn[disabled] {
+            background: #ccc !important;
+            color: #888 !important;
+            cursor: not-allowed !important;
+            box-shadow: none !important;
+            border: none !important;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <aside class="sidebar">
+        <h2 th:if="${role == 'ADMIN' OR role == 'MANAGER'}">관리자페이지</h2>
+        <h2 th:if="${role == 'USER'}">마이페이지</h2>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">관리 메뉴</div>
+                <a class="menu-item active" th:href="@{/myInfo}">🙍‍♂️ 내정보</a>
+                <a class="menu-item" th:href="@{/console}" th:if="${role == 'ADMIN'}">👥 고객 코드 관리</a>
+                <!-- 관리자일 경우 -->
+                <a class="menu-item" th:href="@{/admin/customerList}" th:if="${role == 'ADMIN'}">👤 사용자 관리</a>
+                <a class="menu-item" th:href="@{/admin/projectListAdmin}" th:if="${role == 'ADMIN'}">📋 프로젝트 목록</a>
+                <!-- 사용자일 경우 -->
+                <a class="menu-item" th:href="@{/console}" th:if="${role == 'MANAGER' or role == 'USER'}">👥 담당자 목록</a>
+                <a class="menu-item" th:href="@{/projectList}" th:if="${role == 'MANAGER' or role == 'USER'}">📋 프로젝트
+                    목록</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">기타</div>
+                <a class="menu-item" th:href="@{/inquiryList}">📋 문의리스트</a>
+                <a class="menu-item menu-item-logout" th:href="@{/logout}">🚪 로그아웃</a>
+            </div>
+        </nav>
+    </aside>
+    <main class="main-content">
+        <div class="header">
+            <h1>내정보</h1>
+            <p>내 계정 정보를 확인하고 수정할 수 있습니다.</p>
+        </div>
+        <div class="content-card">
+            <form id="myInfoForm" method="post" th:action="@{/user/updateMyInfo}">
+                <div class="form-section">
+                    <h3>기본 정보</h3>
+                    <input name="username" th:value="${user.username}" type="hidden">
+                    <div class="form-group">
+                        <label class="form-label">이름</label>
+                        <input class="form-input" name="name" required th:value="${user.name}" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">전화번호</label>
+                        <input class="form-input" name="tel" required th:value="${user.tel}" type="text" >
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">이메일</label>
+                        <input class="form-input" name="email" required th:value="${user.email}" type="email">
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h3>비밀번호 변경</h3>
+                    <div class="form-group" id="currentPasswordGroup">
+                        <label class="form-label">현재 비밀번호</label>
+                        <input class="form-input" id="currentPasswordInput" name="currentPassword" placeholder="현재 비밀번호"
+                               type="password">
+                        <div id="currentPasswordError"
+                             style="color: #e53935; font-size: 0.95em; margin-top: 4px; display: none;"></div>
+                        <div id="currentPasswordSuccess"
+                             style="color: green; font-size: 0.95em; margin-top: 4px; display: none;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">새 비밀번호</label>
+                        <input class="form-input" name="newPassword" placeholder="새 비밀번호" type="password">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">새 비밀번호 확인</label>
+                        <input class="form-input" name="confirmPassword" placeholder="새 비밀번호 확인"
+                               type="password">
+                    </div>
+                </div>
+                <div id="newPasswordError"
+                     style="color: #e53935; font-size: 0.95em; margin-bottom: 10px; display: none;"></div>
+                <div class="form-group" style="justify-content: flex-end;">
+                    <button class="btn btn-primary" type="submit">저장</button>
+                </div>
+                <div class="message-alert message-success" th:if="${successMessage}">
+                    <span class="message-icon">✅</span>
+                    <span th:text="${successMessage}"></span>
+                </div>
+                <div class="message-alert message-error" th:if="${errorMessage}">
+                    <span class="message-icon">❌</span>
+                    <span th:text="${errorMessage}"></span>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+<script>
+    // 전화번호 자동 하이픈 (managerConsole과 동일)
+    document.addEventListener('DOMContentLoaded', function () {
+        const telInput = document.querySelector('input[name="tel"]');
+        if (telInput) {
+            telInput.addEventListener('input', function (e) {
+                const cleaned = e.target.value.replace(/\D/g, '');
+                let formatted = cleaned;
+                if (cleaned.length >= 10) {
+                    if (cleaned.startsWith('02')) {
+                        formatted = cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
+                    } else {
+                        formatted = cleaned.replace(/(\d{3})(\d{3,4})(\d{4})/, '$1-$2-$3');
+                    }
+                } else if (cleaned.length >= 7) {
+                    formatted = cleaned.replace(/(\d{3})(\d{3,4})/, '$1-$2');
+                }
+                e.target.value = formatted;
+            });
+        }
+
+        const currentPasswordInput = document.getElementById('currentPasswordInput');
+        const currentPasswordError = document.getElementById('currentPasswordError');
+        const currentPasswordSuccess = document.getElementById('currentPasswordSuccess');
+        const newPasswordInput = document.querySelector('input[name="newPassword"]');
+        const confirmPasswordInput = document.querySelector('input[name="confirmPassword"]');
+        const newPasswordError = document.getElementById('newPasswordError');
+        const btn = document.querySelector('button[type="submit"]');
+
+        let isCurrentPasswordValid = false;
+        let isNewPasswordValid = false;
+        let isPasswordMatch = false;
+
+        // 현재 비밀번호 비동기 검증
+        if (currentPasswordInput) {
+            currentPasswordInput.addEventListener('blur', function () {
+                const value = currentPasswordInput.value;
+                if (!value) {
+                    currentPasswordError.style.display = 'none';
+                    currentPasswordSuccess.style.display = 'none';
+                    isCurrentPasswordValid = false;
+                    return;
+                }
+                fetch('/user/checkPassword', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'currentPassword=' + encodeURIComponent(value)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.valid) {
+                        currentPasswordError.textContent = '현재 비밀번호와 일치하지 않습니다.';
+                        currentPasswordError.style.display = 'block';
+                        currentPasswordSuccess.style.display = 'none';
+                        isCurrentPasswordValid = false;
+                    } else {
+                        currentPasswordSuccess.textContent = '현재 비밀번호와 일치합니다.';
+                        currentPasswordSuccess.style.display = 'block';
+                        currentPasswordError.style.display = 'none';
+                        isCurrentPasswordValid = true;
+                    }
+                });
+            });
+        }
+
+        // 새 비밀번호 길이 및 일치 체크
+        function checkNewPassword() {
+            if (newPasswordInput.value && newPasswordInput.value.length < 8) {
+                newPasswordError.textContent = '패스워드는 8자리 이상으로 사용해주세요.';
+                newPasswordError.style.display = 'block';
+                isNewPasswordValid = false;
+                isPasswordMatch = false;
+            } else if (newPasswordInput.value && confirmPasswordInput.value && newPasswordInput.value !== confirmPasswordInput.value) {
+                newPasswordError.textContent = '새 비밀번호와 비밀번호 확인이 일치하지 않습니다.';
+                newPasswordError.style.display = 'block';
+                isNewPasswordValid = newPasswordInput.value.length >= 8;
+                isPasswordMatch = false;
+            } else {
+                newPasswordError.textContent = '';
+                newPasswordError.style.display = 'none';
+                isNewPasswordValid = newPasswordInput.value.length >= 8;
+                isPasswordMatch = (newPasswordInput.value && confirmPasswordInput.value && newPasswordInput.value === confirmPasswordInput.value);
+            }
+        }
+
+        if (newPasswordInput && confirmPasswordInput) {
+            newPasswordInput.addEventListener('input', checkNewPassword);
+            confirmPasswordInput.addEventListener('input', checkNewPassword);
+        }
+
+        // 새 비밀번호만 입력하고 확인을 입력하지 않은 경우 제출 방지
+        document.getElementById('myInfoForm').addEventListener('submit', function(e) {
+            const currentPassword = document.querySelector('input[name="currentPassword"]').value;
+            const newPassword = document.querySelector('input[name="newPassword"]').value;
+            const confirmPassword = document.querySelector('input[name="confirmPassword"]').value;
+            const newPasswordError = document.getElementById('newPasswordError');
+
+            // 비밀번호 변경 시도(셋 중 하나라도 입력)인데, 나머지 입력이 빠진 경우
+            if (currentPassword || newPassword || confirmPassword) {
+                if (!currentPassword && newPassword && confirmPassword) {
+                    e.preventDefault();
+                    newPasswordError.textContent = '현재 비밀번호를 입력해주세요.';
+                    newPasswordError.style.display = 'block';
+                    document.querySelector('input[name="currentPassword"]').focus();
+                } else if (currentPassword && !newPassword && confirmPassword) {
+                    e.preventDefault();
+                    newPasswordError.textContent = '새 비밀번호를 입력해주세요.';
+                    newPasswordError.style.display = 'block';
+                    document.querySelector('input[name="newPassword"]').focus();
+                } else if (currentPassword && newPassword && !confirmPassword) {
+                    e.preventDefault();
+                    newPasswordError.textContent = '새 비밀번호 확인을 입력해주세요.';
+                    newPasswordError.style.display = 'block';
+                    document.querySelector('input[name="confirmPassword"]').focus();
+                } else if (!currentPassword && newPassword && !confirmPassword) {
+                    e.preventDefault();
+                    newPasswordError.textContent = '현재 비밀번호와 새 비밀번호 확인을 입력해주세요.';
+                    newPasswordError.style.display = 'block';
+                    document.querySelector('input[name="currentPassword"]').focus();
+                } else if (currentPassword && !newPassword && !confirmPassword) {
+                    e.preventDefault();
+                    newPasswordError.textContent = '새 비밀번호와 새 비밀번호 확인을 입력해주세요.';
+                    newPasswordError.style.display = 'block';
+                    document.querySelector('input[name="newPassword"]').focus();
+                } else if (!currentPassword && !newPassword && confirmPassword) {
+                    e.preventDefault();
+                    newPasswordError.textContent = '현재 비밀번호와 새 비밀번호를 입력해주세요.';
+                    newPasswordError.style.display = 'block';
+                    document.querySelector('input[name="currentPassword"]').focus();
+                } else if (!currentPassword && !newPassword && !confirmPassword) {
+                    // 모두 비어있으면 통과(이름/이메일/전화번호만 변경)
+                }
+            }
+        });
+
+        // 현재 비밀번호 입력 시 '현재 비밀번호를 입력해주세요.' 메시지 즉시 숨김
+        document.querySelector('input[name="currentPassword"]').addEventListener('input', function() {
+            const newPasswordError = document.getElementById('newPasswordError');
+            if (newPasswordError.textContent === '현재 비밀번호를 입력해주세요.') {
+                newPasswordError.style.display = 'none';
+            }
+        });
+    }); // ← 이 부분이 반드시 필요!
+</script>
+</body>
+</html> 

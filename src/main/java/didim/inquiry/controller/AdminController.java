@@ -11,6 +11,7 @@ import didim.inquiry.service.ProjectService;
 import didim.inquiry.service.UserService;
 import didim.inquiry.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,8 +44,8 @@ public class AdminController extends BaseController {
         this.customerService = customerService;
     }
 
-    //관리자 화면 표시
-    @GetMapping("admin/console")
+    //콘솔 화면 표시
+    @GetMapping("/console")
     public String adminConsole(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
@@ -79,11 +80,12 @@ public class AdminController extends BaseController {
                 model.addAttribute("activeCustomer", activeCustomer);
                 model.addAttribute("newCustomer", newCustomer);
                 model.addAttribute("searchKeyword", search);
-                return "admin/adminConsole";
+                return "page/adminConsole";
             }
 
             // 관리자인 경우
             if ("MANAGER".equals(user.getRole())) {
+                System.out.println("매니저콘솔");
                 Pageable pageable = PageRequest.of(page, size);
 
                 Page<User> userListByCustomerCode;
@@ -99,7 +101,7 @@ public class AdminController extends BaseController {
                 model.addAttribute("currentUserId",user.getId());
                 model.addAttribute("totalUser", totalUser);
                 model.addAttribute("searchKeyword", search);
-                return "admin/managerConsole";
+                return "page/managerConsole";
             }
 
             // 일반 사용자
@@ -119,7 +121,7 @@ public class AdminController extends BaseController {
                 model.addAttribute("currentUserId",user.getId());
                 model.addAttribute("totalUser", totalUser);
                 model.addAttribute("searchKeyword", search);
-                return "admin/userConsole";
+                return "page/userConsole";
             }
         } catch (UsernameNotFoundException e) {
             System.err.println(e.getMessage());
@@ -146,11 +148,11 @@ public class AdminController extends BaseController {
         try {
             adminService.createCustomerCode(customerDto);
             redirectAttributes.addFlashAttribute("successMessage", "고객코드가 성공적으로 등록되었습니다.");
-            return "redirect:/admin/console";
+            return "redirect:/console";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             System.out.println("고객코드 중복에러 발생 : " + e.getMessage());
-            return "redirect:/admin/console";
+            return "redirect:/console";
         }
     }
 
@@ -173,7 +175,7 @@ public class AdminController extends BaseController {
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
-        return "redirect:/admin/console?page=" + page + (search != null ? "&search=" + URLEncoder.encode(search, StandardCharsets.UTF_8) : "");
+        return "redirect:/console?page=" + page + (search != null ? "&search=" + URLEncoder.encode(search, StandardCharsets.UTF_8) : "");
     }
 
     //코드삭제
@@ -191,13 +193,17 @@ public class AdminController extends BaseController {
             redirectAttributes.addFlashAttribute("successMessage", "고객코드가 성공적으로 삭제되었습니다");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        } catch (DataIntegrityViolationException e){
+            redirectAttributes.addFlashAttribute("errorMessage", "프로젝트가 등록된 고객코드는 삭제 할 수 없습니다");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "알 수 없는 오류가 발생했습니다.");
         }
 
-        return "redirect:/admin/console?page=" + page + "&size=" + size + (search != null ? "&search=" + URLEncoder.encode(search, StandardCharsets.UTF_8) : "");
+        return "redirect:/console?page=" + page + "&size=" + size + (search != null ? "&search=" + URLEncoder.encode(search, StandardCharsets.UTF_8) : "");
     }
 
     //프로젝트 리스트
-    @GetMapping("/admin/projectList")
+    @GetMapping("/projectList")
     public String projectList(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
@@ -212,18 +218,20 @@ public class AdminController extends BaseController {
             String customerCode = user.getCustomerCode();
             Customer customer = customerService.getCustomer(customerCode);
 
+            // 검색 조회 , 일반 조회
             Page<Project> projectList = searchKeyword == null || searchKeyword.isEmpty()
                     ? projectService.getAllProjectsByCustomerId(customer.getId(),pageable)
                     : projectService.getAllProjectsByCustomerIdAndSearch(customer.getId(),searchKeyword, pageable);
 
 
             model.addAttribute("projectList", projectList);
+            model.addAttribute("role",user.getRole());
             model.addAttribute("searchKeyword", searchKeyword);
             model.addAttribute("currentPage", projectList.getNumber());
             model.addAttribute("totalPages", projectList.getTotalPages());
             model.addAttribute("pageSize", projectList.getSize());
 
-            return "admin/userProjectList";
+            return "page/userProjectList";
         } catch (UsernameNotFoundException e) {
             System.err.println("Not Found Error: " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
@@ -249,10 +257,10 @@ public class AdminController extends BaseController {
             model.addAttribute("searchKeyword", searchKeyword);
             // 전체 customerCode 리스트
             model.addAttribute("customerList", customerService.findAll());
-            return "admin/adminProjectList";
+            return "page/adminProjectList";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "프로젝트 목록 조회 중 오류가 발생했습니다: " + e.getMessage());
-            return "redirect:/admin/console";
+            return "redirect:/console";
         }
     }
 
@@ -344,7 +352,7 @@ public class AdminController extends BaseController {
             model.addAttribute("pageSize", size);
             model.addAttribute("searchKeyword", searchKeyword);
 
-            return "admin/adminCustomerList";
+            return "page/adminCustomerList";
         } catch (Exception e) {
             System.err.println("Not Found Error: " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
@@ -409,14 +417,14 @@ public class AdminController extends BaseController {
         }
     }
 
-    @GetMapping("/admin/myInfo")
+    @GetMapping("/myInfo")
     public String myInfo(Model model,
                          RedirectAttributes redirectAttributes) {
         try {
             User user = getCurrentUser();
             model.addAttribute("user", user);
             model.addAttribute("role", user.getRole());
-            return "admin/myInfo";
+            return "/page/myInfo";
         }catch (UsernameNotFoundException e){
             System.err.println("User Not Found Error : " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

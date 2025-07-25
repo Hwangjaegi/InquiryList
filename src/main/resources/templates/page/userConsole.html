@@ -585,13 +585,6 @@
             box-shadow: 0 0 0 3px rgba(168, 230, 207, 0.2);
         }
 
-        .form-input:disabled {
-            background: rgba(200, 200, 200, 0.5);
-            color: #666;
-            cursor: not-allowed;
-            border-color: rgba(200, 200, 200, 0.5);
-        }
-
         .consent-container {
             margin: 20px 0;
             padding: 15px;
@@ -754,43 +747,18 @@
                 font-size: 0.8rem;
             }
         }
-        /* 스타일 추가 */
-        .disabled-row {
-            background: #f0f0f0 !important;
-            color: #aaa !important;
-            opacity: 0.7;
-        }
-        .btn-disabled {
-            background: #ccc !important;
-            color: #888 !important;
-            cursor: not-allowed !important;
-            border-color: #ccc !important;
-            pointer-events: none;
-        }
-        .btn-restore {
-            background: linear-gradient(45deg, #4caf50, #388e3c);
-            color: white;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            margin-left: 4px;
-        }
-        .btn-restore:hover {
-            background: linear-gradient(45deg, #66bb6a, #43a047);
-            color: #fff;
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
-        }
     </style>
 </head>
 <body>
 <div class="container">
     <aside class="sidebar">
-        <h2>관리자페이지</h2>
+        <h2>마이페이지</h2>
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-title">관리 메뉴</div>
-                <a class="menu-item" th:href="@{/admin/myInfo}">🙍‍♂️ 내정보</a>
-                <a class="menu-item active" th:href="@{/admin/console}">👥 담당자 목록</a>
-                <a class="menu-item" th:href="@{/admin/projectList}">📋 프로젝트 목록</a>
+                <a class="menu-item" th:href="@{/myInfo}">🙍‍♂️ 내정보</a>
+                <a class="menu-item active" th:href="@{/console}">👥 담당자 목록</a>
+                <a class="menu-item" th:href="@{/projectList}">📋 프로젝트 목록</a>
             </div>
             <div class="nav-section">
                 <div class="nav-section-title">기타</div>
@@ -803,7 +771,7 @@
     <main class="main-content">
         <div class="header">
             <h1>담당자 목록</h1>
-            <p>나의 담당자 정보를 확인하고 관리할 수 있습니다.</p>
+            <p>나의 담당자 정보를 확인할 수 있습니다.</p>
         </div>
 
         <div class="content-card">
@@ -822,20 +790,20 @@
             <!-- 검색 -->
             <div class="search-container">
                 <div class="search-icon">🔍</div>
-                <form id="searchForm" method="get" th:action="@{/admin/console(page=0)}">
+                <form id="searchForm" method="get" th:action="@{/console(page=0)}">
                     <input class="search-input" name="search" placeholder="담당자 이름, 전화번호, 이메일로 검색..." th:value="${searchKeyword}" type="text">
                 </form>
             </div>
 
             <!-- 담당자 목록 -->
             <div class="manager-list">
-                <div class="empty-state" th:if="${totalManager == 0}">
+                <div class="empty-state" th:if="${totalUser == 0}">
                     <div class="empty-state-icon">👥</div>
                     <div class="empty-state-text">등록된 담당자가 없습니다</div>
                     <div class="empty-state-subtext">새 담당자를 추가하려면 관리자에게 문의하세요.</div>
                 </div>
 
-                <table class="manager-table" th:unless="${totalManager == 0}">
+                <table class="manager-table" th:unless="${totalUser == 0}">
                     <thead>
                     <tr>
                         <th>이름</th>
@@ -843,7 +811,6 @@
                         <th>이메일</th>
                         <th>등록일</th>
                         <th>권한</th>
-                        <th>작업</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -854,32 +821,6 @@
                         <td th:text="${user.email}">email@example.com</td>
                         <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd')}">2024-01-01</td>
                         <td th:text="${user.role}">USER</td>
-                        <td>
-                            <div class="manager-actions">
-                                <button class="btn btn-edit"
-                                        onclick="if(!this.disabled) handleEditClick(this)"
-                                        th:attr="data-id=${user.id}, data-name=${user.name}, data-tel=${user.tel}, data-email=${user.email}, data-role=${user.role}"
-                                        th:classappend="${user.deleteFlag} ? ' btn-disabled' : ''"
-                                        th:disabled="${user.deleteFlag}"
-                                        th:if="${!user.deleteFlag}">
-                                    수정
-                                </button>
-                                <button class="btn btn-delete"
-                                        onclick="if(!this.disabled) handleDeleteClick(this)"
-                                        th:attr="data-id=${user.id}, data-name=${user.name}"
-                                        th:classappend="${user.deleteFlag} ? ' btn-disabled' : ''"
-                                        th:disabled="${user.deleteFlag}"
-                                        th:if="${!user.deleteFlag and user.id != currentUserId}">
-                                    삭제
-                                </button>
-                                <button class="btn btn-restore"
-                                        onclick="handleRestoreClick(this)"
-                                        th:attr="data-id=${user.id}, data-name=${user.name}"
-                                        th:if="${user.deleteFlag}">
-                                    복원
-                                </button>
-                            </div>
-                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -897,27 +838,27 @@
                         nextGroupStartPage=${(currentGroupIndex + 1) * pageGroupSize}">
                         <a class="pagination-button"
                            th:classappend="${userList.number == 0} ? 'disabled'"
-                           th:href="@{/admin/console(page=0, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:href="@{/console(page=0, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav"><<</span>
                         </a>
                         <a class="pagination-button"
                            th:classappend="${!hasPrevGroup} ? 'disabled'"
-                           th:href="@{/admin/console(page=${prevGroupStartPage}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:href="@{/console(page=${prevGroupStartPage}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">이전</span>
                         </a>
                         <a class="pagination-button"
                            th:classappend="${page == userList.number} ? 'active'"
                            th:each="page : ${#numbers.sequence(startPage, endPage)}"
-                           th:href="@{/admin/console(page=${page}, size=${userList.pageable.pageSize}, search=${searchKeyword})}"
+                           th:href="@{/console(page=${page}, size=${userList.pageable.pageSize}, search=${searchKeyword})}"
                            th:text="${page + 1}">1</a>
                         <a class="pagination-button"
                            th:classappend="${!hasNextGroup} ? 'disabled'"
-                           th:href="@{/admin/console(page=${nextGroupStartPage}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:href="@{/console(page=${nextGroupStartPage}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">다음</span>
                         </a>
                         <a class="pagination-button"
                            th:classappend="${userList.number == (userList.totalPages - 1)} ? 'disabled'"
-                           th:href="@{/admin/console(page=${userList.totalPages - 1}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:href="@{/console(page=${userList.totalPages - 1}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">>></span>
                         </a>
                     </th:block>
@@ -927,433 +868,10 @@
     </main>
 </div>
 
-<!-- 수정 모달 -->
-<div class="modal" id="editModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">담당자 정보 수정</h3>
-            <button class="modal-close" onclick="closeEditModal()">×</button>
-        </div>
-        <form action="/user/update" id="editForm" method="post">
-            <div class="modal-body">
-                <div class="form-row">
-                    <input id="editId" name="id" type="hidden">
-                    <label class="form-label">담당자 이름</label>
-                    <input class="form-input" id="editName" name="name" required type="text">
-                </div>
-                <div class="form-row">
-                    <label class="form-label">전화번호</label>
-                    <input class="form-input" id="editTel" name="tel" required type="text">
-                </div>
-                <div class="form-row">
-                    <label class="form-label">이메일</label>
-                    <input class="form-input" id="editEmail" name="email" required type="email">
-                </div>
-                <div class="form-row">
-                    <label class="form-label">권한</label>
-                    <select class="form-input" id="editRole" name="role" required>
-                        <option value="MANAGER">MANAGER</option>
-                        <option value="USER">USER</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeEditModal()" type="button">취소</button>
-                <button class="btn btn-primary" type="submit">저장</button>
-            </div>
-        </form>
-    </div>
-</div>
 
-<!-- 삭제 확인 모달 -->
-<div class="modal" id="deleteModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">담당자 삭제</h3>
-            <button class="modal-close" onclick="closeDeleteModal()">×</button>
-        </div>
-        <div class="modal-body">
-            <p><strong id="deleteManagerName"></strong> 담당자를 삭제하시겠습니까?</p>
-            <p style="color: #f44336; font-size: 0.9rem; margin-top: 10px;">이 작업은 되돌릴 수 없습니다.</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeDeleteModal()" type="button">취소</button>
-            <button class="btn btn-danger" onclick="confirmDelete()" type="button">삭제</button>
-        </div>
-    </div>
-</div>
-
-<!-- 복원 안내 모달 -->
-<div class="modal" id="restoreModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">담당자 복원</h3>
-            <button class="modal-close" onclick="closeRestoreModal()">×</button>
-        </div>
-        <div class="modal-body">
-            <p>정말로 <strong id="restoreManagerName"></strong> 담당자를 복원하시겠습니까?</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeRestoreModal()" type="button">취소</button>
-            <button class="btn btn-primary" onclick="confirmRestore()" type="button">복원</button>
-        </div>
-    </div>
-</div>
 
 <script th:inline="javascript">
-    let currentEditId = null;
-    let currentDeleteId = null;
-    let currentRestoreId = null;
-    const currentPage = /*[[${userList.getNumber()}]]*/ 0;
-    const searchKeyword = /*[[${searchKeyword != null ? searchKeyword : ''}]]*/ '';
-    const currentUserId = /*[[${currentUserId}]]*/ null;
 
-    // 연락처 하이픈 자동 입력 함수
-    function formatPhoneNumber(phoneNumber) {
-        const cleaned = phoneNumber.replace(/\D/g, '');
-        if (cleaned.length <= 2) {
-            return cleaned;
-        } else if (cleaned.length <= 3) {
-            return cleaned;
-        } else if (cleaned.length <= 4) {
-            return cleaned.slice(0, 2) + '-' + cleaned.slice(2);
-        } else if (cleaned.length <= 6) {
-            return cleaned.slice(0, 2) + '-' + cleaned.slice(2);
-        } else if (cleaned.length <= 7) {
-            return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 5) + '-' + cleaned.slice(5);
-        } else if (cleaned.length <= 8) {
-            if (cleaned.startsWith('02')) {
-                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 6) + '-' + cleaned.slice(6);
-            } else {
-                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
-            }
-        } else if (cleaned.length <= 9) {
-            if (cleaned.startsWith('02')) {
-                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 5) + '-' + cleaned.slice(5);
-            } else {
-                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
-            }
-        } else if (cleaned.length <= 10) {
-            if (cleaned.startsWith('02')) {
-                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 6) + '-' + cleaned.slice(6);
-            } else {
-                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
-            }
-        } else {
-            return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 7) + '-' + cleaned.slice(7, 11);
-        }
-    }
-
-    // 메시지 표시 함수
-    function showMessage(message, type) {
-        const messageContainer = document.querySelector('.manager-list');
-        if (!messageContainer) {
-            console.warn('Message container (.manager-list) not found in DOM');
-            return;
-        }
-
-        // 기존 메시지 제거
-        const existingMessages = messageContainer.querySelectorAll('.message-alert');
-        existingMessages.forEach(msg => msg.remove());
-
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message-alert message-${type}`;
-        messageDiv.innerHTML = `
-            <span class="message-icon">${type === 'success' ? '✅' : '❌'}</span>
-            <span>${message}</span>
-        `;
-        messageDiv.style.animation = 'slideInRight 0.3s ease';
-        messageContainer.insertBefore(messageDiv, messageContainer.firstChild);
-
-        setTimeout(() => {
-            messageDiv.style.opacity = '0';
-            messageDiv.style.transform = 'translateX(20px)';
-            setTimeout(() => {
-                if (messageDiv.parentNode) {
-                    messageDiv.parentNode.removeChild(messageDiv);
-                }
-            }, 500);
-        }, 3000);
-    }
-
-    // DOMContentLoaded 이벤트
-    document.addEventListener('DOMContentLoaded', function () {
-        // 전화번호 포맷팅
-        const telInputs = document.querySelectorAll('input[name="managerTel"], input[id="editTel"]');
-        telInputs.forEach(telInput => {
-            telInput.addEventListener('input', function (e) {
-                const cursorPosition = e.target.selectionStart;
-                const oldValue = e.target.value;
-                const newValue = formatPhoneNumber(oldValue);
-                e.target.value = newValue;
-                const diff = newValue.length - oldValue.length;
-                if (diff > 0) {
-                    e.target.setSelectionRange(cursorPosition + diff, cursorPosition + diff);
-                }
-            });
-
-            telInput.addEventListener('keydown', function (e) {
-                const cursorPosition = e.target.selectionStart;
-                const value = e.target.value;
-                if (e.key === 'Backspace' && cursorPosition > 0 && value[cursorPosition - 1] === '-') {
-                    e.preventDefault();
-                    const newValue = value.substring(0, cursorPosition - 2) + value.substring(cursorPosition);
-                    e.target.value = formatPhoneNumber(newValue);
-                    e.target.setSelectionRange(cursorPosition - 2, cursorPosition - 2);
-                }
-            });
-        });
-
-        // 서버 메시지 처리
-        const messageContainer = document.querySelector('.manager-list');
-        if (messageContainer) {
-            const successMessage = /*[[${successMessage}]]*/ null;
-            const errorMessage = /*[[${errorMessage}]]*/ null;
-
-            // 기존 서버 메시지 제거 (Thymeleaf로 렌더링된 메시지)
-            const existingMessages = messageContainer.querySelectorAll('.message-alert');
-            existingMessages.forEach(msg => msg.remove());
-
-            // 서버 메시지 표시
-            if (successMessage) {
-                showMessage(successMessage, 'success');
-            }
-            if (errorMessage) {
-                showMessage(errorMessage, 'error');
-            }
-        } else {
-            console.warn('Message container (.manager-list) not found in DOM');
-        }
-
-        // editForm 제출 처리
-        const editForm = document.getElementById('editForm');
-        if (editForm) {
-            editForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-
-                const id = document.getElementById('editId').value;
-                const name = document.getElementById('editName').value;
-                const tel = document.getElementById('editTel').value;
-                const email = document.getElementById('editEmail').value;
-                const role = document.getElementById('editRole').value;
-
-                const userDto = {
-                    id: id,
-                    name: name,
-                    tel: tel,
-                    email: email,
-                    role: role
-                };
-
-                fetch('/user/update', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(userDto)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(err => { throw new Error(err.message); });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // 테이블 행 업데이트
-                    const row = document.querySelector(`tr[data-id="${id}"]`);
-                    if (row) {
-                        const cells = row.querySelectorAll('td');
-                        cells[0].textContent = data.name;
-                        cells[1].textContent = data.tel;
-                        cells[2].textContent = data.email;
-                        cells[4].textContent = data.role; // 권한 (5번째 열)
-                    }
-                    // 수정 버튼 데이터 업데이트
-                    const editButton = document.querySelector(`button.btn-edit[data-id="${id}"]`);
-                    if (editButton) {
-                        editButton.dataset.name = data.name;
-                        editButton.dataset.tel = data.tel;
-                        editButton.dataset.email = data.email;
-                        editButton.dataset.role = data.role;
-                    }
-                    showMessage('담당자 정보가 성공적으로 수정되었습니다.', 'success');
-                    closeEditModal();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showMessage(`담당자 정보 수정 중 오류가 발생했습니다: ${error.message}`, 'error');
-                });
-            });
-        }
-    });
-
-    // 수정 버튼 클릭
-    function handleEditClick(button) {
-        const id = button.dataset.id;
-        const name = button.dataset.name;
-        const tel = button.dataset.tel;
-        const email = button.dataset.email;
-        const role = button.dataset.role;
-
-        openEditModal(id, name, tel, email, role);
-    }
-
-    // 수정 모달 열기
-    function openEditModal(id, name, tel, email, role) {
-        currentEditId = id;
-        const editName = document.getElementById('editName');
-        const editTel = document.getElementById('editTel');
-        const editEmail = document.getElementById('editEmail');
-        const editRole = document.getElementById('editRole');
-        const editIdInput = document.getElementById('editId');
-
-        // 입력 필드 설정
-        editIdInput.value = id;
-        editName.value = name;
-        editTel.value = formatPhoneNumber(tel);
-        editEmail.value = email;
-        editRole.value = role;
-
-        // 로그인한 유저와 수정 대상 유저 비교
-        const isCurrentUser = currentUserId && id == currentUserId;
-        editName.disabled = !isCurrentUser;
-        editTel.disabled = !isCurrentUser;
-        editEmail.disabled = !isCurrentUser;
-        editRole.disabled = false; // 권한은 항상 수정 가능
-
-        // 모달 표시
-        const modal = document.getElementById('editModal');
-        modal.classList.add('show');
-    }
-
-    // 수정 모달 닫기
-    function closeEditModal() {
-        const modal = document.getElementById('editModal');
-        modal.classList.remove('show');
-        currentEditId = null;
-
-        // 입력 필드 활성화 상태 초기화
-        const editName = document.getElementById('editName');
-        const editTel = document.getElementById('editTel');
-        const editEmail = document.getElementById('editEmail');
-        const editRole = document.getElementById('editRole');
-        if (editName) editName.disabled = false;
-        if (editTel) editTel.disabled = false;
-        if (editEmail) editEmail.disabled = false;
-        if (editRole) editRole.disabled = false;
-    }
-
-    // 삭제 버튼 클릭
-    function handleDeleteClick(button) {
-        const id = button.dataset.id;
-        const name = button.dataset.name;
-
-        openDeleteModal(id, name);
-    }
-
-    // 삭제 모달 열기
-    function openDeleteModal(id, name) {
-        currentDeleteId = id;
-        document.getElementById('deleteManagerName').textContent = name;
-
-        const modal = document.getElementById('deleteModal');
-        modal.classList.add('show');
-    }
-
-    // 삭제 모달 닫기
-    function closeDeleteModal() {
-        const modal = document.getElementById('deleteModal');
-        modal.classList.remove('show');
-        currentDeleteId = null;
-    }
-
-    // 삭제 확인
-    function confirmDelete() {
-        if (currentDeleteId) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `/user/delete/${currentDeleteId}?page=${currentPage}&search=${encodeURIComponent(searchKeyword)}`;
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
-
-    // 복원 버튼 클릭
-    function handleRestoreClick(button) {
-        const id = button.dataset.id;
-        const name = button.dataset.name;
-        openRestoreModal(id, name);
-    }
-
-    // 복원 모달 열기
-    function openRestoreModal(id, name) {
-        currentRestoreId = id;
-        document.getElementById('restoreManagerName').textContent = name;
-        document.getElementById('restoreModal').classList.add('show');
-    }
-
-    // 복원 모달 닫기
-    function closeRestoreModal() {
-        document.getElementById('restoreModal').classList.remove('show');
-        currentRestoreId = null;
-    }
-
-    // 복원 확인
-    function confirmRestore() {
-        if (currentRestoreId) {
-            // 현재 페이지와 검색어를 쿼리스트링에 포함
-            let actionUrl = `/user/restore/${currentRestoreId}?page=${currentPage}`;
-            if (searchKeyword && searchKeyword !== 'null' && searchKeyword !== 'undefined') {
-                actionUrl += `&search=${encodeURIComponent(searchKeyword)}`;
-            }
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = actionUrl;
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
-
-    // 모달 외부 클릭 시 닫기
-    window.addEventListener('click', function(event) {
-        const editModal = document.getElementById('editModal');
-        const deleteModal = document.getElementById('deleteModal');
-        const restoreModal = document.getElementById('restoreModal');
-        if (event.target === editModal) {
-            closeEditModal();
-        }
-        if (event.target === deleteModal) {
-            closeDeleteModal();
-        }
-        if (event.target === restoreModal) {
-            closeRestoreModal();
-        }
-    });
-
-    // ESC 키로 모달 닫기
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            closeEditModal();
-            closeDeleteModal();
-            closeRestoreModal();
-        }
-    });
-
-    // 돋보기 아이콘 클릭으로 검색
-    document.querySelector('.search-icon').addEventListener('click', function() {
-        const searchInput = document.querySelector('.search-input');
-        if (searchInput && searchInput.value.trim().length >= 2) {
-            document.getElementById('searchForm').submit();
-        }
-    });
-
-    // 검색 폼 제출 처리
-    document.querySelector('.search-input').addEventListener('keydown', function(event) {
-        if (event.key === 'Enter' && this.value.trim().length >= 2) {
-            event.preventDefault();
-            document.getElementById('searchForm').submit();
-        }
-    });
 </script>
 </body>
 </html>

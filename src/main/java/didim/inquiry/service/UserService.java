@@ -22,7 +22,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-
     public UserService(UserRepository userRepository, AdminRepository adminRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.adminRepository = adminRepository;
@@ -30,23 +29,33 @@ public class UserService {
     }
 
     //1. 아이디가 존재하는지 확인 후 존재하지 않으면 가입 처리
-    public boolean signUpUser(User user){
+    public boolean signUpUser(User user) {
         // 고객코드가 생성되어있고 활성화 되어있는지 확인 있으면 true
-        boolean exists = adminRepository.existsByCodeAndStatus(user.getCustomerCode(),"ACTIVE");
-        if(!exists){
+        boolean exists = adminRepository.existsByCodeAndStatus(user.getCustomerCode(), "ACTIVE");
+        if (!exists) {
             return false;
         }
 
         // user에서 아이디가 중복되면 가입 못하게 방지
-        if (userRepository.findByUsername(user.getUsername()).isPresent()){ //isPresent : 객체의 값이 존재하는지 확인
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) { //isPresent : 객체의 값이 존재하는지 확인
+            return false;
+        }
+
+        // 비밀번호가 8자리 미만이면 가입 방지
+        if (user.getPassword() == null || user.getPassword().length() < 8) {
+            return false;
+        }
+
+        // email이 중복되면 가입 못하게 방지
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) { //isPresent : 객체의 값이 존재하는지 확인
             return false;
         }
 
         // 고객코드로 처음 가입한 사람은 관리자 권한 부여
-        if (userRepository.findByCustomerCode(user.getCustomerCode()).isEmpty()){
-            if (user.getUsername().equals("admin") && user.getCustomerCode().equals("D000001")){
+        if (userRepository.findByCustomerCode(user.getCustomerCode()).isEmpty()) {
+            if (user.getUsername().equals("admin") && user.getCustomerCode().equals("D000001")) {
                 user.setRole("ADMIN");
-            }else{
+            } else {
                 user.setRole("MANAGER");
             }
         }
@@ -58,7 +67,7 @@ public class UserService {
     }
 
     //2. id를 통해 회원정보 조회
-    public Optional<User> getUserById(Long id){
+    public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
@@ -92,17 +101,18 @@ public class UserService {
     public long getUsersCount() {
         return userRepository.count();
     }
+
     // ADMIN을 제외한 역할 카운트
     public long getUsersCountByRoles(List<String> roles) {
         return userRepository.countByRoleIn(roles);
     }
 
     public Page<User> searchUsersByCustomerCode(String customerCode, String search, Pageable pageable) {
-        return userRepository.searchByCustomerCodeAndNameOrTelOrEmail(customerCode,search,pageable);
+        return userRepository.searchByCustomerCodeAndNameOrTelOrEmail(customerCode, search, pageable);
     }
 
     public Page<User> getUsersByCustomerCode(String customerCode, Pageable pageable) {
-        return userRepository.findAllByCustomerCode(customerCode,pageable);
+        return userRepository.findAllByCustomerCode(customerCode, pageable);
     }
 
     public List<User> getUsersByCustomerCodeList(String customerCode) {
@@ -113,14 +123,41 @@ public class UserService {
         return userRepository.countByCustomerCode(customerCode);
     }
 
-    public UserDto updateUser(UserDto userDto) {
-        // userRepository에서 user 찾아서 정보 수정 후 저장
-        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new IllegalArgumentException("회원 정보가 존재하지 않습니다."));
-        System.out.println("user name : " + user.getName());
+    public UserDto updateUserWithPassword(UserDto userDto , String newPassword , String confirmPassword) {
+        //이부분 수정필요
+
+        User user = userRepository.findByUsername(userDto.getUsername()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 계정입니다."));
+
+        // 이메일 중복 방지
+        if (!userDto.getEmail().equals(user.getEmail())) {
+            if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+                throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+            }
+        }
+
+        // 현재 비밀번호 검증
+        if (!passwordEncoder.matches(userDto.getCurrentPassword(),user.getPassword())){
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+
+        // 비밀번호가 8자리 미만이면 가입 방지
+        if (newPassword == null || newPassword.length() < 8) {
+            System.out.println("userdto : " + userDto.getPassword());
+            System.out.println("leng : " + userDto.getPassword().length());
+            throw new IllegalArgumentException("비밀번호가 8자리 미만입니다.");
+        }
+
+        // 비밀번호 확인 일치 검증
+        if (!newPassword.equals(confirmPassword)){
+            throw  new IllegalArgumentException("새 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        }
+
+
         user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
         user.setTel(userDto.getTel());
-        user.setRole(userDto.getRole());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(newPassword));
+
         return new UserDto(userRepository.save(user));
 
     }
@@ -133,7 +170,7 @@ public class UserService {
     public void softDeleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
-                System.out.println("user name : " + user.getName());
+        System.out.println("user name : " + user.getName());
         user.setDeleteFlag(true);
         userRepository.save(user);
     }
@@ -149,11 +186,33 @@ public class UserService {
         return userRepository.findByUsername(username).orElse(null);
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
     public User save(User user) {
         return userRepository.save(user);
     }
 
     public Page<User> searchAllFieldsExcludeAdmin(String search, Pageable pageable) {
         return userRepository.searchAllFieldsExcludeAdmin(search, pageable);
+    }
+
+    // 관리자 -> 유저 권한변경
+    public UserDto updateRole(UserDto userDto) {
+        userRepository.updateByRole(userDto.getId(), userDto.getRole());
+        // 변경된 유저 정보 반환
+        User updatedUser = userRepository.findById(userDto.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+        return new UserDto(updatedUser);
+    }
+
+    // 비밀번호 변경 없이 이름, 전화번호, 이메일만 수정
+    public void updateUserInfoOnly(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 계정입니다."));
+        user.setName(userDto.getName());
+        user.setTel(userDto.getTel());
+        user.setEmail(userDto.getEmail());
+        userRepository.save(user);
     }
 }

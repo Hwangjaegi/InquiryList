@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link href="/image/didimIcon.png" rel="icon" type="image/png">
-    <title>담당 목록</title>
+    <title>프로젝트 목록</title>
     <style>
         /* 기존 스타일 유지 */
         * {
@@ -85,26 +85,6 @@
             box-shadow: 0 4px 15px rgba(168, 230, 207, 0.3);
         }
 
-        .menu-item-danger {
-            background: rgba(255, 107, 107, 0.2);
-            border: 1px solid rgba(255, 107, 107, 0.3);
-            color: #ee5a52;
-        }
-
-        .menu-item-danger:hover {
-            background: rgba(255, 107, 107, 0.4);
-            transform: translateX(5px);
-            color: #d32f2f;
-        }
-
-        .menu-item-danger::before {
-            background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.3), transparent);
-        }
-
-        .menu-item-danger:hover::before {
-            left: 100%;
-        }
-
         .menu-item-logout {
             background: linear-gradient(45deg, #ff6b6b, #ee5a52);
             border: 1px solid rgba(255, 107, 107, 0.3);
@@ -126,7 +106,7 @@
             left: 100%;
         }
 
-        .nav-section {
+        .sidebar-nav-group {
             margin-bottom: 20px;
         }
 
@@ -301,11 +281,11 @@
             box-shadow: 0 8px 25px rgba(158, 158, 158, 0.4);
         }
 
-        .manager-list {
+        .project-list {
             margin-top: 30px;
         }
 
-        .manager-table {
+        .project-table {
             width: 100%;
             border-collapse: collapse;
             background: rgba(255, 255, 255, 0.9);
@@ -315,30 +295,30 @@
             box-shadow: 0 8px 25px rgba(168, 230, 207, 0.2);
         }
 
-        .manager-table th,
-        .manager-table td {
+        .project-table th,
+        .project-table td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid rgba(168, 230, 207, 0.3);
         }
 
-        .manager-table th {
+        .project-table th {
             background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
             color: white;
             font-weight: 600;
             font-size: 1rem;
         }
 
-        .manager-table tr {
+        .project-table tr {
             transition: all 0.3s ease;
         }
 
-        .manager-table tr:hover {
+        .project-table tr:hover {
             background: rgba(168, 230, 207, 0.1);
             transform: translateY(-2px);
         }
 
-        .manager-table .manager-actions {
+        .project-table .project-actions {
             display: flex;
             gap: 8px;
             justify-content: flex-end;
@@ -379,6 +359,8 @@
             transform: translateY(-50%);
             color: #a8e6cf;
             font-size: 1.2rem;
+        }
+        .search-icon:hover{
             cursor: pointer;
         }
 
@@ -488,7 +470,7 @@
         }
 
         .modal.show {
-            display: flex;
+            display: flex !important;
             align-items: center;
             justify-content: center;
             opacity: 1;
@@ -585,44 +567,6 @@
             box-shadow: 0 0 0 3px rgba(168, 230, 207, 0.2);
         }
 
-        .consent-container {
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(168, 230, 207, 0.5);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #333;
-            line-height: 1.5;
-        }
-
-        .consent-container p {
-            margin-bottom: 10px;
-        }
-
-        .consent-container strong {
-            color: #4a9b8e;
-        }
-
-        .consent-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .consent-checkbox input {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .consent-checkbox label {
-            font-size: 0.9rem;
-            color: #333;
-            cursor: pointer;
-        }
-
         .pagination {
             display: flex;
             justify-content: center;
@@ -703,15 +647,15 @@
                 padding: 20px;
             }
 
-            .manager-table {
+            .project-table {
                 font-size: 0.9rem;
             }
 
-            .manager-table th, .manager-table td {
+            .project-table th, .project-table td {
                 padding: 10px;
             }
 
-            .manager-actions {
+            .project-actions {
                 flex-direction: column;
                 gap: 5px;
             }
@@ -725,15 +669,6 @@
             .modal-content {
                 width: 95%;
                 padding: 20px;
-            }
-
-            .menu-item {
-                padding: 12px 15px;
-                font-size: 0.9rem;
-            }
-
-            .nav-section {
-                margin-bottom: 15px;
             }
 
             .pagination {
@@ -752,113 +687,107 @@
 <body>
 <div class="container">
     <aside class="sidebar">
-        <h2>마이페이지</h2>
-        <nav class="sidebar-nav">
-            <div class="nav-section">
-                <div class="nav-section-title">관리 메뉴</div>
-                <a class="menu-item" th:href="@{/admin/myInfo}">🙍‍♂️ 내정보</a>
-                <a class="menu-item active" th:href="@{/admin/console}">👥 담당자 목록</a>
-                <a class="menu-item" th:href="@{/admin/projectList}">📋 프로젝트 목록</a>
-            </div>
-            <div class="nav-section">
-                <div class="nav-section-title">기타</div>
-                <a class="menu-item" th:href="@{/inquiryList}">📋 문의리스트</a>
-                <a class="menu-item menu-item-logout" th:href="@{/logout}">🚪 로그아웃</a>
-            </div>
+        <h2 th:if="${role=='USER'}">마이페이지</h2>
+        <h2 th:if="${role=='MANAGER'}">관리자페이지</h2>
+        <nav class="sidebar-nav-group">
+            <div class="nav-section-title">관리 메뉴</div>
+            <a class="menu-item" th:href="@{/myInfo}">🙍‍♂️ 내정보</a>
+            <a class="menu-item" th:href="@{/console}">👥 담당자 목록</a>
+            <a class="menu-item active" th:href="@{/projectList}">📋 프로젝트 목록</a>
+        </nav>
+        <nav class="sidebar-nav-group">
+            <div class="nav-section-title">기타</div>
+            <a class="menu-item" th:href="@{/inquiryList}">📋 문의리스트</a>
+            <a class="menu-item menu-item-logout" th:href="@{/logout}">🚪 로그아웃</a>
         </nav>
     </aside>
 
     <main class="main-content">
         <div class="header">
-            <h1>담당자 목록</h1>
-            <p>나의 담당자 정보를 확인할 수 있습니다.</p>
+            <h1>프로젝트 목록</h1>
+            <p>등록된 프로젝트 정보를 확인하고 관리할 수 있습니다.</p>
         </div>
 
         <div class="content-card">
             <!-- 통계 섹션 -->
             <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-number" th:text="${totalUser}">0</div>
-                    <div class="stat-label">등록된 담당자</div>
+                    <div class="stat-number" th:text="${projectList.totalElements}">0</div>
+                    <div class="stat-label">등록된 프로젝트</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM')}">2024-01</div>
+                    <div class="stat-number" th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM')}">2025-07</div>
                     <div class="stat-label">현재 월</div>
                 </div>
             </div>
-
+            
             <!-- 검색 -->
             <div class="search-container">
                 <div class="search-icon">🔍</div>
-                <form id="searchForm" method="get" th:action="@{/admin/console(page=0)}">
-                    <input class="search-input" name="search" placeholder="담당자 이름, 전화번호, 이메일로 검색..." th:value="${searchKeyword}" type="text">
+                <form id="searchForm" method="get" th:action="@{/projectList(page=0)}">
+                    <input class="search-input" name="search" placeholder="프로젝트 제목으로 검색..." th:value="${searchKeyword}" type="text">
                 </form>
             </div>
 
-            <!-- 담당자 목록 -->
-            <div class="manager-list">
-                <div class="empty-state" th:if="${totalUser == 0}">
-                    <div class="empty-state-icon">👥</div>
-                    <div class="empty-state-text">등록된 담당자가 없습니다</div>
-                    <div class="empty-state-subtext">새 담당자를 추가하려면 관리자에게 문의하세요.</div>
+            <!-- 프로젝트 목록 -->
+            <div class="project-list">
+                <div class="empty-state" th:if="${#lists.isEmpty(projectList.content)}">
+                    <div class="empty-state-icon">📋</div>
+                    <div class="empty-state-text">등록된 프로젝트가 없습니다</div>
+                    <div class="empty-state-subtext">서버 관리자에게 문의하세요.</div>
                 </div>
 
-                <table class="manager-table" th:unless="${totalUser == 0}">
+                <table class="project-table" th:unless="${#lists.isEmpty(projectList.content)}">
                     <thead>
                     <tr>
-                        <th>이름</th>
-                        <th>전화번호</th>
-                        <th>이메일</th>
+                        <th>순서</th>
+                        <th>프로젝트 제목</th>
                         <th>등록일</th>
-                        <th>권한</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:classappend="${user.deleteFlag} ? 'disabled-row' : ''" th:data-id="${user.id}"
-                        th:each="user : ${userList}">
-                        <td th:text="${user.name}">담당자 이름</td>
-                        <td th:text="${user.tel}">010-1234-5678</td>
-                        <td th:text="${user.email}">email@example.com</td>
-                        <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd')}">2024-01-01</td>
-                        <td th:text="${user.role}">USER</td>
+                    <tr th:data-id="${project.id}" th:each="project, stat : ${projectList.content}">
+                        <td th:text="${projectList.totalElements - (projectList.number * projectList.size + stat.index)}">1</td>
+                        <td th:text="${project.subject}">프로젝트 제목</td>
+                        <td th:text="${#temporals.format(project.createdAt, 'yyyy-MM-dd HH:mm')}">2025-07-14 13:48</td>
                     </tr>
                     </tbody>
                 </table>
 
                 <!-- 페이징 섹션 -->
-                <div class="pagination" th:if="${userList.totalPages > 1}">
+                <div class="pagination" th:if="${projectList.totalPages > 1}">
                     <th:block th:with="
                         pageGroupSize=5,
-                        currentGroupIndex=${userList.number / pageGroupSize},
+                        currentGroupIndex=${projectList.number / pageGroupSize},
                         startPage=${currentGroupIndex * pageGroupSize},
-                        endPage=${(startPage + pageGroupSize - 1) < (userList.totalPages - 1) ? (startPage + pageGroupSize - 1) : (userList.totalPages - 1)},
+                        endPage=${(startPage + pageGroupSize - 1) < (projectList.totalPages - 1) ? (startPage + pageGroupSize - 1) : (projectList.totalPages - 1)},
                         hasPrevGroup=${currentGroupIndex > 0},
-                        hasNextGroup=${endPage < (userList.totalPages - 1)},
+                        hasNextGroup=${endPage < (projectList.totalPages - 1)},
                         prevGroupStartPage=${(currentGroupIndex - 1) * pageGroupSize},
                         nextGroupStartPage=${(currentGroupIndex + 1) * pageGroupSize}">
                         <a class="pagination-button"
-                           th:classappend="${userList.number == 0} ? 'disabled'"
-                           th:href="@{/admin/console(page=0, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:classappend="${projectList.number == 0} ? 'disabled'"
+                           th:href="@{/projectList(page=0, size=${projectList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav"><<</span>
                         </a>
                         <a class="pagination-button"
                            th:classappend="${!hasPrevGroup} ? 'disabled'"
-                           th:href="@{/admin/console(page=${prevGroupStartPage}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:href="@{/projectList(page=${prevGroupStartPage}, size=${projectList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">이전</span>
                         </a>
                         <a class="pagination-button"
-                           th:classappend="${page == userList.number} ? 'active'"
+                           th:classappend="${page == projectList.number} ? 'active'"
                            th:each="page : ${#numbers.sequence(startPage, endPage)}"
-                           th:href="@{/admin/console(page=${page}, size=${userList.pageable.pageSize}, search=${searchKeyword})}"
+                           th:href="@{/projectList(page=${page}, size=${projectList.pageable.pageSize}, search=${searchKeyword})}"
                            th:text="${page + 1}">1</a>
                         <a class="pagination-button"
                            th:classappend="${!hasNextGroup} ? 'disabled'"
-                           th:href="@{/admin/console(page=${nextGroupStartPage}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:href="@{/projectList(page=${nextGroupStartPage}, size=${projectList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">다음</span>
                         </a>
                         <a class="pagination-button"
-                           th:classappend="${userList.number == (userList.totalPages - 1)} ? 'disabled'"
-                           th:href="@{/admin/console(page=${userList.totalPages - 1}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:classappend="${projectList.number == (projectList.totalPages - 1)} ? 'disabled'"
+                           th:href="@{/projectList(page=${projectList.totalPages - 1}, size=${projectList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">>></span>
                         </a>
                     </th:block>
@@ -868,10 +797,73 @@
     </main>
 </div>
 
+<!-- 수정 모달 -->
+<!-- 삭제 확인 모달 -->
 
+<script>
+    // 전역 변수
 
-<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // 서버 메시지 자동 숨김
+        const messageAlerts = document.querySelectorAll('.message-alert');
+        messageAlerts.forEach(alert => {
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 500);
+            }, 3000);
+        });
 
+        // 검색 폼 제출 처리
+        document.querySelector('.search-input').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && this.value.trim().length >= 2) {
+                event.preventDefault();
+                document.getElementById('searchForm').submit();
+            }
+        });
+
+        // 돋보기 아이콘 클릭으로 검색
+        document.querySelector('.search-icon').addEventListener('click', function() {
+            const searchInput = document.querySelector('.search-input');
+            document.getElementById('searchForm').submit();
+        });
+
+        // 메시지 표시 함수
+        function showMessage(message, type) {
+            const messageContainer = document.querySelector('.form-button-container');
+            // 기존 메시지 제거
+            const existingMessages = messageContainer.querySelectorAll('.message-alert');
+            existingMessages.forEach(msg => msg.remove());
+            // 새 메시지 추가
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message-alert message-${type}`;
+            messageDiv.innerHTML = `
+                <span class="message-icon">${type === 'success' ? '✅' : '❌'}</span>
+                <span>${message}</span>
+            `;
+            messageContainer.appendChild(messageDiv);
+            setTimeout(() => {
+                messageDiv.style.opacity = '0';
+                messageDiv.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    if (messageDiv.parentNode) {
+                        messageDiv.parentNode.removeChild(messageDiv);
+                    }
+                }, 500);
+            }, 3000);
+        }
+
+        // 통계 업데이트 (삭제 시 SSR로 처리하므로 사용 안 함)
+        function updateStats(delta = 0) {
+            const statNumber = document.querySelector('.stat-number');
+            const currentCount = parseInt(statNumber.textContent) || 0;
+            statNumber.textContent = currentCount + delta;
+        }
+    });
 </script>
 </body>
 </html>

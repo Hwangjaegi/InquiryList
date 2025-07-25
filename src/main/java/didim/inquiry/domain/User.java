@@ -12,7 +12,9 @@ import java.time.LocalDateTime;
 @Table(
         name = "user",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"customerCode","username"})
+                @UniqueConstraint(columnNames = {"customerCode"}),
+                @UniqueConstraint(columnNames = {"username"}),
+                @UniqueConstraint(columnNames = {"email"})
         }
 )
 @Getter @Setter
@@ -26,6 +28,7 @@ public class User {
     private String password;    //패스워드
     private String name;        //이름
     private String tel;         //전화번호
+
     private String email;       //이메일
     private String role;        //사용자역할
     private Boolean deleteFlag = false; //사용자삭제처리
