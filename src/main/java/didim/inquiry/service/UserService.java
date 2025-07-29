@@ -215,4 +215,13 @@ public class UserService {
         user.setEmail(userDto.getEmail());
         userRepository.save(user);
     }
+
+    // 고객코드 존재 여부 확인 (삭제되지 않은 사용자만)
+    public boolean existsByCustomerCode(String customerCode) {
+        return userRepository.existsByCustomerCodeAndDeleteFlagFalse(customerCode);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }

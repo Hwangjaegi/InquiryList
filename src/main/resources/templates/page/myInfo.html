@@ -8,94 +8,75 @@
     <style>
         /* 기존 스타일 복사 */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: "Noto Sans KR", sans-serif; background: linear-gradient(135deg, #f0fdfa 0%, #ecfdf5 25%, #f0fdf4 50%, #f7fee7 75%, #fffbeb 100%); min-height: 100vh; color: #333; }
+        body { font-family: "Noto Sans KR", sans-serif; background: #f8fafc; min-height: 100vh; padding: 20px; color: #1f2a44; }
         .container { display: flex; min-height: 100vh; }
-        .sidebar { width: 250px; background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); border-right: 1px solid rgba(168,230,207,0.3); padding: 20px; transition: all 0.3s ease; }
-        .sidebar h2 { color: #4a9b8e; margin-bottom: 30px; text-align: center; font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .sidebar { width: 250px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); padding: 20px; transition: all 0.3s ease; margin-right: 20px; }
+        .sidebar h2 { color: #1f2a44; margin-bottom: 30px; text-align: center; font-size: 1.5rem; font-weight: 600; }
         .menu-item {
             display: block;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            background: rgba(168, 230, 207, 0.2);
-            border: 1px solid rgba(168, 230, 207, 0.3);
-            border-radius: 10px;
-            color: #4a9b8e;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            color: #1f2a44;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
             font-weight: 500;
-        }
-        .menu-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(168, 230, 207, 0.3), transparent);
-            transition: left 0.5s ease;
-        }
-        .menu-item:hover::before {
-            left: 100%;
+            font-size: 0.9rem;
         }
         .menu-item:hover {
-            background: rgba(168, 230, 207, 0.4);
-            transform: translateX(5px);
-            color: #2d6a5d;
+            background: #e6f4f1;
+            border-color: #2a9d8f;
+            color: #2a9d8f;
+            transform: translateY(-1px);
         }
         .menu-item.active {
-            background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+            background: #2a9d8f;
             color: white;
-            box-shadow: 0 4px 15px rgba(168, 230, 207, 0.3);
+            border-color: #2a9d8f;
         }
         .menu-item-logout {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
-            border: 1px solid rgba(255, 107, 107, 0.3);
+            background: #e53e3e;
+            border: 1px solid #e53e3e;
             color: white;
         }
         .menu-item-logout:hover {
-            background: linear-gradient(45deg, #ff8787, #f76c6c);
-            transform: translateX(5px);
+            background: #c53030;
+            border-color: #c53030;
             color: white;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-        }
-        .menu-item-logout::before {
-            background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.3), transparent);
-        }
-        .menu-item-logout:hover::before {
-            left: 100%;
+            transform: translateY(-1px);
         }
         .nav-section {
             margin-bottom: 20px;
         }
         .nav-section-title {
-            color: #4a9b8e;
+            color: #1f2a44;
             font-size: 1rem;
             font-weight: 600;
             margin-bottom: 10px;
             padding-left: 10px;
         }
-        .main-content { flex: 1; padding: 30px; background: rgba(255,255,255,0.3); backdrop-filter: blur(5px); }
-        .header { background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border-radius: 15px; padding: 20px; margin-bottom: 30px; border: 1px solid rgba(168,230,207,0.3); }
-        .header h1 { color: #4a9b8e; font-size: 2rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .header p { color: #666; font-size: 1.1rem; }
-        .content-card { background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border-radius: 15px; padding: 30px; border: 1px solid rgba(168,230,207,0.3); box-shadow: 0 8px 32px rgba(168,230,207,0.15); max-width: 500px; margin: 0 auto; }
+        .main-content { flex: 1; padding: 0; }
+        .header { text-align: center; padding: 30px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); margin-bottom: 30px; }
+        .header h1 { font-size: 2rem; font-weight: 600; color: #1f2a44; }
+        .header p { font-size: 1rem; color: #64748b; margin-top: 8px; }
+        .content-card { background: #ffffff; border-radius: 12px; padding: 30px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); max-width: 500px; margin: 0 auto; }
         .form-section { margin-bottom: 30px; }
-        .form-section h3 { color: #4a9b8e; margin-bottom: 20px; font-size: 1.3rem; }
+        .form-section h3 { color: #1f2a44; margin-bottom: 20px; font-size: 1.3rem; font-weight: 600; }
         .form-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-        .form-label { font-weight: 600; color: #4a9b8e; font-size: 0.95rem; }
-        .form-input { padding: 12px 15px; border: 1px solid rgba(168,230,207,0.5); border-radius: 8px; background: rgba(255,255,255,0.9); color: #333; font-size: 1rem; transition: all 0.3s ease; font-family: inherit; }
-        .form-input:focus { outline: none; border-color: #a8e6cf; background: rgba(255,255,255,1); box-shadow: 0 0 0 3px rgba(168,230,207,0.2); }
-        .btn { padding: 12px 25px; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; position: relative; overflow: hidden; text-decoration: none; display: inline-block; text-align: center; }
-        .btn-primary { background: linear-gradient(45deg, #a8e6cf, #7fcdcd); color: white; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(168,230,207,0.4); }
-        .btn-secondary { background: linear-gradient(45deg, #9e9e9e, #757575); color: white; }
-        .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(158,158,158,0.4); }
+        .form-label { font-weight: 600; color: #1f2a44; font-size: 0.95rem; }
+        .form-input { padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fafafa; color: #1f2a44; font-size: 0.9rem; transition: border-color 0.2s ease; font-family: inherit; }
+        .form-input:focus { outline: none; border-color: #2a9d8f; background: #ffffff; }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease; text-decoration: none; display: inline-block; align-items: center; gap: 6px; }
+        .btn-primary { background: #2a9d8f; color: white; }
+        .btn-primary:hover { background: #237c70; transform: translateY(-1px); }
+        .btn-secondary { background: #e2e8f0; color: #1f2a44; }
+        .btn-secondary:hover { background: #cbd5e1; transform: translateY(-1px); }
         .message-alert { padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; animation: slideInRight 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1); white-space: nowrap; margin-bottom: 10px; }
-        .message-success { background: linear-gradient(135deg, #4caf50, #388e3c); color: white; border: 1px solid rgba(76,175,80,0.3); }
-        .message-error { background: linear-gradient(135deg, #f44336, #d32f2f); color: white; border: 1px solid rgba(244,67,54,0.3); }
+        .message-success { background: #2a9d8f; color: white; }
+        .message-error { background: #e53e3e; color: white; }
         .message-icon { font-size: 1.1rem; }
         .btn-disabled, .btn[disabled] {
             background: #ccc !important;

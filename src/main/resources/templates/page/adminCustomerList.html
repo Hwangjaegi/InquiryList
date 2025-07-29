@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link href="/image/didimIcon.png" rel="icon" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <title>어드민-사용자관리</title>
     <style>
         * {
@@ -15,9 +16,10 @@
 
         body {
             font-family: "Noto Sans KR", sans-serif;
-            background: linear-gradient(135deg, #f0fdfa 0%, #ecfdf5 25%, #f0fdf4 50%, #f7fee7 75%, #fffbeb 100%);
+            background: #f8fafc;
             min-height: 100vh;
-            color: #333;
+            padding: 20px;
+            color: #1f2a44;
         }
 
         .container {
@@ -27,127 +29,94 @@
 
         .sidebar {
             width: 250px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(168, 230, 207, 0.3);
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             padding: 20px;
             transition: all 0.3s ease;
+            margin-right: 20px;
         }
 
         .sidebar h2 {
-            color: #4a9b8e;
+            color: #1f2a44;
             margin-bottom: 30px;
             text-align: center;
             font-size: 1.5rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: 600;
         }
 
         .menu-item {
             display: block;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            background: rgba(168, 230, 207, 0.2);
-            border: 1px solid rgba(168, 230, 207, 0.3);
-            border-radius: 10px;
-            color: #4a9b8e;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            color: #1f2a44;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
             font-weight: 500;
-        }
-
-        .menu-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(168, 230, 207, 0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .menu-item:hover::before {
-            left: 100%;
+            font-size: 0.9rem;
         }
 
         .menu-item:hover {
-            background: rgba(168, 230, 207, 0.4);
-            transform: translateX(5px);
-            color: #2d6a5d;
+            background: #e6f4f1;
+            border-color: #2a9d8f;
+            color: #2a9d8f;
+            transform: translateY(-1px);
         }
 
         .menu-item.active {
-            background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+            background: #2a9d8f;
             color: white;
-            box-shadow: 0 4px 15px rgba(168, 230, 207, 0.3);
+            border-color: #2a9d8f;
         }
 
         .menu-item-logout {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
-            border: 1px solid rgba(255, 107, 107, 0.3);
+            background: #e53e3e;
+            border: 1px solid #e53e3e;
             color: white;
         }
 
         .menu-item-logout:hover {
-            background: linear-gradient(45deg, #ff8787, #f76c6c);
-            transform: translateX(5px);
+            background: #c53030;
+            border-color: #c53030;
             color: white;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-        }
-
-        .menu-item-logout::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,107,107,0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .menu-item-logout:hover::before {
-            left: 100%;
+            transform: translateY(-1px);
         }
 
         .main-content {
             flex: 1;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(5px);
+            padding: 0;
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
+            text-align: center;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             margin-bottom: 30px;
-            border: 1px solid rgba(168, 230, 207, 0.3);
         }
 
         .header h1 {
-            color: #4a9b8e;
             font-size: 2rem;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: 600;
+            color: #1f2a44;
         }
 
         .header p {
-            color: #666;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            color: #64748b;
+            margin-top: 8px;
         }
 
         .content-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
+            background: #ffffff;
+            border-radius: 12px;
             padding: 30px;
-            border: 1px solid rgba(168, 230, 207, 0.3);
-            box-shadow: 0 8px 32px rgba(168, 230, 207, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .form-section {
@@ -155,9 +124,10 @@
         }
 
         .form-section h3 {
-            color: #4a9b8e;
+            color: #1f2a44;
             margin-bottom: 20px;
             font-size: 1.3rem;
+            font-weight: 600;
         }
 
         .form-group {
@@ -169,13 +139,13 @@
 
         .form-group input, .form-group textarea, .form-group select {
             flex: 1;
-            padding: 12px 15px;
-            border: 1px solid rgba(168, 230, 207, 0.5);
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            background: #fafafa;
+            color: #1f2a44;
+            font-size: 0.9rem;
+            transition: border-color 0.2s ease;
             font-family: inherit;
         }
 
@@ -185,112 +155,93 @@
         }
 
         .form-group input::placeholder, .form-group textarea::placeholder {
-            color: #999;
+            color: #64748b;
         }
 
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
-            border-color: #a8e6cf;
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 0 0 0 3px rgba(168, 230, 207, 0.2);
+            border-color: #2a9d8f;
+            background: #ffffff;
         }
 
         .btn {
-            padding: 12px 25px;
+            padding: 10px 20px;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
+            transition: background 0.2s ease, transform 0.2s ease;
             text-decoration: none;
             display: inline-block;
-            text-align: center;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .btn:hover::before {
-            left: 100%;
+            align-items: center;
+            gap: 6px;
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, #a8e6cf, #7fcdcd);
+            background: #2a9d8f;
             color: white;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(168, 230, 207, 0.4);
+            background: #237c70;
+            transform: translateY(-1px);
         }
 
         .btn-danger {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            background: #e53e3e;
             color: white;
         }
 
         .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            background: #c53030;
+            transform: translateY(-1px);
         }
 
         .btn-edit {
-            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            background: #3b82f6;
             color: white;
             padding: 8px 16px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .btn-edit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 195, 247, 0.4);
+            background: #2563eb;
+            transform: translateY(-1px);
         }
 
         .btn-delete {
-            background: linear-gradient(45deg, #ff7043, #f4511e);
+            background: #f59e0b;
             color: white;
             padding: 8px 16px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .btn-delete:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 112, 67, 0.4);
+            background: #d97706;
+            transform: translateY(-1px);
         }
 
         .btn-restore {
-            background: linear-gradient(45deg, #66bb6a, #43a047);
+            background: #10b981;
             color: white;
             padding: 8px 16px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .btn-restore:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 187, 106, 0.4);
+            background: #059669;
+            transform: translateY(-1px);
         }
 
         .btn-secondary {
-            background: linear-gradient(45deg, #9e9e9e, #757575);
-            color: white;
+            background: #e2e8f0;
+            color: #1f2a44;
         }
 
         .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(158, 158, 158, 0.4);
+            background: #cbd5e1;
+            transform: translateY(-1px);
         }
 
         .user-list {
@@ -298,42 +249,42 @@
         }
 
         .user-item {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(168, 230, 207, 0.3);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 20px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             animation: fadeInUp 0.5s ease forwards;
         }
 
         .user-item:hover {
-            background: rgba(255, 255, 255, 1);
+            background: #ffffff;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(168, 230, 207, 0.2);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
         }
 
         .user-item.deactivated {
-            background: rgba(200, 200, 200, 0.5);
-            color: #999;
+            background: #f1f5f9;
+            color: #64748b;
             opacity: 0.7;
         }
 
         .user-item.deactivated .user-id,
         .user-item.deactivated .user-email,
         .user-item.deactivated .user-status {
-            color: #999;
+            color: #64748b;
         }
 
         .user-item.deactivated .status-badge {
-            background: linear-gradient(135deg, #bdbdbd, #9e9e9e);
+            background: #94a3b8;
         }
 
         .user-item.deactivated:hover {
-            background: rgba(200, 200, 200, 0.6);
+            background: #e2e8f0;
             transform: none;
             box-shadow: none;
         }
@@ -342,9 +293,9 @@
         .user-name,
         .user-tel,
         .user-email {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #4a9b8e;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2a44;
             min-width: 120px;
             flex-shrink: 0;
             margin-right: 20px;
@@ -366,16 +317,17 @@
         }
 
         .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
+            padding: 6px 14px;
+            border-radius: 6px;
             font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            color: white;
         }
 
         .status-user {
-            background: linear-gradient(135deg, #4caf50, #388e3c);
+            background: #2a9d8f;
             color: white;
         }
 
@@ -392,44 +344,41 @@
         }
 
         .user-list-subtitle {
-            color: #4a9b8e;
+            color: #1f2a44;
             margin-bottom: 20px;
             font-size: 1.3rem;
+            font-weight: 600;
         }
 
         .search-input {
             width: 100%;
-            padding: 15px 20px;
-            padding-left: 50px;
-            border: 1px solid rgba(168, 230, 207, 0.5);
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            padding: 10px 14px;
+            padding-left: 40px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #fafafa;
+            color: #1f2a44;
+            font-size: 0.9rem;
+            transition: border-color 0.2s ease;
         }
 
         .search-input::placeholder {
-            color: #999;
+            color: #64748b;
         }
 
         .search-input:focus {
             outline: none;
-            border-color: #a8e6cf;
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 0 0 0 3px rgba(168, 230, 207, 0.2);
+            border-color: #2a9d8f;
+            background: #ffffff;
         }
 
         .search-icon {
             position: absolute;
-            left: 18px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
-            color: #a8e6cf;
-            font-size: 1.2rem;
-        }
-
-        .search-icon:hover {
+            color: #2a9d8f;
+            font-size: 1rem;
             cursor: pointer;
         }
 
@@ -441,29 +390,28 @@
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
+            background: #ffffff;
+            border-radius: 12px;
             padding: 20px;
             text-align: center;
-            border: 1px solid rgba(168, 230, 207, 0.3);
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(168, 230, 207, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
         }
 
         .stat-number {
             font-size: 2rem;
             font-weight: bold;
-            color: #4a9b8e;
+            color: #2a9d8f;
             margin-bottom: 10px;
         }
 
         .stat-label {
-            color: #666;
+            color: #64748b;
             font-size: 0.9rem;
         }
 
@@ -487,15 +435,13 @@
         }
 
         .message-success {
-            background: linear-gradient(135deg, #4caf50, #388e3c);
+            background: #2a9d8f;
             color: white;
-            border: 1px solid rgba(76, 175, 80, 0.3);
         }
 
         .message-error {
-            background: linear-gradient(135deg, #f44336, #d32f2f);
+            background: #e53e3e;
             color: white;
-            border: 1px solid rgba(244, 67, 54, 0.3);
         }
 
         .message-icon {
@@ -505,23 +451,26 @@
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: #666;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .empty-state-icon {
             font-size: 3rem;
+            color: #2a9d8f;
             margin-bottom: 20px;
-            opacity: 0.5;
         }
 
         .empty-state-text {
-            font-size: 1.1rem;
+            font-size: 1.25rem;
+            color: #1f2a44;
             margin-bottom: 10px;
         }
 
         .empty-state-subtext {
             font-size: 0.9rem;
-            color: #999;
+            color: #64748b;
         }
 
         .modal {
@@ -532,7 +481,6 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -546,14 +494,12 @@
         }
 
         .modal-content {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
             width: 90%;
-            max-width: 500px;
-            border: 1px solid rgba(168, 230, 207, 0.3);
-            box-shadow: 0 20px 60px rgba(168, 230, 207, 0.3);
+            max-width: 450px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transform: scale(0.9);
             transition: transform 0.3s ease;
         }
@@ -566,43 +512,36 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(168, 230, 207, 0.3);
+            margin-bottom: 20px;
         }
 
         .modal-title {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 600;
-            color: #4a9b8e;
+            color: #1f2a44;
         }
 
         .modal-close {
             background: none;
             border: none;
-            font-size: 1.5rem;
-            color: #999;
+            font-size: 1.25rem;
+            color: #64748b;
             cursor: pointer;
-            padding: 5px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
         }
 
         .modal-close:hover {
-            background: rgba(168, 230, 207, 0.2);
-            color: #4a9b8e;
+            color: #2a9d8f;
         }
 
         .modal-body {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .modal-footer {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             justify-content: flex-end;
-            padding-top: 15px;
-            border-top: 1px solid rgba(168, 230, 207, 0.3);
+            margin-top: 20px;
         }
 
         .form-row {
@@ -614,68 +553,64 @@
 
         .form-label {
             font-weight: 600;
-            color: #4a9b8e;
+            color: #1f2a44;
             font-size: 0.95rem;
         }
 
         .form-input {
-            padding: 12px 15px;
-            border: 1px solid rgba(168, 230, 207, 0.5);
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            background: #fafafa;
+            color: #1f2a44;
+            font-size: 0.9rem;
+            transition: border-color 0.2s ease;
             font-family: inherit;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #a8e6cf;
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 0 0 0 3px rgba(168, 230, 207, 0.2);
+            border-color: #2a9d8f;
+            background: #ffffff;
         }
 
         .pagination {
             display: flex;
             justify-content: center;
-            align-items: center;
             gap: 8px;
             margin-top: 30px;
+            padding: 10px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .pagination-button {
-            padding: 10px 16px;
-            border: 1px solid rgba(168, 230, 207, 0.5);
+            padding: 8px 16px;
+            background: #2a9d8f;
+            color: white;
+            font-weight: 500;
+            border: none;
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #4a9b8e;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.2s ease, transform 0.2s ease;
             text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-            font-weight: 600;
-            min-width: 44px;
-            text-align: center;
         }
 
-        .pagination-button:hover:not(.disabled) {
-            background: rgba(168, 230, 207, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(168, 230, 207, 0.2);
+        .pagination-button:hover {
+            background: #237c70;
+            transform: translateY(-1px);
         }
 
         .pagination-button.active {
-            background: linear-gradient(45deg, #a8e6cf, #7fcdcd);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 15px rgba(168, 230, 207, 0.3);
+            background: #1f2a44;
+            cursor: default;
         }
 
         .pagination-button.disabled {
-            color: #999;
-            pointer-events: none;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0.5;
+            background: #e2e8f0;
+            cursor: not-allowed;
         }
 
         .pagination-nav {
@@ -769,7 +704,7 @@
         }
 
         .nav-section-title {
-            color: #4a9b8e;
+            color: #1f2a44;
             font-size: 1rem;
             font-weight: 600;
             margin-bottom: 10px;
@@ -780,10 +715,10 @@
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            background: rgba(255,255,255,0.9);
-            border-radius: 15px;
+            background: #ffffff;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(168, 230, 207, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             margin-bottom: 30px;
         }
 
@@ -794,10 +729,10 @@
         }
 
         .user-table th {
-            background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+            background: #2a9d8f;
             color: #fff;
-            font-weight: 700;
-            border-bottom: 2px solid #a8e6cf;
+            font-weight: 600;
+            border-bottom: 2px solid #2a9d8f;
         }
 
         .user-table tr {
@@ -805,17 +740,17 @@
         }
 
         .user-table tr:not(.deactivated):hover {
-            background: rgba(168, 230, 207, 0.15);
+            background: #f8fafc;
         }
 
         .user-table tr.deactivated {
-            background: rgba(200, 200, 200, 0.3);
-            color: #999;
+            background: #f1f5f9;
+            color: #64748b;
             opacity: 0.7;
         }
 
         .user-table tr.deactivated .status-badge {
-            background: linear-gradient(135deg, #bdbdbd, #9e9e9e);
+            background: #94a3b8;
         }
 
         .user-customer-code,
@@ -825,7 +760,7 @@
         .user-tel {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #4a9b8e;
+            color: #1f2a44;
         }
 
         .user-role {
@@ -897,6 +832,13 @@
                     <div class="stat-number" th:text="${newUsers}">0</div>
                     <div class="stat-label">신규 사용자 (이번 달)</div>
                 </div>
+            </div>
+
+            <!-- 사용자 추가 버튼 -->
+            <div style="margin-bottom: 30px; text-align: right;">
+                <button class="btn btn-primary" onclick="openAddUserModal()">
+                    <i class="fas fa-user-plus"></i> 사용자 추가
+                </button>
             </div>
 
             <!-- 검색 -->
@@ -1074,10 +1016,64 @@
     </div>
 </div>
 
+<!-- 사용자 추가 모달 -->
+<div class="modal" id="addUserModal">
+    <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+            <h3 class="modal-title"><i class="fas fa-user-plus"></i> 사용자 추가</h3>
+            <button class="modal-close" onclick="closeAddUserModal()">×</button>
+        </div>
+        <form id="addUserForm" method="post" th:action="@{/signup}">
+            <div class="modal-body">
+                <div class="form-row">
+                    <label class="form-label">고객코드 *</label>
+                    <input class="form-input" id="addCustomerCode" name="customerCode" placeholder="고객코드를 입력하세요" required type="text">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">아이디 *</label>
+                    <input class="form-input" id="addUsername" name="username" placeholder="아이디를 입력하세요" required type="text">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">비밀번호 *</label>
+                    <input class="form-input" id="addPassword" name="password" placeholder="비밀번호를 입력하세요" required type="password">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">비밀번호 확인 *</label>
+                    <input class="form-input" id="addPasswordConfirm" name="passwordConfirm" placeholder="비밀번호를 다시 입력하세요" required type="password">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">이름 *</label>
+                    <input class="form-input" id="addName" name="name" placeholder="이름을 입력하세요" required type="text">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">이메일 *</label>
+                    <input class="form-input" id="addEmail" name="email" placeholder="이메일을 입력하세요" required type="email">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">전화번호 *</label>
+                    <input class="form-input" id="addTel" maxlength="13" name="tel" placeholder="전화번호를 입력하세요 (예: 010-1234-5678)" required type="text">
+                </div>
+                <input name="role" type="hidden" value="USER">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddUserModal()" type="button">취소</button>
+                <button class="btn btn-primary" disabled id="addUserBtn" type="submit">사용자 추가</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
     let currentEditId = null;
     let currentDeleteId = null;
     let currentRestoreId = null;
+
+    // 사용자 추가 모달 관련 변수
+    let usernameChecked = false;
+    let passwordValid = false;
+    let passwordMatch = false;
+    let emailChecked = false;
+    let customerCodeChecked = false;
 
     function handleEditClick(button) {
         const id = button.dataset.id;
@@ -1186,6 +1182,7 @@
             closeEditModal();
             closeDeleteModal();
             closeRestoreModal();
+            closeAddUserModal();
         }
     });
 
@@ -1205,6 +1202,293 @@
             }, 300);
         });
     }, 4000);
+
+    // 사용자 추가 모달 관련 함수들
+    function openAddUserModal() {
+        const modal = document.getElementById('addUserModal');
+        modal.classList.add('show');
+        resetAddUserForm();
+        setupAddUserValidation();
+    }
+
+    function closeAddUserModal() {
+        const modal = document.getElementById('addUserModal');
+        modal.classList.remove('show');
+        resetAddUserForm();
+    }
+
+    function resetAddUserForm() {
+        document.getElementById('addUserForm').reset();
+        usernameChecked = false;
+        passwordValid = false;
+        passwordMatch = false;
+        emailChecked = false;
+        customerCodeChecked = false;
+        updateAddUserBtnState();
+        
+        // 메시지 div들 제거
+        const messageDivs = document.querySelectorAll('.validation-message');
+        messageDivs.forEach(div => div.remove());
+    }
+
+    function setupAddUserValidation() {
+        const addUsername = document.getElementById('addUsername');
+        const addPassword = document.getElementById('addPassword');
+        const addPasswordConfirm = document.getElementById('addPasswordConfirm');
+        const addEmail = document.getElementById('addEmail');
+        const addCustomerCode = document.getElementById('addCustomerCode');
+        const addTel = document.getElementById('addTel');
+
+        // 전화번호 자동 하이픈 추가
+        addTel.addEventListener('input', function(e) {
+            const cursorPosition = e.target.selectionStart;
+            const oldValue = e.target.value;
+            const newValue = formatPhoneNumber(e.target.value);
+            e.target.value = newValue;
+            
+            const diff = newValue.length - oldValue.length;
+            if (diff > 0) {
+                e.target.setSelectionRange(cursorPosition + diff, cursorPosition + diff);
+            }
+        });
+
+        // 고객코드 존재 여부 확인
+        addCustomerCode.addEventListener('blur', function() {
+            const customerCode = addCustomerCode.value.trim();
+            if (!customerCode) {
+                removeValidationMessage('customerCode');
+                customerCodeChecked = false;
+                updateAddUserBtnState();
+                return;
+            }
+            
+            fetch(`/api/check-customerCode?customerCode=${encodeURIComponent(customerCode)}`, { method: 'GET' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        showValidationMessage('customerCode', '❌ 이미 사용중인 고객코드입니다.', 'error');
+                        customerCodeChecked = false;
+                    } else {
+                        showValidationMessage('customerCode', '✔️ 사용할 수 있는 고객코드입니다!', 'success');
+                        customerCodeChecked = true;
+                    }
+                    updateAddUserBtnState();
+                })
+                .catch(() => {
+                    showValidationMessage('customerCode', '❌ 서버 오류. 다시 시도하세요.', 'error');
+                    customerCodeChecked = false;
+                    updateAddUserBtnState();
+                });
+        });
+
+        // 아이디 중복확인
+        addUsername.addEventListener('blur', function() {
+            const username = addUsername.value.trim();
+            if (!username) {
+                removeValidationMessage('username');
+                usernameChecked = false;
+                updateAddUserBtnState();
+                return;
+            }
+            
+            fetch(`/api/check-username?username=${encodeURIComponent(username)}`, { method: 'GET' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        showValidationMessage('username', '❌ 사용할 수 없는 아이디입니다.', 'error');
+                        usernameChecked = false;
+                    } else {
+                        showValidationMessage('username', '✔️ 사용할 수 있는 아이디입니다!', 'success');
+                        usernameChecked = true;
+                    }
+                    updateAddUserBtnState();
+                })
+                .catch(() => {
+                    showValidationMessage('username', '❌ 서버 오류. 다시 시도하세요.', 'error');
+                    usernameChecked = false;
+                    updateAddUserBtnState();
+                });
+        });
+
+        // 비밀번호 길이 체크
+        addPassword.addEventListener('blur', function() {
+            const password = addPassword.value;
+            if (!password) {
+                removeValidationMessage('password');
+                passwordValid = false;
+                updateAddUserBtnState();
+                return;
+            }
+            
+            if (password.length < 8) {
+                showValidationMessage('password', '❌ 패스워드는 8자리 이상으로 사용해주세요.', 'error');
+                passwordValid = false;
+            } else {
+                showValidationMessage('password', '✔️ 패스워드가 유효합니다.', 'success');
+                passwordValid = true;
+            }
+            updateAddUserBtnState();
+        });
+
+        // 비밀번호 확인 체크
+        addPasswordConfirm.addEventListener('blur', function() {
+            const password = addPassword.value;
+            const passwordConfirm = addPasswordConfirm.value;
+            
+            if (!passwordConfirm) {
+                removeValidationMessage('passwordConfirm');
+                passwordMatch = false;
+                updateAddUserBtnState();
+                return;
+            }
+            
+            if (password !== passwordConfirm) {
+                showValidationMessage('passwordConfirm', '❌ 비밀번호가 일치하지 않습니다.', 'error');
+                passwordMatch = false;
+            } else {
+                showValidationMessage('passwordConfirm', '✔️ 비밀번호가 일치합니다!', 'success');
+                passwordMatch = true;
+            }
+            updateAddUserBtnState();
+        });
+
+        // 이메일 중복확인
+        addEmail.addEventListener('blur', function() {
+            const email = addEmail.value.trim();
+            if (!email) {
+                removeValidationMessage('email');
+                emailChecked = false;
+                updateAddUserBtnState();
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                showValidationMessage('email', '❌ 올바르지 않은 이메일입니다.', 'error');
+                emailChecked = false;
+                updateAddUserBtnState();
+                return;
+            }
+            
+            fetch(`/api/check-email?email=${encodeURIComponent(email)}`, { method: 'GET' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        showValidationMessage('email', '❌ 이미 사용중인 이메일입니다.', 'error');
+                        emailChecked = false;
+                    } else {
+                        showValidationMessage('email', '✔️ 사용할 수 있는 이메일입니다!', 'success');
+                        emailChecked = true;
+                    }
+                    updateAddUserBtnState();
+                })
+                .catch(() => {
+                    showValidationMessage('email', '❌ 서버 오류. 다시 시도하세요.', 'error');
+                    emailChecked = false;
+                    updateAddUserBtnState();
+                });
+        });
+
+
+    }
+
+    function showValidationMessage(fieldId, message, type) {
+        removeValidationMessage(fieldId);
+        
+        const input = document.getElementById('add' + fieldId.charAt(0).toUpperCase() + fieldId.slice(1));
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'validation-message';
+        messageDiv.style.fontSize = '0.85rem';
+        messageDiv.style.marginTop = '4px';
+        messageDiv.style.color = type === 'success' ? '#2a9d8f' : '#e53e3e';
+        messageDiv.innerHTML = message;
+        
+        input.parentNode.appendChild(messageDiv);
+    }
+
+    function removeValidationMessage(fieldId) {
+        const input = document.getElementById('add' + fieldId.charAt(0).toUpperCase() + fieldId.slice(1));
+        const messageDiv = input.parentNode.querySelector('.validation-message');
+        if (messageDiv) {
+            messageDiv.remove();
+        }
+    }
+
+    function updateAddUserBtnState() {
+        const addUserBtn = document.getElementById('addUserBtn');
+        if (usernameChecked && passwordValid && passwordMatch && emailChecked && customerCodeChecked) {
+            addUserBtn.disabled = false;
+            addUserBtn.style.opacity = '1';
+        } else {
+            addUserBtn.disabled = true;
+            addUserBtn.style.opacity = '0.6';
+        }
+    }
+
+    function formatPhoneNumber(phoneNumber) {
+        const cleaned = phoneNumber.replace(/\D/g, '');
+        
+        if (cleaned.length <= 2) {
+            return cleaned;
+        } else if (cleaned.length <= 3) {
+            return cleaned;
+        } else if (cleaned.length <= 4) {
+            return cleaned.slice(0, 2) + '-' + cleaned.slice(2);
+        } else if (cleaned.length <= 6) {
+            return cleaned.slice(0, 2) + '-' + cleaned.slice(2);
+        } else if (cleaned.length <= 7) {
+            return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 5) + '-' + cleaned.slice(5);
+        } else if (cleaned.length <= 8) {
+            if (cleaned.startsWith('02')) {
+                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 6) + '-' + cleaned.slice(6);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
+            }
+        } else if (cleaned.length <= 9) {
+            if (cleaned.startsWith('02')) {
+                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 5) + '-' + cleaned.slice(5);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
+            }
+        } else if (cleaned.length <= 10) {
+            if (cleaned.startsWith('02')) {
+                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 6) + '-' + cleaned.slice(6);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
+            }
+        } else {
+            return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 7) + '-' + cleaned.slice(7, 11);
+        }
+    }
+
+    // 사용자 추가 폼 제출 처리
+    document.getElementById('addUserForm').addEventListener('submit', function(e) {
+        if (!usernameChecked || !passwordValid || !passwordMatch || !emailChecked || !customerCodeChecked) {
+            e.preventDefault();
+            alert('모든 필드를 올바르게 입력해주세요.');
+            return false;
+        }
+    });
+
+    // 모달 외부 클릭 시 닫기
+    window.onclick = function(event) {
+        const editModal = document.getElementById('editModal');
+        const deleteModal = document.getElementById('deleteModal');
+        const restoreModal = document.getElementById('restoreModal');
+        const addUserModal = document.getElementById('addUserModal');
+
+        if (event.target === editModal) {
+            closeEditModal();
+        }
+        if (event.target === deleteModal) {
+            closeDeleteModal();
+        }
+        if (event.target === restoreModal) {
+            closeRestoreModal();
+        }
+        if (event.target === addUserModal) {
+            closeAddUserModal();
+        }
+    }
 </script>
 </body>
 </html>

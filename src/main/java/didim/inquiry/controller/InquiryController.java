@@ -2,6 +2,7 @@ package didim.inquiry.controller;
 
 import didim.inquiry.controller.absClass.BaseController;
 import didim.inquiry.domain.*;
+import didim.inquiry.dto.ManagerDto;
 import didim.inquiry.dto.ProjectDto;
 import didim.inquiry.dto.SearchInquiryDto;
 import didim.inquiry.security.SecurityUtil;
@@ -9,6 +10,7 @@ import didim.inquiry.service.InquiryService;
 import didim.inquiry.service.ProjectService;
 import didim.inquiry.service.UserService;
 import didim.inquiry.service.AnswerService;
+import didim.inquiry.service.ManagerService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -40,13 +42,15 @@ public class InquiryController extends BaseController {
     private final InquiryService inquiryService;
     private final UserService userService;
     private final ProjectService projectService;
+    private final ManagerService managerService;
     @Value("${file.upload}")
     private String uploadDir;
 
-    public InquiryController(InquiryService inquiryService, UserService userService, ProjectService projectService) {
+    public InquiryController(InquiryService inquiryService, UserService userService, ProjectService projectService, ManagerService managerService) {
         this.inquiryService = inquiryService;
         this.userService = userService;
         this.projectService = projectService;
+        this.managerService = managerService;
     }
 
     @GetMapping("/inquiryList")
@@ -119,8 +123,8 @@ public class InquiryController extends BaseController {
         User user = getCurrentUser();
         model.addAttribute("user", user);
 
-        // 1. 기타문의 프로젝트는 항상 포함
-        Project etcProject = projectService.getEtcProject(); // subject="기타문의"인 Project
+//        // 1. 기타문의 프로젝트는 항상 포함
+//        Project etcProject = projectService.getEtcProject(); // subject="기타문의"인 Project
 
         // 2. 나머지 프로젝트는 customerCode 기준으로 가져옴
         String customerCode = user.getCustomerCode();
@@ -128,16 +132,13 @@ public class InquiryController extends BaseController {
                 projectService.getProjectListByCustomerCode(customerCode, Pageable.unpaged()).getContent() :
                 List.of();
 
-        // 3. 기타문의를 맨 앞에 추가 (중복 방지)
-        List<Project> finalList = new ArrayList<>();
-        finalList.add(etcProject);
-        for (Project p : projectList) {
-            if (p.getId() != etcProject.getId()) { // 혹시라도 중복 방지
-                finalList.add(p);
-            }
-        }
 
-        model.addAttribute("projectList", finalList);
+        // 4. 현재 사용자와 연관된 매니저 목록 가져오기
+        List<Manager> managers = managerService.findByUserId(user.getId());
+
+
+        model.addAttribute("projectList", projectList);
+        model.addAttribute("managers", managers);
         return "inquiry/inquiryWriteForm";
     }
 
@@ -176,9 +177,12 @@ public class InquiryController extends BaseController {
     @PostMapping("/inquiryWrite")
     public String inquiryWrite(Inquiry inquiry,
                                ProjectDto projectDto,
+                               @RequestParam(value = "managerId", required = false) Long managerId,
                                RedirectAttributes redirectAttributes) {
         System.out.println("이쪽들어옴!");
         System.out.println(inquiry.getContent());
+        System.out.println("ManagerId : " + managerId);
+
         String username = SecurityUtil.getCurrentUsername();
         try {
             User findUser = userService.getUserByUsername(username);
@@ -186,9 +190,19 @@ public class InquiryController extends BaseController {
             inquiry.setWriter(findUser);
             inquiry.setCreatedAt(LocalDateTime.now());
             inquiry.setStatus("답변 대기중");
+            
             //프로젝트 조회
             Project selectedProject = projectService.getProject(projectDto.getProjectId());
             inquiry.setProject(selectedProject);
+            
+            //매니저 설정 (매니저 ID가 있는 경우에만)
+            if (managerId != null && managerId > 0) {
+                Manager selectedManager = managerService.getManagerById(managerId);
+                if (selectedManager != null) {
+                    inquiry.setManager(selectedManager);
+                }
+            }
+            
             //문의에 이미지가 존재한다면 이미지 경로 변경 및 위치 변경
             String content = inquiry.getContent();
             if (content != null && content.contains("<img")) {

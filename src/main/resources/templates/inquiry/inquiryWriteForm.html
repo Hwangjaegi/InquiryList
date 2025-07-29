@@ -7,130 +7,317 @@
 
     <!-- Quill 스타일 -->
     <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link href="/image/didimIcon.png" rel="icon" type="image/png">
 
     <style>
-        body {
-          background: linear-gradient(135deg, #f0fdfa 0%, #ecfdf5 25%, #f0fdf4 50%, #f7fee7 75%, #fffbeb 100%);
-          font-family: "Noto Sans KR", sans-serif;
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: "Noto Sans KR", sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            padding: 20px;
+            color: #1f2a44;
+        }
+
         .container {
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(10px);
-          border-radius: 15px;
-          padding: 40px;
-          width: 100%;
-          max-width: 1000px;
-          box-shadow: 0 8px 32px rgba(168, 230, 207, 0.15);
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-logo {
+            width: 90px;
+            height: auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1f2a44;
         }
 
         .form-group {
-          margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
-          font-weight: 600;
-          color: #4a9b8e;
-          display: block;
-          margin-bottom: 6px;
+            font-weight: 600;
+            color: #1f2a44;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
         }
 
         .form-group input,
         .form-group select {
-          width: 100%;
-          padding: 10px;
-          border: 1px solid #a8e6cf;
-          border-radius: 6px;
-          font-size: 1rem;
-          box-sizing: border-box;
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: #fafafa;
+            color: #1f2a44;
+            transition: border-color 0.2s ease;
+            box-sizing: border-box;
         }
 
         .form-group input:focus,
         .form-group select:focus {
-          outline: none;
-          border-color: #7fcdcd;
-          box-shadow: 0 0 0 2px rgba(127, 205, 205, 0.2);
+            outline: none;
+            border-color: #2a9d8f;
+            background: #ffffff;
         }
 
         .form-row {
-          display: flex;
-          gap: 15px;
-          align-items: end;
+            display: flex;
+            gap: 15px;
+            align-items: end;
         }
 
         .form-row .form-group {
-          flex: 1;
-          margin-top: 0;
+            flex: 1;
+            margin-bottom: 20px;
         }
 
         .add-manager-btn {
-          background: linear-gradient(45deg, #a8e6cf, #7fcdcd);
-          color: white;
-          border: none;
-          padding: 10px 15px;
-          border-radius: 6px;
-          cursor: pointer;
-          font-size: 0.9rem;
-          height: 40px;
-          white-space: nowrap;
+            background: #2a9d8f;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            height: 40px;
+            white-space: nowrap;
+            transition: background 0.2s ease, transform 0.2s ease;
         }
 
         .add-manager-btn:hover {
-          background: linear-gradient(45deg, #7fcdcd, #a8e6cf);
+            background: #237c70;
+            transform: translateY(-1px);
         }
 
         #editor {
-          height: 500px;
-          background: white;
-          border-radius: 0px 0px 8px 8px;
-          font-size: 1.05rem;
+            height: 500px;
+            background: white;
+            border-radius: 0px 0px 8px 8px;
+            font-size: 1.05rem;
         }
 
         input#title {
-          font-size: 1.1rem;
-          padding: 12px;
+            font-size: 1.1rem;
+            padding: 12px 14px;
         }
 
         .ql-toolbar.ql-snow {
-          border-radius: 8px 8px 0 0;
+            border-radius: 8px 8px 0 0;
+            border: 1px solid #e2e8f0;
         }
 
         .ql-container.ql-snow {
-          border-radius: 0 0 8px 8px;
-          border-top: none;
+            border-radius: 0 0 8px 8px;
+            border-top: none;
+            border: 1px solid #e2e8f0;
         }
 
         .readonly-field {
-          background-color: #f8f9fa;
-          color: #6c757d;
+            background-color: #f8fafc;
+            color: #64748b;
         }
 
         .submit-btn {
-          background: linear-gradient(45deg, #a8e6cf, #7fcdcd);
-          color: #fff;
-          padding: 8px 16px;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          transition: all 0.3s ease;
+            background: #2a9d8f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: #237c70;
+            transform: translateY(-1px);
         }
 
         .submit-btn:disabled {
-          background: #ccc;
-          color: #666;
-          cursor: not-allowed;
+            background: #e2e8f0;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        .button-group {
+            margin-top: 25px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .cancel-btn {
+            background: #e2e8f0;
+            color: #1f2a44;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .cancel-btn:hover {
+            background: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .submit-main-btn {
+            background: #2a9d8f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .submit-main-btn:hover {
+            background: #237c70;
+            transform: translateY(-1px);
+        }
+
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2a44;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: #2a9d8f;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .form-row .form-group {
+                margin-bottom: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
         }
     </style>
 
 </head>
 <body>
 <div class="container">
-    <h2 style="text-align:center; color:#4a9b8e;">문의 작성</h2>
+    <div class="header">
+        <h2><i class="fas fa-edit"></i> 문의 작성</h2>
+    </div>
     <form action="/inquiryWrite" id="inquiryForm" method="POST">
 
         <!-- 제목 -->
@@ -139,22 +326,49 @@
             <input id="title" name="title" placeholder="문의 제목을 입력하세요" required type="text"/>
         </div>
         <br>
+        <!-- 담당자 추가 성공 메시지 -->
+        <div id="managerAddMessage" style="display: none; background: #d4edda; color: #155724; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+            <i class="fas fa-check-circle"></i> 담당자가 성공적으로 추가되었습니다!
+        </div>
+
+        <!-- 본인 정보를 숨겨서 저장 -->
+        <div id="currentUserInfo" style="display: none;"
+             th:attr="data-name=${user.name},data-tel=${user.tel},data-email=${user.email}"></div>
+
         <!-- 이름/연락처/이메일: 로그인 유저 정보 표시 -->
         <div class="form-row">
             <div class="form-group">
-                <label for="userName">이름</label>
-                <input class="readonly-field" id="userName" name="userName" readonly th:value="${user.name}" type="text" />
+                <label for="userName">담당자 선택</label>
+                <select id="userName" name="name" onchange="updateContactInfo()">
+                    <!-- 현재 사용자 정보 -->
+                    <option th:attr="data-tel=${user.tel},data-email=${user.email},data-id=''"
+                            th:text="${user.name} + ' (본인)'"
+                            th:value="${user.name}"
+                            value="current">본인</option>
+                    <!-- 매니저 목록 -->
+                    <option th:attr="data-tel=${manager.tel},data-email=${manager.email},data-id=${manager.id}"
+                            th:each="manager : ${managers}"
+                            th:text="${manager.name}"
+                            th:value="${manager.name}">
+                    </option>
+                </select>
+                <!-- 매니저 ID를 저장할 hidden 필드 추가 -->
+                <input type="hidden" id="managerId" name="managerId" value="" />
             </div>
             <div class="form-group">
                 <label for="userTel">연락처</label>
-                <input class="readonly-field" id="userTel" name="userTel" readonly th:value="${user.tel}" type="text" />
+                <input class="readonly-field" id="userTel" name="tel" readonly th:value="${user.tel}" type="text" />
             </div>
             <div class="form-group">
                 <label for="userEmail">이메일</label>
-                <input class="readonly-field" id="userEmail" name="userEmail" readonly th:value="${user.email}" type="email" />
+                <input class="readonly-field" id="userEmail" name="email" readonly th:value="${user.email}" type="email" />
+            </div>
+            <div class="form-group" style="flex: 0 0 auto; margin-top: 25px;" th:if="${user.role == 'MANAGER'}">
+                <button class="add-manager-btn" onclick="openAddManagerModal()" type="button">
+                    <i class="fas fa-user-plus"></i> 담당자 추가
+                </button>
             </div>
         </div>
-        <!-- 기존 담당자 선택/추가/연락처/이메일 영역 삭제 -->
 
         <!-- 프로젝트 선택 -->
         <div class="form-group">
@@ -175,25 +389,24 @@
         </div>
 
         <!-- 버튼 -->
-        <div style="margin-top: 25px; display: flex; justify-content: flex-end; gap: 10px;">
-            <button onclick="history.back()"
-                    style="background:#ccc; color:#444; padding:10px 20px; border:none; border-radius:6px; cursor:pointer;"
-                    type="button">
-                취소
+        <div class="button-group">
+            <button class="cancel-btn" onclick="history.back()" type="button">
+                <i class="fas fa-times"></i> 취소
             </button>
-            <button style="background: linear-gradient(45deg, #a8e6cf, #7fcdcd); color:#fff; padding:10px 20px; border:none; border-radius:6px; cursor:pointer;"
-                    type="submit">
-                제출
+            <button class="submit-main-btn" type="submit">
+                <i class="fas fa-paper-plane"></i> 제출
             </button>
         </div>
     </form>
 </div>
 
 <!-- 담당자 추가 모달 -->
-<div id="addManagerModal"
-     style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 15px; width: 800px; max-width: 90%;">
-        <h3 style="color: #4a9b8e; margin-top: 0;">담당자 추가</h3>
+<div class="modal" id="addManagerModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title"><i class="fas fa-user-plus"></i> 담당자 추가</h3>
+            <button class="modal-close" onclick="closeAddManagerModal()">×</button>
+        </div>
         <form id="addManagerForm">
             <div class="form-group">
                 <label for="newManagerName">이름</label>
@@ -202,20 +415,20 @@
             <div class="form-group">
                 <label for="newManagertel">연락처</label>
                 <input id="newManagertel" name="tel" placeholder="연락처" required type="text"/>
+                <div id="telMsgDiv" style="display: none; font-size: 0.9em; margin-top: 4px; color: red;"></div>
             </div>
             <div class="form-group">
                 <label for="newManagerEmail">이메일</label>
                 <input id="newManagerEmail" name="email" placeholder="이메일" required type="email"/>
+                <div id="emailMsgDiv" style="display: none; font-size: 0.9em; margin-top: 4px; color: red;"></div>
             </div>
 
-            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-                <button onclick="closeAddManagerModal()"
-                        style="background:#ccc; color:#444; padding:8px 16px; border:none; border-radius:6px; cursor:pointer;"
-                        type="button">
-                    취소
+            <div class="modal-footer">
+                <button class="cancel-btn" onclick="closeAddManagerModal()" type="button">
+                    <i class="fas fa-times"></i> 취소
                 </button>
-                <button class="submit-btn" disabled id="addManagerSubmitBtn" type="submit">
-                    추가
+                <button class="submit-btn" id="addManagerSubmitBtn" type="submit">
+                    <i class="fas fa-plus"></i> 추가
                 </button>
             </div>
         </form>
@@ -227,78 +440,93 @@
 <script>
     // Quill 에디터 생성
     const quill = new Quill('#editor', {
-      theme: 'snow',
-      placeholder: '문의 내용을 입력하세요',
-      modules: {
-        toolbar: {
-          container: [
-            [{ 'header': [1, 2, 3, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            ['link', 'image'],
-            ['clean']
-          ],
-          handlers: {
-            'image': imageHandler
-          }
+        theme: 'snow',
+        placeholder: '문의 내용을 입력하세요',
+        modules: {
+            toolbar: {
+                container: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'image'],
+                    ['clean']
+                ],
+                handlers: {
+                    'image': imageHandler
+                }
+            }
         }
-      }
     });
 
     // 이미지 업로드 핸들러
     function imageHandler() {
-      const input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      input.setAttribute('accept', 'image/*');
-      input.click();
-      input.onchange = async () => {
-        const file = input.files[0];
-        if (!file) return;
-        const formData = new FormData();
-        formData.append('image', file);
-        try {
-          const response = await fetch('/uploadTempImage', {
-            method: 'POST',
-            body: formData
-          });
-          if (!response.ok) throw new Error('업로드 실패');
-          const data = await response.json();
-          const range = quill.getSelection();
-          quill.insertText(range.index, '\n');
-          quill.insertEmbed(range.index + 1, 'image', data.url);
-          quill.setSelection(range.index + 2);
-        } catch (err) {
-          alert('이미지 업로드 중 오류가 발생했습니다.');
-          console.error(err);
-        }
-      };
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+        input.onchange = async () => {
+            const file = input.files[0];
+            if (!file) return;
+            const formData = new FormData();
+            formData.append('image', file);
+            try {
+                const response = await fetch('/uploadTempImage', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (!response.ok) throw new Error('업로드 실패');
+                const data = await response.json();
+                const range = quill.getSelection();
+                quill.insertText(range.index, '\n');
+                quill.insertEmbed(range.index + 1, 'image', data.url);
+                quill.setSelection(range.index + 2);
+            } catch (err) {
+                alert('이미지 업로드 중 오류가 발생했습니다.');
+                console.error(err);
+            }
+        };
     }
+
     // 폼 제출 시 validation 및 hidden input 설정
     document.getElementById('inquiryForm').onsubmit = function(e) {
-      const html = quill.root.innerHTML;
-      document.getElementById('hiddenContent').value = html;
-      if (!document.getElementById('title').value.trim()) {
-        alert('제목을 입력하세요.');
-        e.preventDefault();
-        return false;
-      }
-      if (!document.getElementById('project').value) {
-        alert('프로젝트 유형을 선택하세요.');
-        e.preventDefault();
-        return false;
-      }
-      if (quill.getLength() <= 1) {
-        alert('내용을 입력하세요.');
-        e.preventDefault();
-        return false;
-      }
+        const html = quill.root.innerHTML;
+        document.getElementById('hiddenContent').value = html;
+        if (!document.getElementById('title').value.trim()) {
+            alert('제목을 입력하세요.');
+            e.preventDefault();
+            return false;
+        }
+        if (!document.getElementById('project').value) {
+            alert('프로젝트 유형을 선택하세요.');
+            e.preventDefault();
+            return false;
+        }
+        if (quill.getLength() <= 1) {
+            alert('내용을 입력하세요.');
+            e.preventDefault();
+            return false;
+        }
     };
+
     document.getElementById('addManagerModal').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeAddManagerModal();
-      }
+        if (e.target === this) {
+            closeAddManagerModal();
+        }
     });
-    // --- 연락처 하이픈 ---
+
+    // 관리자 추가 모달 관련 함수들
+    function openAddManagerModal() {
+        const modal = document.getElementById('addManagerModal');
+        modal.classList.add('show');
+    }
+
+    function closeAddManagerModal() {
+        const modal = document.getElementById('addManagerModal');
+        modal.classList.remove('show');
+        document.getElementById('addManagerForm').reset();
+    }
+
+    // 연락처 자동 하이픈 함수
     function formatPhoneNumber(phoneNumber) {
         const cleaned = phoneNumber.replace(/\D/g, '');
         if (cleaned.length <= 2) {
@@ -331,6 +559,216 @@
             }
         } else {
             return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 7) + '-' + cleaned.slice(7, 11);
+        }
+    }
+
+    // 전역 변수로 이메일 중복 확인 상태 관리
+    let emailChecked = false;
+
+    // 연락처 입력 필드에 자동 하이픈 적용
+    document.addEventListener('DOMContentLoaded', function() {
+        const telInput = document.getElementById('newManagertel');
+
+        if (telInput) {
+            telInput.addEventListener('input', function(e) {
+                const cursorPosition = e.target.selectionStart;
+                const oldValue = e.target.value;
+                const newValue = formatPhoneNumber(e.target.value);
+
+                e.target.value = newValue;
+
+                // 커서 위치 조정
+                const diff = newValue.length - oldValue.length;
+                if (diff > 0) {
+                    e.target.setSelectionRange(cursorPosition + diff, cursorPosition + diff);
+                }
+            });
+
+            // 키보드 이벤트 처리 (백스페이스 등)
+            telInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace') {
+                    const cursorPosition = e.target.selectionStart;
+                    const value = e.target.value;
+
+                    if (cursorPosition > 0 && value[cursorPosition - 1] === '-') {
+                        e.preventDefault();
+                        const newValue = value.substring(0, cursorPosition - 2) + value.substring(cursorPosition);
+                        e.target.value = formatPhoneNumber(newValue);
+                        e.target.setSelectionRange(cursorPosition - 2, cursorPosition - 2);
+                    }
+                }
+            });
+        }
+
+        // 이메일 중복 확인
+        const emailInput = document.getElementById('newManagerEmail');
+        const emailMsgDiv = document.getElementById('emailMsgDiv');
+
+        emailInput.addEventListener('input', function() {
+            const email = emailInput.value.trim();
+            if (!email) {
+                emailMsgDiv.style.display = 'none';
+                emailChecked = false;
+                return;
+            }
+        });
+
+        emailInput.addEventListener('blur', function() {
+            const email = emailInput.value.trim();
+            if (!email) {
+                emailMsgDiv.style.display = 'none';
+                emailChecked = false;
+                return;
+            }
+
+            if (!email.includes('@')) {
+                emailMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 올바르지 않은 이메일입니다.';
+                emailMsgDiv.style.color = 'red';
+                emailMsgDiv.style.display = 'block';
+                emailChecked = false;
+                return;
+            }
+
+            // 이메일 중복 확인 요청
+            fetch(`/api/check-email-manager?email=${encodeURIComponent(email)}`, { method: 'GET' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        emailMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 이미 사용중인 이메일입니다. 다른 이메일을 입력해주세요';
+                        emailMsgDiv.style.color = 'red';
+                        emailMsgDiv.style.display = 'block';
+                        emailChecked = false;
+                    } else {
+                        emailMsgDiv.innerHTML = '<span style="font-size:1.1em; color:green;">✔️</span> 사용할 수 있는 이메일입니다!';
+                        emailMsgDiv.style.color = 'green';
+                        emailMsgDiv.style.display = 'block';
+                        emailChecked = true;
+                    }
+                })
+                .catch(() => {
+                    emailMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 서버 오류. 다시 시도하세요.';
+                    emailMsgDiv.style.color = 'red';
+                    emailMsgDiv.style.display = 'block';
+                    emailChecked = false;
+                });
+        });
+
+        // 페이지 로드 시 초기 담당자 정보 설정
+        updateContactInfo();
+    });
+
+    // 담당자 추가 폼 제출 처리
+    document.getElementById('addManagerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const requestData = {
+            name: formData.get('name'),
+            tel: formData.get('tel'),
+            email: formData.get('email')
+        };
+
+        // 필수 필드 검증
+        if (!requestData.name || !requestData.tel || !requestData.email) {
+            alert('모든 필드를 입력해주세요.');
+            return;
+        }
+
+        // 이메일 중복 확인 검증
+        const emailInput = document.getElementById('newManagerEmail');
+        const email = emailInput.value.trim();
+        if (!emailChecked) {
+            alert('이메일 중복확인을 해주세요.');
+            emailInput.focus();
+            return;
+        }
+
+        // 이메일 형식 검증
+        if (!requestData.email.includes('@')) {
+            alert('올바른 이메일 형식을 입력해주세요.');
+            return;
+        }
+
+        // 서버에 요청
+        fetch('/api/addManager', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // 성공 메시지 표시
+                showManagerAddMessage();
+
+                // 드롭다운에 새 담당자 추가
+                addManagerToDropdown(data.manager);
+
+                // 모달 닫기
+                closeAddManagerModal();
+            } else {
+                alert('담당자 추가 실패: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('담당자 추가 중 오류가 발생했습니다.');
+        });
+    });
+
+    // 담당자 추가 성공 메시지 표시
+    function showManagerAddMessage() {
+        const messageDiv = document.getElementById('managerAddMessage');
+        messageDiv.style.display = 'block';
+
+        // 3초 후 메시지 숨기기
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 3000);
+    }
+
+    // 드롭다운에 새 담당자 추가
+    function addManagerToDropdown(manager) {
+        const select = document.getElementById('userName');
+        const newOption = document.createElement('option');
+        newOption.value = manager.name;
+        newOption.textContent = manager.name;
+        newOption.setAttribute('data-tel', manager.tel);
+        newOption.setAttribute('data-email', manager.email);
+        newOption.setAttribute('data-id', manager.id);
+
+        // 새 담당자를 드롭다운에 추가
+        select.appendChild(newOption);
+
+        // 새로 추가된 담당자 선택
+        select.value = manager.name;
+        updateContactInfo();
+    }
+
+    // 담당자 선택 시 연락처/이메일 업데이트
+    function updateContactInfo() {
+        const select = document.getElementById('userName');
+        const selectedOption = select.options[select.selectedIndex];
+        const telInput = document.getElementById('userTel');
+        const emailInput = document.getElementById('userEmail');
+        const managerIdInput = document.getElementById('managerId');
+
+        if (selectedOption.value === 'current') {
+            // 본인 정보로 복원
+            const currentUserInfo = document.getElementById('currentUserInfo');
+            telInput.value = currentUserInfo.getAttribute('data-tel') || '';
+            emailInput.value = currentUserInfo.getAttribute('data-email') || '';
+            managerIdInput.value = ''; // 본인 선택 시 매니저 ID는 빈 값
+        } else {
+            // 선택된 매니저 정보로 업데이트
+            const tel = selectedOption.getAttribute('data-tel') || '';
+            const email = selectedOption.getAttribute('data-email') || '';
+            const managerId = selectedOption.getAttribute('data-id') || '';
+            telInput.value = tel;
+            emailInput.value = email;
+            managerIdInput.value = managerId; // 매니저 ID 설정
         }
     }
 </script>

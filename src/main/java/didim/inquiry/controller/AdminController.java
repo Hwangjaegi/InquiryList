@@ -27,7 +27,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class AdminController extends BaseController {
@@ -430,5 +432,15 @@ public class AdminController extends BaseController {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/login";
         }
+    }
+
+    // 고객코드 존재 여부 확인 API
+    @GetMapping("/api/check-customerCode")
+    @ResponseBody
+    public Map<String, Object> checkCustomerCode(@RequestParam String customerCode) {
+        Map<String, Object> response = new HashMap<>();
+        boolean exists = userService.existsByCustomerCode(customerCode);
+        response.put("exists", exists);
+        return response;
     }
 }
