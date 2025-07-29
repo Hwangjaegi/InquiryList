@@ -302,12 +302,20 @@
 
         .inquiry-content {
             display: none;
-            padding: 20px;
             background: #fafafa;
         }
 
         .inquiry-content.active {
             display: block;
+        }
+
+        .content-header , .content-body {
+            padding: 20px;
+        }
+
+        .content-header{
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .content-section-group {
@@ -330,6 +338,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            padding-bottom: 3px;
         }
 
         .content-label i {
@@ -356,7 +365,6 @@
 
         .inquiry-text {
             background: #e6f4f1;
-            border-left: 3px solid #2a9d8f;
             display: inline-block;
             max-width: 80%;
             min-width: 80px;
@@ -836,12 +844,12 @@
         <button class="create-button" onclick="location.href='/inquiryWriteForm'" th:if="${role != 'ADMIN'}">
             <i class="fas fa-plus"></i> 새 문의 작성
         </button>
-<!--        <button class="create-button" onclick="location.href='/console'">-->
-<!--            <i class="fas fa-cogs"></i>-->
-<!--            <span th:if="${role == 'ADMIN'}">어드민페이지</span>-->
-<!--            <span th:if="${role == 'MANAGER'}">관리자페이지</span>-->
-<!--            <span th:if="${role == 'USER'}">마이페이지</span>-->
-<!--        </button>-->
+        <!--        <button class="create-button" onclick="location.href='/console'">-->
+        <!--            <i class="fas fa-cogs"></i>-->
+        <!--            <span th:if="${role == 'ADMIN'}">어드민페이지</span>-->
+        <!--            <span th:if="${role == 'MANAGER'}">관리자페이지</span>-->
+        <!--            <span th:if="${role == 'USER'}">마이페이지</span>-->
+        <!--        </button>-->
     </div>
     <div class="search-bar">
         <form action="/searchInquiries" class="search-form" id="searchForm" method="get">
@@ -890,7 +898,8 @@
                         <span class="ticket-number label" th:text="${inquiry.tickNumber}">티켓 번호</span>
                         <span class="inquiry-manager label" th:text="${inquiry.writer.customerCode}">고객코드</span>
                         <span class="inquiry-project label" th:text="${inquiry.project.subject}">프로젝트</span>
-                        <span class="inquiry-manager label" th:text="${inquiry.manager != null ? inquiry.manager.name : inquiry.writer.name}">담당자</span>
+                        <span class="inquiry-manager label"
+                              th:text="${inquiry.manager != null ? inquiry.manager.name : inquiry.writer.name}">담당자</span>
                         <span class="inquiry-title main-title" th:text="${inquiry.title}">제목</span>
                     </div>
                     <div class="inquiry-right">
@@ -902,70 +911,81 @@
                 </div>
             </div>
             <div class="inquiry-content">
-                <div class="content-section-group">
-                    <div class="content-section">
-                        <div class="content-label">
-                            <i class="fas fa-user"></i> 담당자
-                        </div>
-                        <div class="content-value" th:text="${inquiry.manager != null ? inquiry.manager.name : inquiry.writer.name}">담당자</div>
-                    </div>
-                    <div class="content-section">
-                        <div class="content-label">
-                            <i class="fas fa-id-card"></i> 고객코드
-                        </div>
-                        <div class="content-value" th:text="${inquiry.writer.customerCode}">고객코드</div>
-                    </div>
-                    <div class="content-section">
-                        <div class="content-label">
-                            <i class="fas fa-phone"></i> 연락처
-                        </div>
-                        <div class="content-value" th:text="${inquiry.manager != null ? inquiry.manager.tel : inquiry.writer.tel}">010-1234-5678</div>
-                    </div>
-                    <div class="content-section">
-                        <div class="content-label">
-                            <i class="fas fa-envelope"></i> 이메일
-                        </div>
-                        <div class="content-value" th:text="${inquiry.manager != null ? inquiry.manager.email : inquiry.writer.email}">test@example.com</div>
-                    </div>
-                    <div class="content-section">
-                        <div class="content-label">
-                            <i class="fas fa-folder"></i> 문의 및 프로젝트
-                        </div>
-                        <div class="content-value" th:text="${inquiry.project.subject}">테스트프로젝트</div>
-                    </div>
-                </div>
-                <div class="content-section">
-                    <div class="content-label">
-                        <i class="fas fa-comment-dots"></i> 문의 내용
-                        <span class="pending-answer" style="color: #e53e3e; font-size: 0.8rem;"
-                              th:if="${#lists.isEmpty(inquiry.answers) and inquiry.status == '답변 대기중'}"> * 담당자가 문의 확인 후 답변 예정입니다.</span>
-                    </div>
-                    <div class="content-text inquiry-text" th:utext="${inquiry.content}">
-                        문의 내용이 표시됩니다.
-                    </div>
-                </div>
-                <div class="hr-inquiry-section"></div>
-                <div class="content-section answer-list">
-                    <th:block th:if="${!#lists.isEmpty(inquiry.answers)}">
-                        <div style="margin-bottom: 15px;" th:each="answer : ${inquiry.answers}">
-                            <div class="content-label"
-                                 th:style="${answer.user.id == inquiry.writer.id} ? 'justify-content: flex-start; text-align: left;' : 'justify-content: flex-end; text-align: right;'">
-                                <i class="fas fa-reply"></i>
-                                <span th:if="${answer.user.id == inquiry.writer.id}"
-                                      th:text="${inquiry.manager != null ? inquiry.manager.name : inquiry.writer.name} + ' 답글'">작성자답글</span>
-                                <span th:if="${answer.user.id != inquiry.writer.id}"
-                                      th:text="${answer.user.name} + ' 답글'">답글2</span>
+                <div class="content-header">
+                    <div class="content-section-group">
+                        <div class="content-section">
+                            <div class="content-label">
+                                <i class="fas fa-user"></i> 담당자
                             </div>
-                            <div class="inquiry-text" th:if="${answer.user.id == inquiry.writer.id}"
-                                 th:utext="${answer.content}"></div>
-                            <span class="answer-date left-date" th:if="${answer.user.id == inquiry.writer.id}"
-                                  th:text="${answer.repliedAt != null ? #temporals.format(answer.repliedAt, 'yyyy-MM-dd HH:mm') : ''}"></span>
-                            <div class="answer-text answer-admin" th:if="${answer.user.id != inquiry.writer.id}"
-                                 th:utext="${answer.content}"></div>
-                            <span class="answer-date right-date" th:if="${answer.user.id != inquiry.writer.id}"
-                                  th:text="${answer.repliedAt != null ? #temporals.format(answer.repliedAt, 'yyyy-MM-dd HH:mm') : ''}"></span>
+                            <div class="content-value"
+                                 th:text="${inquiry.manager != null ? inquiry.manager.name : inquiry.writer.name}">담당자
+                            </div>
                         </div>
-                    </th:block>
+                        <div class="content-section">
+                            <div class="content-label">
+                                <i class="fas fa-id-card"></i> 고객코드
+                            </div>
+                            <div class="content-value" th:text="${inquiry.writer.customerCode}">고객코드</div>
+                        </div>
+                        <div class="content-section">
+                            <div class="content-label">
+                                <i class="fas fa-phone"></i> 연락처
+                            </div>
+                            <div class="content-value"
+                                 th:text="${inquiry.manager != null ? inquiry.manager.tel : inquiry.writer.tel}">
+                                010-1234-5678
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <div class="content-label">
+                                <i class="fas fa-envelope"></i> 이메일
+                            </div>
+                            <div class="content-value"
+                                 th:text="${inquiry.manager != null ? inquiry.manager.email : inquiry.writer.email}">
+                                test@example.com
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <div class="content-label">
+                                <i class="fas fa-folder"></i> 문의 및 프로젝트
+                            </div>
+                            <div class="content-value" th:text="${inquiry.project.subject}">테스트프로젝트</div>
+                        </div>
+                    </div>
+                    <div class="content-section">
+                        <div class="content-label">
+                            <i class="fas fa-comment-dots"></i> 문의 내용
+                            <span class="pending-answer" style="color: #e53e3e; font-size: 0.8rem;"
+                                  th:if="${#lists.isEmpty(inquiry.answers) and inquiry.status == '답변 대기중'}"> * 담당자가 문의 확인 후 답변 예정입니다.</span>
+                        </div>
+                        <div class="content-text inquiry-text" th:utext="${inquiry.content}">
+                            문의 내용이 표시됩니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="content-body">
+                    <!--                <div class="hr-inquiry-section"></div>-->
+                    <div class="content-section answer-list">
+                        <th:block th:if="${!#lists.isEmpty(inquiry.answers)}">
+                            <div style="margin-bottom: 15px;" th:each="answer : ${inquiry.answers}">
+                                <div class="content-label"
+                                     th:style="${answer.user.id == inquiry.writer.id} ? 'justify-content: flex-start; text-align: left;' : 'justify-content: flex-end; text-align: right;'">
+                                <span th:if="${answer.user.id == inquiry.writer.id}"
+                                      th:text="${inquiry.manager != null ? inquiry.manager.name : inquiry.writer.name}">작성자답글</span>
+                                    <span th:if="${answer.user.id != inquiry.writer.id}"
+                                          th:text="${answer.user.name}">답글2</span>
+                                </div>
+                                <div class="inquiry-text" th:if="${answer.user.id == inquiry.writer.id}"
+                                     th:utext="${answer.content}"></div>
+                                <span class="answer-date left-date" th:if="${answer.user.id == inquiry.writer.id}"
+                                      th:text="${answer.repliedAt != null ? #temporals.format(answer.repliedAt, 'yyyy-MM-dd HH:mm') : ''}"></span>
+                                <div class="answer-text answer-admin" th:if="${answer.user.id != inquiry.writer.id}"
+                                     th:utext="${answer.content}"></div>
+                                <span class="answer-date right-date" th:if="${answer.user.id != inquiry.writer.id}"
+                                      th:text="${answer.repliedAt != null ? #temporals.format(answer.repliedAt, 'yyyy-MM-dd HH:mm') : ''}"></span>
+                            </div>
+                        </th:block>
+                    </div>
                 </div>
                 <form action="/answerWrite" class="reply-form" method="post" onclick="event.stopPropagation();"
                       th:if="${inquiry.status != '처리완료' and (role == 'ADMIN' or !#lists.isEmpty(inquiry.answers))}">
@@ -1074,6 +1094,13 @@
                             statusDiv.textContent = '답변완료';
                             statusDiv.classList.remove('status-pending');
                             statusDiv.classList.add('status-processing');
+                        }
+                        
+                        // 답글 개수 업데이트
+                        const answerCountSpan = card.querySelector('.answer-count');
+                        if (answerCountSpan) {
+                            const currentCount = parseInt(answerCountSpan.textContent) || 0;
+                            answerCountSpan.textContent = currentCount + 1;
                         }
                     } else {
                         alert(data.message || '답글 등록 실패');

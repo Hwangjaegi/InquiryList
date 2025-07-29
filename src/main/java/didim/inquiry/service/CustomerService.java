@@ -16,11 +16,16 @@ public class CustomerService {
     public List<Customer> findAll() {
         return customerRepository.findAll();
     }
-    public Customer findById(Long id) {
+
+    public Customer getCustomerById(Long id) {
         return customerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("고객코드를 찾을 수 없습니다."));
     }
 
-    public Customer getCustomer(String customerCode) {
+    public Customer getCustomerByCode(String customerCode) {
         return customerRepository.findByCode(customerCode);
+    }
+
+    public boolean existsByCustomerCodeAndStatusActive(String customerCode) {
+        return customerRepository.existsByCodeAndStatus(customerCode,"ACTIVE");
     }
 }

@@ -2,11 +2,14 @@ package didim.inquiry.controller;
 
 import didim.inquiry.controller.absClass.BaseController;
 import didim.inquiry.domain.Customer;
+import didim.inquiry.domain.Manager;
 import didim.inquiry.domain.Project;
 import didim.inquiry.domain.User;
 import didim.inquiry.dto.CustomerDto;
+import didim.inquiry.dto.ManagerDto;
 import didim.inquiry.dto.ProjectDto;
 import didim.inquiry.service.AdminService;
+import didim.inquiry.service.ManagerService;
 import didim.inquiry.service.ProjectService;
 import didim.inquiry.service.UserService;
 import didim.inquiry.service.CustomerService;
@@ -38,12 +41,14 @@ public class AdminController extends BaseController {
     private final UserService userService;
     private final ProjectService projectService;
     private final CustomerService customerService;
+    private final ManagerService managerService;
 
-    public AdminController(AdminService adminService, UserService userService, ProjectService projectService, CustomerService customerService) {
+    public AdminController(AdminService adminService, UserService userService, ProjectService projectService, CustomerService customerService, ManagerService managerService) {
         this.adminService = adminService;
         this.userService = userService;
         this.projectService = projectService;
         this.customerService = customerService;
+        this.managerService = managerService;
     }
 
     //콘솔 화면 표시
@@ -90,18 +95,32 @@ public class AdminController extends BaseController {
                 System.out.println("매니저콘솔");
                 Pageable pageable = PageRequest.of(page, size);
 
-                Page<User> userListByCustomerCode;
+                Page<Manager> managerList;
                 if (search != null && !search.trim().isEmpty()) {
-                    userListByCustomerCode = userService.searchUsersByCustomerCode(user.getCustomerCode(), search, pageable);
+                    managerList = managerService.searchManagersByUserId(user.getId(), search, pageable);
                 } else {
-                    userListByCustomerCode = userService.getUsersByCustomerCode(user.getCustomerCode(),pageable);
+                    managerList = managerService.getManagersByUserId(user.getId(), pageable);
                 }
 
-                Long totalUser = userService.getUsersCountByCustomerCode(user.getCustomerCode());
+                // Manager를 ManagerDto로 변환
+                Page<ManagerDto> managerDtoList = managerList.map(manager -> {
+                    ManagerDto dto = new ManagerDto();
+                    dto.setId(manager.getId());
+                    dto.setName(manager.getName());
+                    dto.setTel(manager.getTel());
+                    dto.setEmail(manager.getEmail());
+                    dto.setDeleteFlag(manager.isDeleteFlag());
+                    dto.setCreatedAt(manager.getCreatedAt());
+                    dto.setUpdatedAt(manager.getUpdatedAt());
+                    dto.setUser(manager.getUser());
+                    return dto;
+                });
 
-                model.addAttribute("userList", userListByCustomerCode);
-                model.addAttribute("currentUserId",user.getId());
-                model.addAttribute("totalUser", totalUser);
+                Long totalManager = managerService.getManagerCountByUserId(user.getId());
+
+                model.addAttribute("managerList", managerDtoList);
+                model.addAttribute("currentUserId", user.getId());
+                model.addAttribute("totalManager", totalManager);
                 model.addAttribute("searchKeyword", search);
                 return "page/managerConsole";
             }
@@ -218,7 +237,7 @@ public class AdminController extends BaseController {
             User user = getCurrentUser();
             Pageable pageable = PageRequest.of(page, size);
             String customerCode = user.getCustomerCode();
-            Customer customer = customerService.getCustomer(customerCode);
+            Customer customer = customerService.getCustomerByCode(customerCode);
 
             // 검색 조회 , 일반 조회
             Page<Project> projectList = searchKeyword == null || searchKeyword.isEmpty()
@@ -271,7 +290,7 @@ public class AdminController extends BaseController {
                             @RequestParam String projectSubject,
                             RedirectAttributes redirectAttributes) {
         try {
-            Customer customer = customerService.findById(customerId);
+            Customer customer = customerService.getCustomerById(customerId);
             ProjectDto dto = new ProjectDto();
             dto.setProjectSubject(projectSubject);
             projectService.saveProjectWithCustomer(dto, customer);
@@ -294,7 +313,7 @@ public class AdminController extends BaseController {
             ProjectDto dto = new ProjectDto();
             dto.setProjectId(projectId);
             dto.setProjectSubject(projectSubject);
-            Customer customer = customerService.findById(customerId);
+            Customer customer = customerService.getCustomerById(customerId);
             projectService.updateProject(dto, customer);
             redirectAttributes.addFlashAttribute("successMessage", "프로젝트가 성공적으로 수정되었습니다.");
         } catch (Exception e) {
@@ -439,8 +458,15 @@ public class AdminController extends BaseController {
     @ResponseBody
     public Map<String, Object> checkCustomerCode(@RequestParam String customerCode) {
         Map<String, Object> response = new HashMap<>();
-        boolean exists = userService.existsByCustomerCode(customerCode);
-        response.put("exists", exists);
+        System.out.println("user : " + userService.existsByCustomerCode(customerCode) + " / customer : " + customerService.existsByCustomerCodeAndStatusActive(customerCode));
+        if(userService.existsByCustomerCode(customerCode)){
+            response.put("exists",true);
+        }else if(!customerService.existsByCustomerCodeAndStatusActive(customerCode)){
+            response.put("exists",true);
+        }else {
+            response.put("exists",false);
+        }
+
         return response;
     }
 }

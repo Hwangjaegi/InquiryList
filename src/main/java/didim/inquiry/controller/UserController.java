@@ -2,6 +2,7 @@ package didim.inquiry.controller;
 
 import didim.inquiry.controller.absClass.BaseController;
 import didim.inquiry.domain.User;
+import didim.inquiry.service.ManagerService;
 import didim.inquiry.service.UserService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,10 +24,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserController extends BaseController{
 
     private final UserService userService;
+    private final ManagerService managerService;
     private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService, ManagerService managerService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.managerService = managerService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -82,7 +85,8 @@ public class UserController extends BaseController{
     @GetMapping("/api/check-email")
     @ResponseBody
     public Map<String, Boolean> checkEmail(@RequestParam String email) {
-        boolean exists = userService.findByEmail(email) != null;
+        boolean exists = userService.existsByEmail(email) || managerService.existsByEmail(email);
+
         return Collections.singletonMap("exists", exists);
     }
 

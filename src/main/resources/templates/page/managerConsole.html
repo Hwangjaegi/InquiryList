@@ -381,6 +381,7 @@
             animation: slideInRight 0.3s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             white-space: nowrap;
+            margin-bottom: 10px;
         }
 
         .message-success {
@@ -745,7 +746,7 @@
             <!-- 통계 섹션 -->
             <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-number" th:text="${totalUser}">0</div>
+                    <div class="stat-number" th:text="${totalManager}">0</div>
                     <div class="stat-label">등록된 담당자</div>
                 </div>
                 <div class="stat-card">
@@ -777,40 +778,40 @@
                         <th>전화번호</th>
                         <th>이메일</th>
                         <th>등록일</th>
-                        <th>권한</th>
+                        <th>상태</th>
                         <th>작업</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:classappend="${user.deleteFlag} ? 'disabled-row' : ''" th:data-id="${user.id}"
-                        th:each="user : ${userList}">
-                        <td th:text="${user.name}">담당자 이름</td>
-                        <td th:text="${user.tel}">010-1234-5678</td>
-                        <td th:text="${user.email}">email@example.com</td>
-                        <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd')}">2024-01-01</td>
-                        <td th:text="${user.role}">USER</td>
+                    <tr th:classappend="${manager.deleteFlag} ? 'disabled-row' : ''" th:data-id="${manager.id}"
+                        th:each="manager : ${managerList}">
+                        <td th:text="${manager.name}">담당자 이름</td>
+                        <td th:text="${manager.tel}">010-1234-5678</td>
+                        <td th:text="${manager.email}">email@example.com</td>
+                        <td th:text="${#temporals.format(manager.createdAt, 'yyyy-MM-dd')}">2024-01-01</td>
+                        <td th:text="${manager.deleteFlag ? '비활성' : '활성'}">활성</td>
                         <td>
                             <div class="manager-actions">
                                 <button class="btn btn-edit"
                                         onclick="if(!this.disabled) handleEditClick(this)"
-                                        th:attr="data-id=${user.id}, data-role=${user.role}"
-                                        th:classappend="${user.deleteFlag} ? ' btn-disabled' : ''"
-                                        th:disabled="${user.deleteFlag}"
-                                        th:if="${!user.deleteFlag and user.id != currentUserId}">
+                                        th:attr="data-id=${manager.id}, data-name=${manager.name}"
+                                        th:classappend="${manager.deleteFlag} ? ' btn-disabled' : ''"
+                                        th:disabled="${manager.deleteFlag}"
+                                        th:if="${!manager.deleteFlag}">
                                     수정
                                 </button>
                                 <button class="btn btn-delete"
                                         onclick="if(!this.disabled) handleDeleteClick(this)"
-                                        th:attr="data-id=${user.id}, data-name=${user.name}"
-                                        th:classappend="${user.deleteFlag} ? ' btn-disabled' : ''"
-                                        th:disabled="${user.deleteFlag}"
-                                        th:if="${!user.deleteFlag and user.id != currentUserId}">
+                                        th:attr="data-id=${manager.id}, data-name=${manager.name}"
+                                        th:classappend="${manager.deleteFlag} ? ' btn-disabled' : ''"
+                                        th:disabled="${manager.deleteFlag}"
+                                        th:if="${!manager.deleteFlag}">
                                     삭제
                                 </button>
                                 <button class="btn btn-restore"
                                         onclick="handleRestoreClick(this)"
-                                        th:attr="data-id=${user.id}, data-name=${user.name}"
-                                        th:if="${user.deleteFlag}">
+                                        th:attr="data-id=${manager.id}, data-name=${manager.name}"
+                                        th:if="${manager.deleteFlag}">
                                     복원
                                 </button>
                             </div>
@@ -820,39 +821,39 @@
                 </table>
 
                 <!-- 페이징 섹션 -->
-                <div class="pagination" th:if="${userList.totalPages > 1}">
+                <div class="pagination" th:if="${managerList.totalPages > 1}">
                     <th:block th:with="
                         pageGroupSize=5,
-                        currentGroupIndex=${userList.number / pageGroupSize},
+                        currentGroupIndex=${managerList.number / pageGroupSize},
                         startPage=${currentGroupIndex * pageGroupSize},
-                        endPage=${(startPage + pageGroupSize - 1) < (userList.totalPages - 1) ? (startPage + pageGroupSize - 1) : (userList.totalPages - 1)},
+                        endPage=${(startPage + pageGroupSize - 1) < (managerList.totalPages - 1) ? (startPage + pageGroupSize - 1) : (managerList.totalPages - 1)},
                         hasPrevGroup=${currentGroupIndex > 0},
-                        hasNextGroup=${endPage < (userList.totalPages - 1)},
+                        hasNextGroup=${endPage < (managerList.totalPages - 1)},
                         prevGroupStartPage=${(currentGroupIndex - 1) * pageGroupSize},
                         nextGroupStartPage=${(currentGroupIndex + 1) * pageGroupSize}">
                         <a class="pagination-button"
-                           th:classappend="${userList.number == 0} ? 'disabled'"
-                           th:href="@{/console(page=0, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:classappend="${managerList.number == 0} ? 'disabled'"
+                           th:href="@{/console(page=0, size=${managerList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav"><<</span>
                         </a>
                         <a class="pagination-button"
                            th:classappend="${!hasPrevGroup} ? 'disabled'"
-                           th:href="@{/console(page=${prevGroupStartPage}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:href="@{/console(page=${prevGroupStartPage}, size=${managerList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">이전</span>
                         </a>
                         <a class="pagination-button"
-                           th:classappend="${page == userList.number} ? 'active'"
+                           th:classappend="${page == managerList.number} ? 'active'"
                            th:each="page : ${#numbers.sequence(startPage, endPage)}"
-                           th:href="@{/console(page=${page}, size=${userList.pageable.pageSize}, search=${searchKeyword})}"
+                           th:href="@{/console(page=${page}, size=${managerList.pageable.pageSize}, search=${searchKeyword})}"
                            th:text="${page + 1}">1</a>
                         <a class="pagination-button"
                            th:classappend="${!hasNextGroup} ? 'disabled'"
-                           th:href="@{/console(page=${nextGroupStartPage}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:href="@{/console(page=${nextGroupStartPage}, size=${managerList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">다음</span>
                         </a>
                         <a class="pagination-button"
-                           th:classappend="${userList.number == (userList.totalPages - 1)} ? 'disabled'"
-                           th:href="@{/console(page=${userList.totalPages - 1}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:classappend="${managerList.number == (managerList.totalPages - 1)} ? 'disabled'"
+                           th:href="@{/console(page=${managerList.totalPages - 1}, size=${managerList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">>></span>
                         </a>
                     </th:block>
@@ -866,18 +867,24 @@
 <div class="modal" id="editModal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title">담당자 권한 수정</h3>
+            <h3 class="modal-title">담당자 정보 수정</h3>
             <button class="modal-close" onclick="closeEditModal()">×</button>
         </div>
-        <form action="/user/update" id="editForm" method="post">
+        <form action="/manager/update" id="editForm" method="post">
             <div class="modal-body">
                 <div class="form-row">
                     <input id="editId" name="id" type="hidden">
-                    <label class="form-label">권한</label>
-                    <select class="form-input" id="editRole" name="role" required>
-                        <option value="MANAGER">MANAGER</option>
-                        <option value="USER">USER</option>
-                    </select>
+                    <label class="form-label">이름</label>
+                    <input class="form-input" id="editName" name="name" required type="text">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">전화번호</label>
+                    <input class="form-input" id="editTel" name="tel" required type="text">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">이메일</label>
+                    <input class="form-input" id="editEmail" name="email" required type="email">
+                    <div id="editEmailError" class="email-error" style="display: none; color: #e53e3e; font-size: 0.85rem; margin-top: 5px;"></div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -897,7 +904,7 @@
         </div>
         <div class="modal-body">
             <p><strong id="deleteManagerName"></strong> 담당자를 삭제하시겠습니까?</p>
-            <p style="color: #f44336; font-size: 0.9rem; margin-top: 10px;">이 작업은 되돌릴 수 없습니다.</p>
+            <p style="color: #f44336; font-size: 0.9rem; margin-top: 10px;">이 작업은 복원할 수 있습니다.</p>
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="closeDeleteModal()" type="button">취소</button>
@@ -927,7 +934,7 @@
     let currentEditId = null;
     let currentDeleteId = null;
     let currentRestoreId = null;
-    const currentPage = /*[[${userList.getNumber()}]]*/ 0;
+    const currentPage = /*[[${managerList.getNumber()}]]*/ 0;
     const searchKeyword = /*[[${searchKeyword != null ? searchKeyword : ''}]]*/ '';
     const currentUserId = /*[[${currentUserId}]]*/ null;
 
@@ -1048,23 +1055,71 @@
             console.warn('Message container (.manager-list) not found in DOM');
         }
 
+        // 이메일 중복 검증 함수
+        function checkEmailDuplicate(email) {
+            const currentManagerId = document.getElementById('editId').value;
+            const url = `/api/check-email-manager?email=${encodeURIComponent(email)}&excludeManagerId=${currentManagerId}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const errorDiv = document.getElementById('editEmailError');
+                    if (data.exists) {
+                        errorDiv.textContent = '이미 사용중인 이메일입니다.';
+                        errorDiv.style.display = 'block';
+                    } else {
+                        errorDiv.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('이메일 중복 확인 중 오류:', error);
+                });
+        }
+
+        // 이메일 입력 필드 이벤트 리스너
+        const editEmailInput = document.getElementById('editEmail');
+        if (editEmailInput) {
+            editEmailInput.addEventListener('blur', function() {
+                const email = this.value.trim();
+                if (email) {
+                    checkEmailDuplicate(email);
+                } else {
+                    document.getElementById('editEmailError').style.display = 'none';
+                }
+            });
+            
+            editEmailInput.addEventListener('input', function() {
+                // 입력 중에는 에러 메시지를 숨김
+                document.getElementById('editEmailError').style.display = 'none';
+            });
+        }
+
         // editForm 제출 처리
         const editForm = document.getElementById('editForm');
         if (editForm) {
             editForm.addEventListener('submit', function (event) {
                 event.preventDefault();
-                const id = document.getElementById('editId').value;
-                const role = document.getElementById('editRole').value;
-                const userDto = {
-                    id: id,
-                    role: role
+                
+                // 이메일 중복 확인
+                const emailError = document.getElementById('editEmailError');
+                if (emailError.style.display === 'block') {
+                    showMessage('중복된 이메일이 있습니다. 다른 이메일을 입력해주세요.', 'error');
+                    return;
+                }
+                
+                const formData = new FormData(editForm);
+                const managerData = {
+                    id: formData.get('id'),
+                    name: formData.get('name'),
+                    tel: formData.get('tel'),
+                    email: formData.get('email')
                 };
-                fetch('/user/updateRole', {
+                fetch('/manager/update', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(userDto)
+                    body: JSON.stringify(managerData)
                 })
                 .then(response => {
                     if (!response.ok) {
@@ -1074,22 +1129,29 @@
                 })
                 .then(data => {
                     // 테이블 행 업데이트
-                    const row = document.querySelector(`tr[data-id="${id}"]`);
+                    const row = document.querySelector(`tr[data-id="${managerData.id}"]`);
                     if (row) {
                         const cells = row.querySelectorAll('td');
-                        cells[4].textContent = data.role; // 권한 (5번째 열)
+                        cells[0].textContent = data.manager.name; // 이름
+                        cells[1].textContent = data.manager.tel; // 전화번호
+                        cells[2].textContent = data.manager.email; // 이메일
                     }
                     // 수정 버튼 데이터 업데이트
-                    const editButton = document.querySelector(`button.btn-edit[data-id="${id}"]`);
+                    const editButton = document.querySelector(`button.btn-edit[data-id="${managerData.id}"]`);
                     if (editButton) {
-                        editButton.dataset.role = data.role;
+                        editButton.dataset.name = data.manager.name;
                     }
-                    showMessage('담당자 권한이 성공적으로 수정되었습니다.', 'success');
+                    // 삭제 버튼 데이터 업데이트
+                    const deleteButton = document.querySelector(`button.btn-delete[data-id="${managerData.id}"]`);
+                    if (deleteButton) {
+                        deleteButton.dataset.name = data.manager.name;
+                    }
+                    showMessage('담당자 정보가 성공적으로 수정되었습니다.', 'success');
                     closeEditModal();
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showMessage(`담당자 권한 수정 중 오류가 발생했습니다: ${error.message}`, 'error');
+                    showMessage(`담당자 정보 수정 중 오류가 발생했습니다: ${error.message}`, 'error');
                 });
             });
         }
@@ -1098,19 +1160,25 @@
     // 수정 버튼 클릭
     function handleEditClick(button) {
         const id = button.dataset.id;
-        if (id == currentUserId) return; // 본인 권한 수정 방지
-        const role = button.dataset.role;
-        openEditModal(id, role);
+        const name = button.dataset.name;
+        const tel = button.closest('tr').querySelector('td:nth-child(2)').textContent;
+        const email = button.closest('tr').querySelector('td:nth-child(3)').textContent;
+        openEditModal(id, name, tel, email);
     }
 
     // 수정 모달 열기
-    function openEditModal(id, role) {
+    function openEditModal(id, name, tel, email) {
         currentEditId = id;
-        const editRole = document.getElementById('editRole');
-        const editIdInput = document.getElementById('editId');
+        
         // 입력 필드 설정
-        editIdInput.value = id;
-        editRole.value = role;
+        document.getElementById('editId').value = id;
+        document.getElementById('editName').value = name;
+        document.getElementById('editTel').value = tel;
+        document.getElementById('editEmail').value = email;
+        
+        // 이메일 에러 메시지 초기화
+        document.getElementById('editEmailError').style.display = 'none';
+        
         // 모달 표시
         const modal = document.getElementById('editModal');
         modal.classList.add('show');
@@ -1122,8 +1190,12 @@
         modal.classList.remove('show');
         currentEditId = null;
         // 입력 필드 초기화
-        const editRole = document.getElementById('editRole');
-        if (editRole) editRole.disabled = false;
+        document.getElementById('editId').value = '';
+        document.getElementById('editName').value = '';
+        document.getElementById('editTel').value = '';
+        document.getElementById('editEmail').value = '';
+        // 에러 메시지 초기화
+        document.getElementById('editEmailError').style.display = 'none';
     }
 
     // 삭제 버튼 클릭
@@ -1155,7 +1227,7 @@
         if (currentDeleteId) {
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = `/user/delete/${currentDeleteId}?page=${currentPage}&search=${encodeURIComponent(searchKeyword)}`;
+            form.action = `/manager/delete/${currentDeleteId}?page=${currentPage}&search=${encodeURIComponent(searchKeyword)}`;
             document.body.appendChild(form);
             form.submit();
         }
@@ -1185,7 +1257,7 @@
     function confirmRestore() {
         if (currentRestoreId) {
             // 현재 페이지와 검색어를 쿼리스트링에 포함
-            let actionUrl = `/user/restore/${currentRestoreId}?page=${currentPage}`;
+            let actionUrl = `/manager/restore/${currentRestoreId}?page=${currentPage}`;
             if (searchKeyword && searchKeyword !== 'null' && searchKeyword !== 'undefined') {
                 actionUrl += `&search=${encodeURIComponent(searchKeyword)}`;
             }

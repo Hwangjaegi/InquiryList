@@ -9,4 +9,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     // 기본적인 findAll, findById 등 JpaRepository에서 제공
 
     Customer findByCode(String code);
+
+    boolean existsByCodeAndStatus(String customerCode , String status);
 }

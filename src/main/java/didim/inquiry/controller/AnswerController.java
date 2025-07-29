@@ -88,6 +88,8 @@ public class AnswerController extends BaseController {
             System.out.println("isWriter : " + isWriter + " / isManager : " + isManager);
             context.setVariable("isWriter", isWriter);
             context.setVariable("isManager", isManager);
+            // inquiry 객체도 context에 추가하여 매니저 정보에 접근할 수 있도록 함
+            context.setVariable("inquiry", saveAnswer.getInquiry());
             String answerHtml = templateEngine.process("inquiry/answerFragment", context);
             result.put("success", true);
             result.put("answerHtml", answerHtml);

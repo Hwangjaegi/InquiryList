@@ -1266,7 +1266,7 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.exists) {
-                        showValidationMessage('customerCode', '❌ 이미 사용중인 고객코드입니다.', 'error');
+                        showValidationMessage('customerCode', '❌ 등록되지 않았거나 사용중인 고객코드입니다.', 'error');
                         customerCodeChecked = false;
                     } else {
                         showValidationMessage('customerCode', '✔️ 사용할 수 있는 고객코드입니다!', 'success');

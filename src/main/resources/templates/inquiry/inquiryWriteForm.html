@@ -342,7 +342,7 @@
                 <select id="userName" name="name" onchange="updateContactInfo()">
                     <!-- 현재 사용자 정보 -->
                     <option th:attr="data-tel=${user.tel},data-email=${user.email},data-id=''"
-                            th:text="${user.name} + ' (본인)'"
+                            th:text="${user.name}"
                             th:value="${user.name}"
                             value="current">본인</option>
                     <!-- 매니저 목록 -->
@@ -353,7 +353,7 @@
                     </option>
                 </select>
                 <!-- 매니저 ID를 저장할 hidden 필드 추가 -->
-                <input type="hidden" id="managerId" name="managerId" value="" />
+                <input id="managerId" name="managerId" type="hidden" value="" />
             </div>
             <div class="form-group">
                 <label for="userTel">연락처</label>
