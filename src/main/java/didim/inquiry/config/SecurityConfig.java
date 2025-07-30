@@ -1,6 +1,7 @@
 package didim.inquiry.config;
 
 import didim.inquiry.filter.RefererFilter;
+import didim.inquiry.security.JwtAuthenticationFilter;
 import didim.inquiry.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,9 @@ public class SecurityConfig {
 
     @Autowired
     private RefererFilter refererFilter;
+    
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
@@ -50,8 +54,9 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())  // 최신 스타일로 CSRF 비활성화
                 .addFilterBefore(refererFilter, UsernamePasswordAuthenticationFilter.class)  // RefererFilter 추가
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // JWT 필터 추가
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/**" , "/signup", "/css/**", "/js/**" , "/image/**").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/validate", "/api/auth/test", "/signup", "/css/**", "/js/**", "/image/**", "/temp/**", "/posts/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

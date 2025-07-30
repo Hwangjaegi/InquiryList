@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>JWT 로그인 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .token-display {
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 12px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JWT 로그인 테스트</h1>
+        <p>파일메이커에서 이 페이지를 호출하여 JWT 로그인을 테스트할 수 있습니다.</p>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="customerCode">고객코드:</label>
+                <input id="customerCode" name="customerCode" required type="text">
+            </div>
+            
+            <div class="form-group">
+                <label for="username">사용자명:</label>
+                <input id="username" name="username" required type="text">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">비밀번호:</label>
+                <input id="password" name="password" required type="password">
+            </div>
+            
+            <button type="submit">로그인</button>
+        </form>
+        
+        <div class="result" id="result"></div>
+        
+        <div id="tokenInfo" style="display: none;">
+            <h3>JWT 토큰 정보</h3>
+            <div class="token-display" id="tokenDisplay"></div>
+            <button onclick="validateToken()" style="margin-top: 10px;">토큰 검증</button>
+            <button onclick="redirectToInquiryList()" style="margin-top: 10px; margin-left: 10px;">문의 목록으로 이동</button>
+        </div>
+    </div>
+
+    <script>
+        let currentToken = null;
+        
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const customerCode = document.getElementById('customerCode').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // username|customerCode 형식으로 조합
+            const combinedUsername = `${username}|${customerCode}`;
+            
+            console.log('전송할 데이터:', {
+                username: combinedUsername,
+                password: '***'
+            });
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: combinedUsername,
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentToken = data.token;
+                    showResult('로그인 성공! JWT 토큰이 발급되었습니다.', 'success');
+                    showTokenInfo(data.token);
+                } else {
+                    showResult('로그인 실패: ' + data.message, 'error');
+                }
+            } catch (error) {
+                showResult('오류 발생: ' + error.message, 'error');
+            }
+        });
+        
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = 'result ' + type;
+            resultDiv.style.display = 'block';
+        }
+        
+        function showTokenInfo(token) {
+            document.getElementById('tokenDisplay').textContent = token;
+            document.getElementById('tokenInfo').style.display = 'block';
+        }
+        
+        async function validateToken() {
+            if (!currentToken) {
+                showResult('토큰이 없습니다.', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/auth/validate', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + currentToken
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.valid) {
+                    showResult('토큰이 유효합니다. 사용자: ' + data.username, 'success');
+                } else {
+                    showResult('토큰이 유효하지 않습니다: ' + data.message, 'error');
+                }
+            } catch (error) {
+                showResult('토큰 검증 오류: ' + error.message, 'error');
+            }
+        }
+        
+        function redirectToInquiryList() {
+            if (currentToken) {
+                // 토큰을 localStorage와 쿠키에 저장
+                localStorage.setItem('jwt_token', currentToken);
+                
+                // 쿠키에 토큰 저장 (24시간 유효)
+                const expires = new Date();
+                expires.setTime(expires.getTime() + (24 * 60 * 60 * 1000));
+                document.cookie = `jwt_token=${currentToken}; expires=${expires.toUTCString()}; path=/`;
+                
+                console.log('JWT 토큰을 쿠키에 저장:', currentToken.substring(0, 50) + '...');
+                
+                // inquiryList 페이지로 이동
+                window.location.href = '/inquiryList';
+            } else {
+                showResult('토큰이 없습니다.', 'error');
+            }
+        }
+    </script>
+</body>
+</html> 

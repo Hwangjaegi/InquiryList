@@ -12,11 +12,27 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.beans.factory.annotation.Value;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class AnswerController extends BaseController {
@@ -26,6 +42,9 @@ public class AnswerController extends BaseController {
     private final AnswerService answerService;
     @Autowired
     private TemplateEngine templateEngine;
+    
+    @Value("${file.upload}")
+    private String uploadDir;
 
     public AnswerController(UserService userService, InquiryService inquiryService, AnswerService answerService) {
         this.userService = userService;
@@ -59,6 +78,37 @@ public class AnswerController extends BaseController {
         return "redirect:/inquiryList";
     }
 
+    // 답글용 임시 이미지 업로드
+    @PostMapping("/uploadAnswerTempImage")
+    @ResponseBody
+    public Map<String, String> uploadAnswerTempImage(@RequestParam("image") MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new RuntimeException("파일이 없습니다.");
+        }
+        
+        // 저장할 파일명 생성 (예: timestamp + 랜덤값)
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String filename = System.currentTimeMillis() + "_" + UUID.randomUUID() + extension;
+
+        // temp 디렉토리에 저장 , 디렉토리 없으면 생성
+        String tempDir = uploadDir + "/temp/";
+        File directory = new File(tempDir);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        File saveFile = new File(tempDir + filename);
+        file.transferTo(saveFile);
+
+        // 웹 접근경로
+        String webUrl = "/temp/" + filename;
+
+        Map<String, String> result = new HashMap<>();
+        result.put("url", webUrl);
+        return result;
+    }
+
     @PostMapping("/answerWriteAjax")
     @ResponseBody
     public java.util.Map<String, Object> answerWriteAjax(Answer answer) {
@@ -66,6 +116,27 @@ public class AnswerController extends BaseController {
         try {
             User findUser = getCurrentUser();
             answer.setUser(findUser);
+            
+            // 디버깅: 콘텐츠 확인
+            System.out.println("=== 답글 작성 디버깅 ===");
+            System.out.println("원본 콘텐츠: " + answer.getContent());
+            System.out.println("콘텐츠 길이: " + (answer.getContent() != null ? answer.getContent().length() : 0));
+            System.out.println("temp 포함 여부: " + (answer.getContent() != null && answer.getContent().contains("/temp/")));
+            
+            // 답글에 temp 이미지가 있다면 posts로 이동
+            String content = answer.getContent();
+            if (content != null && content.contains("/temp/")) {
+                System.out.println("temp 이미지 발견! 이동 처리 시작...");
+                String updatedContent = moveImageFromTempToPosts(content);
+                answer.setContent(updatedContent);
+                System.out.println("이동 후 콘텐츠: " + answer.getContent());
+            } else {
+                System.out.println("temp 이미지가 없습니다.");
+                if (content != null) {
+                    System.out.println("콘텐츠 내용: [" + content + "]");
+                }
+            }
+            
             answerService.saveAnswer(answer);
             // 답글 저장 후, DB에서 다시 조회(연관객체 포함, fetch join)
             Answer saveAnswer = answerService.getAnswerWithInquiryAndWriterById(answer.getId()).orElse(answer);
@@ -98,5 +169,71 @@ public class AnswerController extends BaseController {
             result.put("message", e.getMessage());
         }
         return result;
+    }
+    
+
+    
+    // temp폴더에서 posts폴더로 이동처리 메서드
+    private String moveImageFromTempToPosts(String content) throws IOException {
+        System.out.println("=== 이미지 이동 처리 시작 ===");
+        System.out.println("처리할 콘텐츠: " + content);
+        
+        // 정규식을 사용해 img 태그의 src 속성 추출
+        Pattern pattern = Pattern.compile("<img[^>]+src=[\"'](.*?)['\"]");
+        Matcher matcher = pattern.matcher(content);
+        StringBuilder updatedContent = new StringBuilder(content);
+
+        // 파일 시스템 경로
+        String uploadPath = uploadDir;
+        String tempPath = uploadPath + "/temp/";
+        String postsPath = uploadPath + "/posts/";
+        
+        System.out.println("업로드 경로: " + uploadPath);
+        System.out.println("temp 경로: " + tempPath);
+        System.out.println("posts 경로: " + postsPath);
+
+        // posts 폴더가 없으면 생성
+        File postsDir = new File(postsPath);
+        if (!postsDir.exists()) {
+            postsDir.mkdirs();
+        }
+
+        while (matcher.find()) {
+            String imgSrc = matcher.group(1);
+            System.out.println("발견된 이미지 src: " + imgSrc);
+            
+            if (imgSrc.contains("/temp/")) {
+                System.out.println("temp 이미지 발견! 이동 처리...");
+                
+                // 파일명 추출
+                String fileName = imgSrc.substring(imgSrc.lastIndexOf("/") + 1);
+                String oldFilePath = tempPath + fileName;
+                String newFilePath = postsPath + fileName;
+                
+                System.out.println("파일명: " + fileName);
+                System.out.println("이전 경로: " + oldFilePath);
+                System.out.println("새 경로: " + newFilePath);
+
+                // 파일 이동
+                File oldFile = new File(oldFilePath);
+                File newFile = new File(newFilePath);
+                if (oldFile.exists()) {
+                    System.out.println("파일 존재 확인됨. 이동 시작...");
+                    Files.move(oldFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    System.out.println("파일 이동 완료!");
+
+                    // 새로운 경로로 src 업데이트
+                    String newSrc = imgSrc.replace("/temp/", "/posts/");
+                    updatedContent = new StringBuilder(updatedContent.toString().replace(imgSrc, newSrc));
+                    System.out.println("경로 업데이트: " + imgSrc + " -> " + newSrc);
+                } else {
+                    System.out.println("파일이 존재하지 않습니다: " + oldFilePath);
+                }
+            } else {
+                System.out.println("temp 이미지가 아닙니다: " + imgSrc);
+            }
+        }
+
+        return updatedContent.toString();
     }
 }

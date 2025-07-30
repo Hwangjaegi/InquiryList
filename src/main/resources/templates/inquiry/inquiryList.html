@@ -418,6 +418,103 @@
             margin-bottom: 10px;
         }
 
+        /* 이미지 업로드 스타일 */
+        .image-upload-section {
+            margin-bottom: 15px;
+        }
+
+        .file-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .image-upload-btn {
+            padding: 8px 16px;
+            background: #f8fafc;
+            color: #2a9d8f;
+            border: 2px dashed #2a9d8f;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .image-upload-btn:hover {
+            background: #e6f4f1;
+            border-color: #237c70;
+            color: #237c70;
+        }
+
+        .file-info {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .image-preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+        }
+
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-preview-item .remove-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 20px;
+            height: 20px;
+            background: rgba(229, 62, 62, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .image-preview-item .remove-btn:hover {
+            background: rgba(229, 62, 62, 1);
+        }
+
+        .image-preview-item .file-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 4px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         textarea {
             width: 100%;
             padding: 10px 14px;
@@ -736,6 +833,72 @@
     let errorMessage = /*[[${errorMessage}]]*/ null;
     let loginErrorMessage = /*[[${loginErrorMessage}]]*/ null;
 
+    // JWT 토큰 확인 및 설정
+    function setupJwtToken() {
+        // localStorage에서 토큰 확인
+        let token = localStorage.getItem('jwt_token');
+        
+        // localStorage에 없으면 쿠키에서 확인
+        if (!token) {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'jwt_token') {
+                    token = value;
+                    break;
+                }
+            }
+        }
+        
+        console.log('JWT 토큰 확인:', token ? '존재함' : '없음');
+        
+        if (token) {
+            // 모든 fetch 요청에 JWT 토큰 추가
+            const originalFetch = window.fetch;
+            window.fetch = function(url, options = {}) {
+                if (!options.headers) {
+                    options.headers = {};
+                }
+                options.headers['Authorization'] = 'Bearer ' + token;
+                console.log('Fetch 요청에 JWT 토큰 추가:', url);
+                return originalFetch(url, options);
+            };
+            
+            // 페이지 로드 시 토큰 검증
+            validateJwtToken(token);
+        } else {
+            console.log('JWT 토큰이 없음, 로그인 페이지로 이동');
+            window.location.href = '/login';
+        }
+    }
+    
+    // JWT 토큰 검증
+    async function validateJwtToken(token) {
+        try {
+            const response = await fetch('/api/auth/validate', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            
+            const data = await response.json();
+            if (!data.valid) {
+                console.log('JWT 토큰이 유효하지 않음, 로그인 페이지로 이동');
+                localStorage.removeItem('jwt_token');
+                window.location.href = '/login';
+            } else {
+                console.log('JWT 토큰 유효함:', data.username);
+            }
+        } catch (error) {
+            console.error('JWT 토큰 검증 오류:', error);
+        }
+    }
+
+    // 페이지 로드 시 JWT 토큰 설정
+    document.addEventListener('DOMContentLoaded', function() {
+        setupJwtToken();
+    });
+
     if (successMessage !== null) {
         alert(successMessage);
     }
@@ -993,6 +1156,19 @@
                     <label>
                         <i class="fas fa-reply"></i> 답글 작성
                     </label>
+                    
+                    <!-- 이미지 업로드 영역 추가 -->
+                    <div class="image-upload-section">
+                        <div class="file-input-wrapper">
+                            <input type="file" class="answer-image-upload" accept="image/*" multiple style="display: none;">
+                            <button type="button" class="image-upload-btn" onclick="this.previousElementSibling.click()">
+                                <i class="fas fa-image"></i> 이미지 추가
+                            </button>
+                            <span class="file-info">최대 5개, 각 5MB 이하</span>
+                        </div>
+                        <div class="image-preview-container"></div>
+                    </div>
+                    
                     <textarea name="content" placeholder="답글을 입력해주세요..." required="required" rows="4"></textarea>
                     <div class="reply-btn-row">
                         <button class="reply-button" type="submit">
@@ -1070,13 +1246,52 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+        // 이미지 업로드 기능 초기화
+        initializeImageUpload();
+        
         document.querySelectorAll('.reply-form').forEach(function(form) {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const formData = new FormData(form);
+                
+                // 이미지 URL들을 콘텐츠에 추가
+                const imageFiles = form.querySelectorAll('.image-preview-item');
+                let imageUrls = [];
+                imageFiles.forEach((item, index) => {
+                    const imageUrl = item.dataset.imageUrl;
+                    if (imageUrl) {
+                        imageUrls.push(imageUrl);
+                    }
+                });
+                
+                // 이미지 URL들을 콘텐츠에 추가
+                if (imageUrls.length > 0) {
+                    const textarea = form.querySelector('textarea');
+                    const currentContent = textarea.value;
+                    const imageHtml = imageUrls.map(url => 
+                        `<img src="${url}" style="max-width: 100%; height: auto; border-radius: 4px; margin: 5px 0;"><br>`
+                    ).join('');
+                    
+                    const newContent = currentContent + (currentContent ? '\n\n' : '') + imageHtml;
+                    textarea.value = newContent;
+                    
+                    console.log('=== 답글 이미지 추가 디버깅 ===');
+                    console.log('현재 콘텐츠:', currentContent);
+                    console.log('추가할 이미지 HTML:', imageHtml);
+                    console.log('최종 콘텐츠:', newContent);
+                }
+                
+                // FormData를 새로 생성하여 업데이트된 콘텐츠 포함
+                const updatedFormData = new FormData();
+                const textarea = form.querySelector('textarea');
+                const inquiryIdInput = form.querySelector('input[name="inquiry.id"]');
+                
+                updatedFormData.append('inquiry.id', inquiryIdInput.value);
+                updatedFormData.append('content', textarea.value);
+                
                 fetch('/answerWriteAjax', {
                     method: 'POST',
-                    body: formData
+                    body: updatedFormData
                 })
                 .then(res => res.json())
                 .then(data => {
@@ -1088,6 +1303,12 @@
                             answerList.appendChild(temp.firstElementChild);
                         }
                         form.reset();
+                        // 이미지 미리보기 초기화
+                        const previewContainer = form.querySelector('.image-preview-container');
+                        if (previewContainer) {
+                            previewContainer.innerHTML = '';
+                        }
+                        
                         const card = form.closest('.inquiry-card');
                         const statusDiv = card.querySelector('.inquiry-status');
                         if (statusDiv) {
@@ -1109,6 +1330,98 @@
             });
         });
     });
+
+    // 이미지 업로드 기능
+    function initializeImageUpload() {
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('answer-image-upload')) {
+                const files = Array.from(e.target.files);
+                const maxFiles = 5;
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                
+                // 파일 개수 제한
+                if (files.length > maxFiles) {
+                    alert(`최대 ${maxFiles}개의 이미지만 업로드 가능합니다.`);
+                    return;
+                }
+                
+                // 파일 크기 및 타입 검증
+                const validFiles = files.filter(file => {
+                    if (file.size > maxSize) {
+                        alert(`${file.name} 파일이 5MB를 초과합니다.`);
+                        return false;
+                    }
+                    if (!file.type.startsWith('image/')) {
+                        alert(`${file.name}은(는) 이미지 파일이 아닙니다.`);
+                        return false;
+                    }
+                    return true;
+                });
+                
+                if (validFiles.length === 0) return;
+                
+                const previewContainer = e.target.closest('.reply-form').querySelector('.image-preview-container');
+                
+                // 기존 미리보기 개수 확인
+                const existingPreviews = previewContainer.querySelectorAll('.image-preview-item');
+                if (existingPreviews.length + validFiles.length > maxFiles) {
+                    alert(`최대 ${maxFiles}개의 이미지만 업로드 가능합니다.`);
+                    return;
+                }
+                
+                validFiles.forEach(file => {
+                    uploadImageToTemp(file, previewContainer);
+                });
+                
+                // 파일 입력 초기화
+                e.target.value = '';
+            }
+        });
+    }
+    
+    // 이미지를 temp에 업로드하고 미리보기 생성
+    async function uploadImageToTemp(file, previewContainer) {
+        const formData = new FormData();
+        formData.append('image', file);
+        
+        try {
+            const response = await fetch('/uploadAnswerTempImage', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (!response.ok) {
+                throw new Error('이미지 업로드 실패');
+            }
+            
+            const data = await response.json();
+            
+            const previewItem = document.createElement('div');
+            previewItem.className = 'image-preview-item';
+            previewItem.dataset.imageUrl = data.url;
+            previewItem.dataset.fileName = file.name;
+            
+            previewItem.innerHTML = `
+                <img src="${data.url}" alt="${file.name}">
+                <button type="button" class="remove-btn" onclick="removeImage(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="file-name">${file.name}</div>
+            `;
+            
+            previewContainer.appendChild(previewItem);
+            
+        } catch (error) {
+            console.error('이미지 업로드 오류:', error);
+            alert('이미지 업로드 중 오류가 발생했습니다.');
+        }
+    }
+
+    // 이미지 제거
+    function removeImage(button) {
+        const previewItem = button.closest('.image-preview-item');
+        previewItem.remove();
+    }
 </script>
 </body>
 </html>

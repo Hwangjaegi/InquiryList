@@ -27,11 +27,19 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
+        System.out.println("=== CustomUserDetails.getPassword 호출 ===");
+        System.out.println("반환할 비밀번호: " + (user.getPassword() != null ? "***" : "null"));
         return user.getPassword();
     }
 
     @Override
     public String getUsername() {
+        System.out.println("=== CustomUserDetails.getUsername 호출 ===");
+        System.out.println("반환할 사용자명: " + user.getUsername());
         return user.getUsername(); // customerCode는 여기에 포함할 필요 없음
+    }
+    
+    public String getCustomerCode() {
+        return user.getCustomerCode();
     }
 }
