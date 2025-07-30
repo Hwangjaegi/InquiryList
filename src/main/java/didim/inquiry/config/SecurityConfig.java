@@ -56,8 +56,10 @@ public class SecurityConfig {
                 .addFilterBefore(refererFilter, UsernamePasswordAuthenticationFilter.class)  // RefererFilter 추가
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // JWT 필터 추가
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/api/auth/login", "/api/auth/validate", "/api/auth/test", "/signup", "/css/**", "/js/**", "/image/**", "/temp/**", "/posts/**").permitAll()
-                          .requestMatchers("/api/auth/**", "/signup", "/css/**", "/js/**", "/image/**", "/temp/**", "/posts/**").permitAll()
+                        // 공개 접근 가능한 경로들 (JWT 검증 불필요)
+                        .requestMatchers("/api/auth/**", "/api/check-*", "/signup", "/login", "/css/**", "/js/**", 
+                                       "/image/**", "/temp/**", "/posts/**", "/uploads/**").permitAll()
+                        // 인증이 필요한 경로들 (JWT 또는 세션 인증 필요)
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

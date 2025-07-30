@@ -6,9 +6,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
@@ -19,112 +23,135 @@ public class JwtTokenProvider {
     @Value("${jwt.expiration:86400000}") // 24시간
     private long jwtExpirationMs;
 
-    // 임시 토큰 저장소 (실제로는 Redis나 DB 사용 권장)
-    private Map<String, TokenInfo> tokenStore = new HashMap<>();
-
     public String generateToken(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         
         // CustomUserDetails인 경우 고객코드도 함께 저장
+        String usernameWithCustomerCode = userDetails.getUsername();
         if (userDetails instanceof CustomUserDetails) {
             CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
-            String usernameWithCustomerCode = customUserDetails.getUsername() + "|" + customUserDetails.getCustomerCode();
-            return generateTokenFromUsername(usernameWithCustomerCode);
+            usernameWithCustomerCode = customUserDetails.getUsername() + "|" + customUserDetails.getCustomerCode();
         }
         
-        return generateTokenFromUsername(userDetails.getUsername());
+        return generateTokenFromUsername(usernameWithCustomerCode);
     }
 
     public String generateTokenFromUsername(String username) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
         
-        // 간단한 토큰 생성 (실제로는 JWT 라이브러리 사용)
-        String token = "JWT_" + username + "_" + now.getTime() + "_" + jwtSecret.hashCode();
+        // JWT 형식: header.payload.signature
+        String header = Base64.getUrlEncoder().withoutPadding().encodeToString(
+            "{\"alg\":\"HS256\",\"typ\":\"JWT\"}".getBytes(StandardCharsets.UTF_8)
+        );
         
-        // 토큰 정보 저장
-        TokenInfo tokenInfo = new TokenInfo(username, expiryDate);
-        tokenStore.put(token, tokenInfo);
+        String payload = Base64.getUrlEncoder().withoutPadding().encodeToString(
+            ("{\"sub\":\"" + username + "\",\"iat\":" + now.getTime() + ",\"exp\":" + expiryDate.getTime() + "}")
+            .getBytes(StandardCharsets.UTF_8)
+        );
         
-        return token;
+        // HMAC-SHA256 서명 생성
+        String signature = createHmacSignature(header + "." + payload);
+        
+        return header + "." + payload + "." + signature;
     }
 
     public String getUsernameFromToken(String token) {
-        TokenInfo tokenInfo = tokenStore.get(token);
-        if (tokenInfo != null && !tokenInfo.isExpired()) {
-            return tokenInfo.getUsername();
+        try {
+            String[] parts = token.split("\\.");
+            if (parts.length != 3) {
+                return null;
+            }
+            
+            String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
+            // 간단한 JSON 파싱 (실제로는 JSON 라이브러리 사용 권장)
+            if (payload.contains("\"sub\":")) {
+                String sub = payload.split("\"sub\":\"")[1].split("\"")[0];
+                return sub;
+            }
+            return null;
+        } catch (Exception e) {
+            System.out.println("토큰에서 사용자명 추출 실패: " + e.getMessage());
+            return null;
         }
-        return null;
     }
 
     public boolean validateToken(String token) {
-        System.out.println("=== JWT 토큰 검증 시작 ===");
-        System.out.println("검증할 토큰: " + token.substring(0, Math.min(50, token.length())) + "...");
-        System.out.println("토큰 저장소 크기: " + tokenStore.size());
-        
-        TokenInfo tokenInfo = tokenStore.get(token);
-        System.out.println("토큰 정보 조회 결과: " + (tokenInfo != null ? "존재함" : "없음"));
-        
-        if (tokenInfo != null) {
-            System.out.println("토큰 만료 여부: " + tokenInfo.isExpired());
-            System.out.println("토큰 사용자명: " + tokenInfo.getUsername());
-            System.out.println("토큰 만료 시간: " + tokenInfo.getExpiryDate());
+        try {
+            System.out.println("=== JWT 토큰 검증 시작 ===");
+            System.out.println("검증할 토큰: " + token.substring(0, Math.min(50, token.length())) + "...");
+            
+            String[] parts = token.split("\\.");
+            if (parts.length != 3) {
+                System.out.println("토큰 형식 오류");
+                return false;
+            }
+            
+            // HMAC-SHA256 서명 검증
+            String expectedSignature = createHmacSignature(parts[0] + "." + parts[1]);
+            if (!parts[2].equals(expectedSignature)) {
+                System.out.println("서명 검증 실패");
+                return false;
+            }
+            
+            // 만료 시간 검증
+            String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
+            System.out.println("페이로드: " + payload);
+            if (payload.contains("\"exp\":")) {
+                String expStr = payload.split("\"exp\":")[1].split(",")[0].replaceAll("[^0-9]", "");
+                long exp = Long.parseLong(expStr);
+                if (System.currentTimeMillis() > exp) {
+                    System.out.println("토큰 만료");
+                    return false;
+                }
+            }
+            
+            System.out.println("JWT 토큰 검증 성공");
+            return true;
+            
+        } catch (Exception e) {
+            System.out.println("JWT 토큰 검증 실패: " + e.getMessage());
+            e.printStackTrace();
+            return false;
         }
-        
-        boolean isValid = tokenInfo != null && !tokenInfo.isExpired();
-        System.out.println("토큰 검증 결과: " + isValid);
-        
-        return isValid;
+    }
+
+    // HMAC-SHA256 서명 생성 (올바른 방식)
+    private String createHmacSignature(String data) {
+        try {
+            Mac mac = Mac.getInstance("HmacSHA256");
+            SecretKeySpec secretKeySpec = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+            mac.init(secretKeySpec);
+            
+            byte[] hmacBytes = mac.doFinal(data.getBytes(StandardCharsets.UTF_8));
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(hmacBytes);
+            
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            throw new RuntimeException("HMAC-SHA256 서명 생성 실패", e);
+        }
     }
 
     public Date getExpirationDateFromToken(String token) {
-        TokenInfo tokenInfo = tokenStore.get(token);
-        return tokenInfo != null ? tokenInfo.getExpiryDate() : null;
+        try {
+            String[] parts = token.split("\\.");
+            String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
+            if (payload.contains("\"exp\":")) {
+                String expStr = payload.split("\"exp\":")[1].split(",")[0].replaceAll("[^0-9]", "");
+                long exp = Long.parseLong(expStr);
+                return new Date(exp);
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public boolean isTokenExpired(String token) {
-        TokenInfo tokenInfo = tokenStore.get(token);
-        return tokenInfo == null || tokenInfo.isExpired();
-    }
-    
-    // 토큰 정보를 저장하는 내부 클래스
-    private static class TokenInfo {
-        private final String username;
-        private final Date expiryDate;
-        
-        public TokenInfo(String username, Date expiryDate) {
-            this.username = username;
-            this.expiryDate = expiryDate;
-        }
-        
-        public String getUsername() {
-            return username;
-        }
-        
-        public Date getExpiryDate() {
-            return expiryDate;
-        }
-        
-        public boolean isExpired() {
-            return new Date().after(expiryDate);
-        }
-    }
-
-    // 토큰 저장소 크기 반환 메서드 추가
-    public int getTokenStoreSize() {
-        return tokenStore.size();
-    }
-
-    // 토큰 저장소 내용 출력 메서드 추가
-    public void printTokenStore() {
-        System.out.println("=== 토큰 저장소 상태 ===");
-        System.out.println("저장소 크기: " + tokenStore.size());
-        for (Map.Entry<String, TokenInfo> entry : tokenStore.entrySet()) {
-            String token = entry.getKey();
-            TokenInfo info = entry.getValue();
-            System.out.println("토큰: " + token.substring(0, Math.min(30, token.length())) + "...");
-            System.out.println("사용자: " + info.getUsername());
-            System.out.println("만료: " + info.getExpiryDate());
+        try {
+            Date expiration = getExpirationDateFromToken(token);
+            return expiration != null && expiration.before(new Date());
+        } catch (Exception e) {
+            return true;
         }
     }
 } 
