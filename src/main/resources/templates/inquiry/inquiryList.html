@@ -835,10 +835,27 @@
 
     // JWT 토큰 확인 및 설정
     function setupJwtToken() {
-        // localStorage에서 토큰 확인
+        // 1. URL 파라미터에서 토큰 확인 (파일메이커용)
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlToken = urlParams.get('token');
+        
+        if (urlToken) {
+            console.log('URL 파라미터에서 토큰 발견, 쿠키에 저장');
+            // 토큰을 쿠키에 저장
+            document.cookie = `jwt_token=${urlToken}; path=/; max-age=${24 * 60 * 60}`;
+            
+            // URL에서 토큰 파라미터 제거 (보안상)
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
+            
+            // localStorage에도 저장
+            localStorage.setItem('jwt_token', urlToken);
+        }
+        
+        // 2. localStorage에서 토큰 확인
         let token = localStorage.getItem('jwt_token');
         
-        // localStorage에 없으면 쿠키에서 확인
+        // 3. localStorage에 없으면 쿠키에서 확인
         if (!token) {
             const cookies = document.cookie.split(';');
             for (let cookie of cookies) {

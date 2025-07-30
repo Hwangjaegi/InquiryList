@@ -29,28 +29,46 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        
+        // 특정 URL은 JWT 필터를 거치지 않음
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith("/api/auth/inquiryList")) {
+            System.out.println("=== JWT 필터 제외 ===");
+            System.out.println("요청 URL: " + requestURI + " - JWT 필터를 거치지 않음");
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
         try {
             String jwt = getJwtFromRequest(request);
             System.out.println("=== JWT 필터 실행 ===");
             System.out.println("요청 URL: " + request.getRequestURI());
             System.out.println("JWT 토큰: " + (jwt != null ? jwt.substring(0, Math.min(50, jwt.length())) + "..." : "null"));
 
-            if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
-                System.out.println("JWT 토큰 유효함");
-                String username = jwtTokenProvider.getUsernameFromToken(jwt);
-                System.out.println("토큰에서 추출한 사용자명: " + username);
-
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                System.out.println("UserDetails 로드 완료: " + userDetails.getUsername());
+            if (StringUtils.hasText(jwt)) {
+                System.out.println("토큰이 존재함, 검증 시작");
+                boolean isValid = jwtTokenProvider.validateToken(jwt);
+                System.out.println("토큰 검증 결과: " + isValid);
                 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                if (isValid) {
+                    System.out.println("JWT 토큰 유효함");
+                    String username = jwtTokenProvider.getUsernameFromToken(jwt);
+                    System.out.println("토큰에서 추출한 사용자명: " + username);
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                System.out.println("SecurityContext에 인증 정보 설정 완료");
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    System.out.println("UserDetails 로드 완료: " + userDetails.getUsername());
+                    
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    System.out.println("SecurityContext에 인증 정보 설정 완료");
+                } else {
+                    System.out.println("JWT 토큰이 유효하지 않음");
+                }
             } else {
-                System.out.println("JWT 토큰이 없거나 유효하지 않음");
+                System.out.println("JWT 토큰이 없음");
             }
         } catch (Exception ex) {
             System.out.println("JWT 필터 오류: " + ex.getMessage());
@@ -76,6 +94,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         }
+
+//        // 3. URL 파라미터에서 토큰 확인 (추가)
+//        String tokenParam = request.getParameter("token");
+//        if (StringUtils.hasText(tokenParam)) {
+//            System.out.println("URL 파라미터에서 토큰 발견: " + tokenParam.substring(0, Math.min(50, tokenParam.length())) + "...");
+//            return tokenParam;
+//        }
         
         return null;
     }

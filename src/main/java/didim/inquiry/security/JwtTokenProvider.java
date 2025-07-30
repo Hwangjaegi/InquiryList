@@ -58,8 +58,23 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
+        System.out.println("=== JWT 토큰 검증 시작 ===");
+        System.out.println("검증할 토큰: " + token.substring(0, Math.min(50, token.length())) + "...");
+        System.out.println("토큰 저장소 크기: " + tokenStore.size());
+        
         TokenInfo tokenInfo = tokenStore.get(token);
-        return tokenInfo != null && !tokenInfo.isExpired();
+        System.out.println("토큰 정보 조회 결과: " + (tokenInfo != null ? "존재함" : "없음"));
+        
+        if (tokenInfo != null) {
+            System.out.println("토큰 만료 여부: " + tokenInfo.isExpired());
+            System.out.println("토큰 사용자명: " + tokenInfo.getUsername());
+            System.out.println("토큰 만료 시간: " + tokenInfo.getExpiryDate());
+        }
+        
+        boolean isValid = tokenInfo != null && !tokenInfo.isExpired();
+        System.out.println("토큰 검증 결과: " + isValid);
+        
+        return isValid;
     }
 
     public Date getExpirationDateFromToken(String token) {
@@ -92,6 +107,24 @@ public class JwtTokenProvider {
         
         public boolean isExpired() {
             return new Date().after(expiryDate);
+        }
+    }
+
+    // 토큰 저장소 크기 반환 메서드 추가
+    public int getTokenStoreSize() {
+        return tokenStore.size();
+    }
+
+    // 토큰 저장소 내용 출력 메서드 추가
+    public void printTokenStore() {
+        System.out.println("=== 토큰 저장소 상태 ===");
+        System.out.println("저장소 크기: " + tokenStore.size());
+        for (Map.Entry<String, TokenInfo> entry : tokenStore.entrySet()) {
+            String token = entry.getKey();
+            TokenInfo info = entry.getValue();
+            System.out.println("토큰: " + token.substring(0, Math.min(30, token.length())) + "...");
+            System.out.println("사용자: " + info.getUsername());
+            System.out.println("만료: " + info.getExpiryDate());
         }
     }
 } 

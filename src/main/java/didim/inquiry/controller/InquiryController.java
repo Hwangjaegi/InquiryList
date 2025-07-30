@@ -9,6 +9,7 @@ import didim.inquiry.security.SecurityUtil;
 import didim.inquiry.service.InquiryService;
 import didim.inquiry.service.ProjectService;
 import didim.inquiry.service.UserService;
+import didim.inquiry.security.JwtTokenProvider;  // 추가
 import didim.inquiry.service.AnswerService;
 import didim.inquiry.service.ManagerService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,14 +44,16 @@ public class InquiryController extends BaseController {
     private final UserService userService;
     private final ProjectService projectService;
     private final ManagerService managerService;
+    private final JwtTokenProvider jwtTokenProvider;
     @Value("${file.upload}")
     private String uploadDir;
 
-    public InquiryController(InquiryService inquiryService, UserService userService, ProjectService projectService, ManagerService managerService) {
+    public InquiryController(InquiryService inquiryService, UserService userService, ProjectService projectService, ManagerService managerService, JwtTokenProvider jwtTokenProvider) {
         this.inquiryService = inquiryService;
         this.userService = userService;
         this.projectService = projectService;
         this.managerService = managerService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @GetMapping("/inquiryList")

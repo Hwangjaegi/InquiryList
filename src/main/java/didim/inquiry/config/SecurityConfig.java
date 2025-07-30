@@ -56,7 +56,8 @@ public class SecurityConfig {
                 .addFilterBefore(refererFilter, UsernamePasswordAuthenticationFilter.class)  // RefererFilter 추가
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // JWT 필터 추가
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/api/auth/validate", "/api/auth/test", "/signup", "/css/**", "/js/**", "/image/**", "/temp/**", "/posts/**").permitAll()
+//                        .requestMatchers("/api/auth/login", "/api/auth/validate", "/api/auth/test", "/signup", "/css/**", "/js/**", "/image/**", "/temp/**", "/posts/**").permitAll()
+                          .requestMatchers("/api/auth/**", "/signup", "/css/**", "/js/**", "/image/**", "/temp/**", "/posts/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
