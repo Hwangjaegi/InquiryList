@@ -209,17 +209,17 @@ public class JwtAuthController {
             if (token == null) {
                 System.out.println("URL 파라미터에 토큰이 없음, 쿠키에서 토큰 확인");
                 
-                // 쿠키에서 JWT 토큰 확인
-                Cookie[] cookies = request.getCookies();
-                if (cookies != null) {
-                    for (Cookie cookie : cookies) {
-                        if ("jwt_token".equals(cookie.getName())) {
-                            token = cookie.getValue();
-                            System.out.println("쿠키에서 JWT 토큰 발견: " + token.substring(0, Math.min(50, token.length())) + "...");
-                            break;
-                        }
-                    }
-                }
+//                // 쿠키에서 JWT 토큰 확인
+//                Cookie[] cookies = request.getCookies();
+//                if (cookies != null) {
+//                    for (Cookie cookie : cookies) {
+//                        if ("jwt_token".equals(cookie.getName())) {
+//                            token = cookie.getValue();
+//                            System.out.println("쿠키에서 JWT 토큰 발견: " + token.substring(0, Math.min(50, token.length())) + "...");
+//                            break;
+//                        }
+//                    }
+//                }
                 
                 // 쿠키에도 토큰이 없으면 세션 인증 확인
                 if (token == null) {
