@@ -133,13 +133,13 @@ public class AdminController extends BaseController {
                 if (search != null && !search.trim().isEmpty()) {
                     userListByCustomerCode = userService.searchUsersByCustomerCode(user.getCustomerCode(), search, pageable);
                 } else {
-                    userListByCustomerCode = userService.getUsersByCustomerCode(user.getCustomerCode(),pageable);
+                    userListByCustomerCode = userService.getUsersByCustomerCode(user.getCustomerCode(), pageable);
                 }
 
                 Long totalUser = userService.getUsersCountByCustomerCode(user.getCustomerCode());
 
                 model.addAttribute("userList", userListByCustomerCode);
-                model.addAttribute("currentUserId",user.getId());
+                model.addAttribute("currentUserId", user.getId());
                 model.addAttribute("totalUser", totalUser);
                 model.addAttribute("searchKeyword", search);
                 return "page/userConsole";
@@ -148,7 +148,7 @@ public class AdminController extends BaseController {
             System.err.println(e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/login";
-        } catch (Exception e){
+        } catch (Exception e) {
             // 알 수 없는 역할
             System.err.println("Error : " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "알 수 없는 오류가 발생했습니다.");
@@ -210,11 +210,16 @@ public class AdminController extends BaseController {
 
         //해당 고객코드가 없을 경우 예외처리 후 삭제
         try {
+            User validateUser = getCurrentUser();
+            if (!validateUser.getRole().equals("ADMIN")) {
+                throw new IllegalArgumentException("권한이 없는 계정입니다.");
+            }
+
             adminService.deleteCustomerCode(id);
             redirectAttributes.addFlashAttribute("successMessage", "고객코드가 성공적으로 삭제되었습니다");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-        } catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             redirectAttributes.addFlashAttribute("errorMessage", "프로젝트가 등록된 고객코드는 삭제 할 수 없습니다");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "알 수 없는 오류가 발생했습니다.");
@@ -241,12 +246,12 @@ public class AdminController extends BaseController {
 
             // 검색 조회 , 일반 조회
             Page<Project> projectList = searchKeyword == null || searchKeyword.isEmpty()
-                    ? projectService.getAllProjectsByCustomerId(customer.getId(),pageable)
-                    : projectService.getAllProjectsByCustomerIdAndSearch(customer.getId(),searchKeyword, pageable);
+                    ? projectService.getAllProjectsByCustomerId(customer.getId(), pageable)
+                    : projectService.getAllProjectsByCustomerIdAndSearch(customer.getId(), searchKeyword, pageable);
 
 
             model.addAttribute("projectList", projectList);
-            model.addAttribute("role",user.getRole());
+            model.addAttribute("role", user.getRole());
             model.addAttribute("searchKeyword", searchKeyword);
             model.addAttribute("currentPage", projectList.getNumber());
             model.addAttribute("totalPages", projectList.getTotalPages());
@@ -262,11 +267,16 @@ public class AdminController extends BaseController {
 
     @GetMapping("/admin/projectListAdmin")
     public String adminProjectList(@RequestParam(value = "page", defaultValue = "0") int page,
-                                  @RequestParam(value = "size", defaultValue = "10") int size,
-                                  @RequestParam(value = "search", required = false) String searchKeyword,
-                                  Model model,
-                                  RedirectAttributes redirectAttributes) {
+                                   @RequestParam(value = "size", defaultValue = "10") int size,
+                                   @RequestParam(value = "search", required = false) String searchKeyword,
+                                   Model model,
+                                   RedirectAttributes redirectAttributes) {
         try {
+            User validateUser = getCurrentUser();
+            if (!validateUser.getRole().equals("ADMIN")) {
+                throw new IllegalArgumentException("권한이 없는 계정입니다.");
+            }
+
             Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
             Page<Project> projectList = (searchKeyword == null || searchKeyword.isEmpty())
                     ? projectService.getAllProjects(pageable)
@@ -279,6 +289,9 @@ public class AdminController extends BaseController {
             // 전체 customerCode 리스트
             model.addAttribute("customerList", customerService.findAll());
             return "page/adminProjectList";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/login";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "프로젝트 목록 조회 중 오류가 발생했습니다: " + e.getMessage());
             return "redirect:/console";
@@ -287,14 +300,22 @@ public class AdminController extends BaseController {
 
     @PostMapping("/admin/projectAdd")
     public String addProject(@RequestParam Long customerId,
-                            @RequestParam String projectSubject,
-                            RedirectAttributes redirectAttributes) {
+                             @RequestParam String projectSubject,
+                             RedirectAttributes redirectAttributes) {
         try {
+            User validateUser = getCurrentUser();
+            if (!validateUser.getRole().equals("ADMIN")) {
+                throw new IllegalArgumentException("권한이 없는 계정입니다.");
+            }
+
             Customer customer = customerService.getCustomerById(customerId);
             ProjectDto dto = new ProjectDto();
             dto.setProjectSubject(projectSubject);
             projectService.saveProjectWithCustomer(dto, customer);
             redirectAttributes.addFlashAttribute("successMessage", "프로젝트가 성공적으로 추가되었습니다.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/login";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "프로젝트 추가 중 오류가 발생했습니다: " + e.getMessage());
         }
@@ -310,12 +331,20 @@ public class AdminController extends BaseController {
                                 @RequestParam(value = "size", defaultValue = "10") int size,
                                 RedirectAttributes redirectAttributes) {
         try {
+            User validateUser = getCurrentUser();
+            if (!validateUser.getRole().equals("ADMIN")) {
+                throw new IllegalArgumentException("권한이 없는 계정입니다.");
+            }
+
             ProjectDto dto = new ProjectDto();
             dto.setProjectId(projectId);
             dto.setProjectSubject(projectSubject);
             Customer customer = customerService.getCustomerById(customerId);
             projectService.updateProject(dto, customer);
             redirectAttributes.addFlashAttribute("successMessage", "프로젝트가 성공적으로 수정되었습니다.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/login";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "프로젝트 수정 중 오류가 발생했습니다: " + e.getMessage());
         }
@@ -330,8 +359,16 @@ public class AdminController extends BaseController {
                                 @RequestParam(value = "size", defaultValue = "10") int size,
                                 RedirectAttributes redirectAttributes) {
         try {
+            User validateUser = getCurrentUser();
+            if (!validateUser.getRole().equals("ADMIN")) {
+                throw new IllegalArgumentException("권한이 없는 계정입니다.");
+            }
+
             projectService.deleteProjectById(id);
             redirectAttributes.addFlashAttribute("successMessage", "프로젝트가 성공적으로 삭제되었습니다.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/login";
         } catch (Exception e) {
             System.err.println("프로젝트 삭제중 문제발생 : " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "문의가 등록된 프로젝트는 삭제 할 수 없습니다.");
@@ -347,7 +384,13 @@ public class AdminController extends BaseController {
             @RequestParam(value = "search", required = false) String searchKeyword,
             Model model,
             RedirectAttributes redirectAttributes) {
+
         try {
+            User validateUser = getCurrentUser();
+            if (!validateUser.getRole().equals("ADMIN")) {
+                throw new IllegalArgumentException("권한이 없는 계정입니다.");
+            }
+
             Pageable pageable = PageRequest.of(page, size);
             Page<User> userPage;
             if (searchKeyword == null || searchKeyword.isEmpty()) {
@@ -374,9 +417,12 @@ public class AdminController extends BaseController {
             model.addAttribute("searchKeyword", searchKeyword);
 
             return "page/adminCustomerList";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/login";
         } catch (Exception e) {
             System.err.println("Not Found Error: " + e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "알수없는 오류가 발생 했습니다 : " + e.getMessage());
             return "redirect:/login";
         }
     }
@@ -446,7 +492,7 @@ public class AdminController extends BaseController {
             model.addAttribute("user", user);
             model.addAttribute("role", user.getRole());
             return "/page/myInfo";
-        }catch (UsernameNotFoundException e){
+        } catch (UsernameNotFoundException e) {
             System.err.println("User Not Found Error : " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/login";
@@ -459,12 +505,12 @@ public class AdminController extends BaseController {
     public Map<String, Object> checkCustomerCode(@RequestParam String customerCode) {
         Map<String, Object> response = new HashMap<>();
         System.out.println("user : " + userService.existsByCustomerCode(customerCode) + " / customer : " + customerService.existsByCustomerCodeAndStatusActive(customerCode));
-        if(userService.existsByCustomerCode(customerCode)){
-            response.put("exists",true);
-        }else if(!customerService.existsByCustomerCodeAndStatusActive(customerCode)){
-            response.put("exists",true);
-        }else {
-            response.put("exists",false);
+        if (userService.existsByCustomerCode(customerCode)) {
+            response.put("exists", true);
+        } else if (!customerService.existsByCustomerCodeAndStatusActive(customerCode)) {
+            response.put("exists", true);
+        } else {
+            response.put("exists", false);
         }
 
         return response;

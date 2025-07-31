@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String usernameWithCustomerCode) throws UsernameNotFoundException {
         System.out.println("=== CustomUserDetailsService.loadUserByUsername 호출 ===");
-        System.out.println("입력된 usernameWithCustomerCode: " + usernameWithCustomerCode);
+        System.out.println("2. 입력된 usernameWithCustomerCode: " + usernameWithCustomerCode);
         
         String[] parts = usernameWithCustomerCode.split("\\|");
 
@@ -35,8 +35,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         System.out.println("파싱된 username: " + username);
         System.out.println("파싱된 customerCode: " + customerCode);
-
-        User user = userRepository.findByUsername(username)
+        System.out.println("파싱된 username , customerCode로 DB조회");
+        User user = userRepository.findByUsernameAndCustomerCode(username,customerCode)
                 .orElseThrow(() -> {
                     System.out.println("사용자를 찾을 수 없음: " + username);
                     return new UsernameNotFoundException("존재하지 않는 계정입니다: " + username);
@@ -51,7 +51,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("비활성화된 계정입니다");
         }
 
-        System.out.println("인증 성공 - CustomUserDetails 생성");
+        System.out.println("인증 성공 - CustomUserDetails 생성(User객체) 후 반환 -> JwtAuthController");
         // 기존 UserDetails 대신 CustomUserDetails 객체 반환
         return new CustomUserDetails(user);
     }

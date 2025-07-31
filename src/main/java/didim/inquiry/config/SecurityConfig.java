@@ -19,8 +19,8 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    private RefererFilter refererFilter;
+//    @Autowired
+//    private RefererFilter refererFilter;
     
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -53,10 +53,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())  // 최신 스타일로 CSRF 비활성화
-                .addFilterBefore(refererFilter, UsernamePasswordAuthenticationFilter.class)  // RefererFilter 추가
+//                .addFilterBefore(refererFilter, UsernamePasswordAuthenticationFilter.class)  // RefererFilter 추가
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // JWT 필터 추가
                 .authorizeHttpRequests(auth -> auth
-                        // 공개 접근 가능한 경로들 (JWT 검증 불필요)
+                        // 공개 접근 가능한 경로들(세션 없어도 접속가능한 url)
                         .requestMatchers("/api/auth/**", "/api/check-*", "/signup", "/login", "/css/**", "/js/**", 
                                        "/image/**", "/temp/**", "/posts/**", "/uploads/**").permitAll()
                         // 인증이 필요한 경로들 (JWT 또는 세션 인증 필요)

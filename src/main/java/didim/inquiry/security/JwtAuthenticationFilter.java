@@ -2,6 +2,7 @@ package didim.inquiry.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 공개 경로는 JWT 필터를 거치지 않음 (SecurityConfig에서 이미 permitAll 처리됨)
         if (requestURI.equals("/login") ||
             requestURI.equals("/signup") ||
-            requestURI.startsWith("/api/auth/") ||
+//            requestURI.startsWith("/api/auth/") ||
             requestURI.startsWith("/api/check-") ||
             requestURI.startsWith("/css/") ||
             requestURI.startsWith("/js/") ||
@@ -62,19 +63,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 이미 인증된 사용자가 있으면 JWT 검증 건너뛰기
             if (SecurityContextHolder.getContext().getAuthentication() != null && 
                 SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-                System.out.println("JWT 검증건너뛰기");
+                System.out.println("SecurityContextHolder.getContext().getAuthentication() : " + SecurityContextHolder.getContext().getAuthentication());
+                System.out.println("SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : " + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
+                System.out.println("인증된 사용자 JWT 검증건너뛰기");
                 filterChain.doFilter(request, response);
                 return;
             }
-            
+
+            // 인증필요시 요청에서 jwt가져오기(헤더,쿠키,파라미터)
+            //JWT → 유저 이름 추출 → DB에서 유저 정보 조회 → 인증 객체 생성 → SecurityContext에 저장
+            // 로그인시 토큰이 없기에 NULL로 다음 필터
             String jwt = getJwtFromRequest(request);
-            System.out.println("Filter JWT : " + jwt);
+            System.out.println("헤더 쿠키 파라미터 -> Filter JWT : " + jwt);
 
             if (StringUtils.hasText(jwt)) {
+                System.out.println("jwt 가져오기 후 검증 시작");
                 boolean isValid = jwtTokenProvider.validateToken(jwt);
                 
                 if (isValid) {
+                    System.out.println("검증 성공 후 유저네임을 추출해 userDetailService 메서드호출");
                     String username = jwtTokenProvider.getUsernameFromToken(jwt);
+                    System.out.println("유저네임을 통해 DB에서 유저조회후 계정정보 및 권한 추출");
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                     
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -91,17 +100,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+
     private String getJwtFromRequest(HttpServletRequest request) {
         // 1. Authorization 헤더에서 토큰 확인
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            System.out.println("헤더에서 토큰확인");
             return bearerToken.substring(7);
         }
         
         // 2. 쿠키에서 토큰 확인
         jakarta.servlet.http.Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            for (jakarta.servlet.http.Cookie cookie : cookies) {
+            for (Cookie cookie : cookies) {
                 if ("jwt_token".equals(cookie.getName())) {
                     System.out.println("JWT 필터에서 쿠키에서 토큰 발견");
                     return cookie.getValue();
@@ -116,7 +127,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return tokenParam;
         }
 
-        System.out.println("토큰 정보 확인 불가능");
+
+        System.out.println("/login 요청 시 토큰 정보 확인 불가능");
         return null;
     }
 } 

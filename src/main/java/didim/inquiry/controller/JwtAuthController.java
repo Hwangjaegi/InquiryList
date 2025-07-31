@@ -44,11 +44,14 @@ public class JwtAuthController {
     @ResponseBody
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         try {
-            System.out.println("=== JWT 로그인 시도 ===");
+            System.out.println("=== JwtAuthController JWT 로그인 시도 ===");
             System.out.println("사용자명: " + loginRequest.getUsername());
             System.out.println("비밀번호: " + (loginRequest.getPassword() != null ? "***" : "null"));
             
             // 인증 처리
+            System.out.println("1. 로그인 정보 인증처리 -> CustomUserDetailsService");
+            //내부적으로 userDetailService를 사용해 사용자정보조회 및 검증 실행
+            //따라서 해당 클래스를 구현한 CustomUserDetailsService 클래스의 메서드 실행
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.getUsername(),
@@ -56,19 +59,24 @@ public class JwtAuthController {
                     )
             );
 
+            System.out.println("인증성공 시 username,password만 가지고 인증객체 생성");
             System.out.println("인증 성공: " + authentication.getName());
             System.out.println("인증 권한: " + authentication.getAuthorities());
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            System.out.println("인증객체를 시큐리티 컨텍스트에 저장");
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // JWT 토큰 생성
-            String jwt = jwtTokenProvider.generateToken(authentication);
+            System.out.println("인증객체를 JWT토큰으로 생성 (header.payload,signature)");
+            String jwt = jwtTokenProvider.generateTokenFromUsername(loginRequest.getUsername());
             System.out.println("JWT 토큰 생성 완료: " + jwt.substring(0, Math.min(50, jwt.length())) + "...");
 
             // 토큰이 실제로 발행되었는지 확인
             boolean tokenExists = jwtTokenProvider.validateToken(jwt);
-            System.out.println("토큰 발행 확인 결과: " + tokenExists);
+            System.out.println("토큰 발행 검증 확인 결과: " + tokenExists);
 
+            // 토큰 발행 후 응답 결과 리턴
+            System.out.println("요청한 클라이언트에게 토큰,url응답");
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("token", jwt);

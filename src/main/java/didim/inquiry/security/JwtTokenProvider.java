@@ -24,15 +24,20 @@ public class JwtTokenProvider {
     private long jwtExpirationMs;
 
     public String generateToken(Authentication authentication) {
+        System.out.println("인증객체를 UserDetails로 다운캐스팅");
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         
         // CustomUserDetails인 경우 고객코드도 함께 저장
+        System.out.println("다운캐스팅을 통핸 User객체에서 username|customerCode 형태로 변환");
         String usernameWithCustomerCode = userDetails.getUsername();
+        System.out.println("usernameWithCustomerCode : " + userDetails.getUsername());
         if (userDetails instanceof CustomUserDetails) {
             CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
             usernameWithCustomerCode = customUserDetails.getUsername() + "|" + customUserDetails.getCustomerCode();
         }
-        
+        System.out.println("instanceof : " + usernameWithCustomerCode);
+
+        System.out.println("username|customerCode형태의 username으로 토큰 생성");
         return generateTokenFromUsername(usernameWithCustomerCode);
     }
 
@@ -76,6 +81,7 @@ public class JwtTokenProvider {
         }
     }
 
+    //토큰 검증 메서드
     public boolean validateToken(String token) {
         try {
             System.out.println("=== JWT 토큰 검증 시작 ===");
@@ -119,10 +125,14 @@ public class JwtTokenProvider {
     // HMAC-SHA256 서명 생성 (올바른 방식)
     private String createHmacSignature(String data) {
         try {
+            //java  HMAC 알고리즘 사용 (JWT 표준사용 알고리즘)
             Mac mac = Mac.getInstance("HmacSHA256");
+            System.out.println("시크릿키 : " + jwtSecret);
+            // jwtSecret문자열 바이트로변환해 HMAC키로 설정
             SecretKeySpec secretKeySpec = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
             mac.init(secretKeySpec);
-            
+
+            // data : header.paylod 문자열 이를 HMAC-SHA256해싱 시 서명결과 byte[]가 나옴
             byte[] hmacBytes = mac.doFinal(data.getBytes(StandardCharsets.UTF_8));
             return Base64.getUrlEncoder().withoutPadding().encodeToString(hmacBytes);
             

@@ -186,6 +186,8 @@
 
 <!-- 전화번호 자동 하이픈 추가 스크립트 -->
 <script>
+    localStorage.removeItem('jwt_token');
+
     function formatPhoneNumber(phoneNumber) {
         // 숫자만 추출
         const cleaned = phoneNumber.replace(/\D/g, '');

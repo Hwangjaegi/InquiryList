@@ -80,4 +80,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     // 이메일 중복확인
     boolean existsByEmail(String email);
+
+    Optional<User> findByUsernameAndCustomerCode(String username, String customerCode);
 }
