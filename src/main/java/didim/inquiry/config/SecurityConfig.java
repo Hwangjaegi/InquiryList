@@ -77,6 +77,9 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")       // /logout url요청을 가로채서 세션 삭제
                         .logoutSuccessUrl("/login") // 세션삭제 성공 시 이동할 url 요청
+                        .deleteCookies("jwt_token", "JSESSIONID")  // JWT 토큰과 세션 쿠키 삭제
+                        .invalidateHttpSession(true)  // HTTP 세션 무효화
+                        .clearAuthentication(true)   // 인증 정보 클리어
                         .permitAll()
                 )
                 .userDetailsService(customUserDetailsService);

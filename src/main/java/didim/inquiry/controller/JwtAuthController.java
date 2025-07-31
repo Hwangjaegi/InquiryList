@@ -9,6 +9,7 @@ import didim.inquiry.service.InquiryService;
 import didim.inquiry.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -92,6 +93,69 @@ public class JwtAuthController {
     @GetMapping("/test")
     public String testPage() {
         return "jwt-test";
+    }
+
+    @GetMapping("/clear-session")
+    @ResponseBody
+    public ResponseEntity<?> clearSession(HttpServletRequest request) {
+        try {
+            request.getSession().invalidate();
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "세션이 무효화되었습니다.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "세션 무효화 실패: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PostMapping("/logout")
+    @ResponseBody
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            System.out.println("=== JWT 로그아웃 처리 ===");
+            
+            // 1. 세션 무효화
+            request.getSession().invalidate();
+            System.out.println("세션 무효화 완료");
+            
+            // 2. SecurityContext 클리어
+            SecurityContextHolder.clearContext();
+            System.out.println("SecurityContext 클리어 완료");
+            
+            // 3. JWT 토큰 쿠키 삭제
+            jakarta.servlet.http.Cookie jwtCookie = new jakarta.servlet.http.Cookie("jwt_token", "");
+            jwtCookie.setMaxAge(0);
+            jwtCookie.setPath("/");
+            response.addCookie(jwtCookie);
+            System.out.println("JWT 토큰 쿠키 삭제 완료");
+            
+            // 4. JSESSIONID 쿠키 삭제
+            jakarta.servlet.http.Cookie sessionCookie = new jakarta.servlet.http.Cookie("JSESSIONID", "");
+            sessionCookie.setMaxAge(0);
+            sessionCookie.setPath("/");
+            response.addCookie(sessionCookie);
+            System.out.println("JSESSIONID 쿠키 삭제 완료");
+            
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("success", true);
+            responseMap.put("message", "로그아웃이 완료되었습니다.");
+            responseMap.put("redirectUrl", "/login");
+            
+            return ResponseEntity.ok(responseMap);
+            
+        } catch (Exception e) {
+            System.out.println("로그아웃 처리 중 오류: " + e.getMessage());
+            e.printStackTrace();
+            
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("success", false);
+            responseMap.put("message", "로그아웃 처리 실패: " + e.getMessage());
+            return ResponseEntity.badRequest().body(responseMap);
+        }
     }
 
     @GetMapping("/validate")
