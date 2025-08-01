@@ -687,15 +687,15 @@
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-title">관리 메뉴</div>
-                <a class="menu-item" th:href="@{/myInfo}">🙍‍♂️ 내정보</a>
-                <a class="menu-item active" th:href="@{/console}">🪪 고객 코드 관리</a>
-                <a class="menu-item" th:href="@{/admin/customerList}">👤 사용자 관리</a>
-                <a class="menu-item" th:href="@{/admin/projectListAdmin}">📋 프로젝트 목록</a>
+                <a class="menu-item" onclick="goToPage('/myInfo')">🙍‍♂️ 내정보</a>
+                <a class="menu-item active" onclick="goToPage('/console')">🪪 고객 코드 관리</a>
+                <a class="menu-item" onclick="goToPage('/admin/customerList')">👤 사용자 관리</a>
+                <a class="menu-item" onclick="goToPage('/admin/projectListAdmin')">📋 프로젝트 목록</a>
             </div>
             <div class="nav-section">
                 <div class="nav-section-title">기타</div>
-                <a class="menu-item" th:href="@{/inquiryList}">📋 문의리스트</a>
-                <a class="menu-item menu-item-logout" th:href="@{/logout}">🚪 로그아웃</a>
+                <a class="menu-item" onclick="goToPage('/inquiryList')">📋 문의리스트</a>
+                <a class="menu-item menu-item-logout" onclick="logout()">🚪 로그아웃</a>
             </div>
         </nav>
     </aside>
@@ -913,6 +913,107 @@
 </div>
 
 <script th:inline="javascript">
+    // JWT 토큰 확인 및 설정
+    function setupJwtToken() {
+        // 1. URL 파라미터에서 토큰 확인 (파일메이커용)
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlToken = urlParams.get('token');
+        
+        if (urlToken) {
+            console.log('URL 파라미터에서 토큰 발견 스토리지 저장');
+            
+            // URL에서 토큰 파라미터 제거 (보안상)
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
+            
+            // localStorage에도 저장
+            localStorage.setItem('jwt_token', urlToken);
+        }
+        
+        // 2. localStorage에서 토큰 확인
+        let token = localStorage.getItem('jwt_token');
+        
+        console.log('JWT 토큰 확인:', token ? '존재함' : '없음');
+        
+        if (token) {
+            // 모든 fetch 요청에 JWT 토큰 추가
+            const originalFetch = window.fetch;
+            window.fetch = function(url, options = {}) {
+                if (!options.headers) {
+                    options.headers = {};
+                }
+                options.headers['Authorization'] = 'Bearer ' + token;
+                console.log('Fetch 요청에 JWT 토큰 추가:', url);
+                return originalFetch(url, options);
+            };
+            
+            // JWT 토큰이 있을 때만 검증 수행
+            validateJwtToken(token);
+        } else {
+            // JWT 토큰이 없으면 일반 세션 인증으로 간주하고 검증 건너뛰기
+            console.log('JWT 토큰이 없음, 일반 세션 인증으로 간주');
+        }
+    }
+    
+    // JWT 토큰 검증
+    async function validateJwtToken(token) {
+        try {
+            const response = await fetch('/api/auth/validate', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            
+            const data = await response.json();
+            if (!data.valid) {
+                console.log('JWT 토큰이 유효하지 않음, 로그인 페이지로 이동');
+                localStorage.removeItem('jwt_token');
+                window.location.href = '/login';
+            } else {
+                console.log('JWT 토큰 유효함:', data.username);
+            }
+        } catch (error) {
+            console.error('JWT 토큰 검증 오류:', error);
+        }
+    }
+
+    // 페이지 이동 함수 (JWT 토큰과 함께)
+    function goToPage(url) {
+        const token = localStorage.getItem('jwt_token');
+        if (token) {
+            // JWT 토큰이 있을 때는 /api/auth/inquiryList로 이동
+            if (url === '/inquiryList') {
+                const separator = '/api/auth/inquiryList'.includes('?') ? '&' : '?';
+                window.location.href = '/api/auth/inquiryList' + separator + 'token=' + encodeURIComponent(token);
+            } else {
+                const separator = url.includes('?') ? '&' : '?';
+                window.location.href = url + separator + 'token=' + encodeURIComponent(token);
+            }
+        } else {
+            window.location.href = url;
+        }
+    }
+
+    // 로그아웃 함수
+    function logout() {
+        const token = localStorage.getItem('jwt_token');
+        if (token) {
+            // 서버에 로그아웃 요청
+            fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            }).finally(() => {
+                // localStorage에서 토큰 제거
+                localStorage.removeItem('jwt_token');
+                window.location.href = '/login';
+            });
+        } else {
+            window.location.href = '/logout';
+        }
+    }
+
     let currentEditId = null;
     let currentDeleteId = null;
     const currentPage = [[${customers.getNumber()}]];
@@ -977,6 +1078,8 @@
 
     // 이벤트 리스너 설정
     document.addEventListener('DOMContentLoaded', () => {
+        // JWT 토큰 설정
+        setupJwtToken();
         // 수정 및 삭제 버튼
         document.querySelectorAll('.btn-edit').forEach(button => {
             button.addEventListener('click', handleButtonClick);

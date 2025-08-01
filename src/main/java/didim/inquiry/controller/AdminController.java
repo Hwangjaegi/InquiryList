@@ -13,6 +13,7 @@ import didim.inquiry.service.ManagerService;
 import didim.inquiry.service.ProjectService;
 import didim.inquiry.service.UserService;
 import didim.inquiry.service.CustomerService;
+import didim.inquiry.security.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -42,13 +43,56 @@ public class AdminController extends BaseController {
     private final ProjectService projectService;
     private final CustomerService customerService;
     private final ManagerService managerService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public AdminController(AdminService adminService, UserService userService, ProjectService projectService, CustomerService customerService, ManagerService managerService) {
+    public AdminController(AdminService adminService, UserService userService, ProjectService projectService, CustomerService customerService, ManagerService managerService, JwtTokenProvider jwtTokenProvider) {
         this.adminService = adminService;
         this.userService = userService;
         this.projectService = projectService;
         this.customerService = customerService;
         this.managerService = managerService;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    // JWT 토큰에서 사용자 정보 가져오기
+    private User getCurrentUserFromToken(HttpServletRequest request) {
+        String token = extractTokenFromRequest(request);
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            String usernameWithCustomerCode = jwtTokenProvider.getUsernameFromToken(token);
+            
+            System.out.println("JWT 토큰에서 추출한 사용자명: " + usernameWithCustomerCode);
+            
+            // username|customerCode 형태인 경우
+            if (usernameWithCustomerCode != null && usernameWithCustomerCode.contains("|")) {
+                String[] parts = usernameWithCustomerCode.split("\\|");
+                if (parts.length == 2) {
+                    String username = parts[0];
+                    String customerCode = parts[1];
+                    return userService.getUserByUsernameAndCustomerCode(username, customerCode);
+                }
+            }
+            
+            // username만 있는 경우 (기존 방식)
+            return userService.getUserByUsername(usernameWithCustomerCode);
+        }
+        return getCurrentUser(); // JWT 토큰이 없으면 세션 기반 인증 사용
+    }
+
+    // 요청에서 JWT 토큰 추출
+    private String extractTokenFromRequest(HttpServletRequest request) {
+        // 1. Authorization 헤더에서 Bearer 토큰 확인
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+
+        // 2. URL 파라미터에서 토큰 확인
+        String tokenParam = request.getParameter("token");
+        if (tokenParam != null && !tokenParam.trim().isEmpty()) {
+            return tokenParam;
+        }
+
+        return null;
     }
 
     //콘솔 화면 표시
@@ -58,10 +102,11 @@ public class AdminController extends BaseController {
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "search", required = false) String search,
             Model model,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request) {
 
         try {
-            User user = getCurrentUser();
+            User user = getCurrentUserFromToken(request);
 
             // 어드민인 경우
             if ("ADMIN".equals(user.getRole())) {
@@ -160,13 +205,19 @@ public class AdminController extends BaseController {
 
     //코드생성
     @PostMapping("createCode")
-    public String createCustomerCode(@ModelAttribute CustomerDto customerDto, RedirectAttributes redirectAttributes, Model model) {
+    public String createCustomerCode(@ModelAttribute CustomerDto customerDto, RedirectAttributes redirectAttributes, Model model, HttpServletRequest request) {
         //1. Dto에 요청 파라미터 값 담기
         System.out.println("code : " + customerDto.getCode());
         System.out.println("설명 : " + customerDto.getCompany());
 
         //2. DB에 저장 , 존재하는 코드일시 예외발생시켜 Try-Catch로 예외처리
         try {
+            User user = getCurrentUserFromToken(request);
+            if (!"ADMIN".equals(user.getRole())) {
+                redirectAttributes.addFlashAttribute("errorMessage", "권한이 없는 계정입니다.");
+                return "redirect:/console";
+            }
+            
             adminService.createCustomerCode(customerDto);
             redirectAttributes.addFlashAttribute("successMessage", "고객코드가 성공적으로 등록되었습니다.");
             return "redirect:/console";
@@ -183,7 +234,8 @@ public class AdminController extends BaseController {
             @ModelAttribute CustomerDto customerDto,
             RedirectAttributes redirectAttributes,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "search", required = false) String search) {
+            @RequestParam(value = "search", required = false) String search,
+            HttpServletRequest request) {
 
         System.out.println("수정코드 : " + customerDto.getCode());
         System.out.println("수정설명 : " + customerDto.getCompany());
@@ -191,6 +243,12 @@ public class AdminController extends BaseController {
 
         //1. 수정 파라미터 받아서 업데이트
         try {
+            User user = getCurrentUserFromToken(request);
+            if (!"ADMIN".equals(user.getRole())) {
+                redirectAttributes.addFlashAttribute("errorMessage", "권한이 없는 계정입니다.");
+                return "redirect:/console";
+            }
+            
             adminService.updateCustomerCode(customerDto);
             redirectAttributes.addFlashAttribute("successMessage", "고객코드가 성공적으로 수정되었습니다.");
         } catch (IllegalArgumentException e) {
@@ -206,11 +264,12 @@ public class AdminController extends BaseController {
             RedirectAttributes redirectAttributes,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "search", required = false) String search) {
+            @RequestParam(value = "search", required = false) String search,
+            HttpServletRequest request) {
 
         //해당 고객코드가 없을 경우 예외처리 후 삭제
         try {
-            User validateUser = getCurrentUser();
+            User validateUser = getCurrentUserFromToken(request);
             if (!validateUser.getRole().equals("ADMIN")) {
                 throw new IllegalArgumentException("권한이 없는 계정입니다.");
             }
@@ -239,7 +298,7 @@ public class AdminController extends BaseController {
             HttpServletRequest request) {
 
         try {
-            User user = getCurrentUser();
+            User user = getCurrentUserFromToken(request);
             Pageable pageable = PageRequest.of(page, size);
             String customerCode = user.getCustomerCode();
             Customer customer = customerService.getCustomerByCode(customerCode);
@@ -270,9 +329,10 @@ public class AdminController extends BaseController {
                                    @RequestParam(value = "size", defaultValue = "10") int size,
                                    @RequestParam(value = "search", required = false) String searchKeyword,
                                    Model model,
-                                   RedirectAttributes redirectAttributes) {
+                                   RedirectAttributes redirectAttributes,
+                                   HttpServletRequest request) {
         try {
-            User validateUser = getCurrentUser();
+            User validateUser = getCurrentUserFromToken(request);
             if (!validateUser.getRole().equals("ADMIN")) {
                 throw new IllegalArgumentException("권한이 없는 계정입니다.");
             }
@@ -301,9 +361,10 @@ public class AdminController extends BaseController {
     @PostMapping("/admin/projectAdd")
     public String addProject(@RequestParam Long customerId,
                              @RequestParam String projectSubject,
-                             RedirectAttributes redirectAttributes) {
+                             RedirectAttributes redirectAttributes,
+                             HttpServletRequest request) {
         try {
-            User validateUser = getCurrentUser();
+            User validateUser = getCurrentUserFromToken(request);
             if (!validateUser.getRole().equals("ADMIN")) {
                 throw new IllegalArgumentException("권한이 없는 계정입니다.");
             }
@@ -329,9 +390,10 @@ public class AdminController extends BaseController {
                                 @RequestParam(value = "page", defaultValue = "0") int page,
                                 @RequestParam(value = "search", required = false) String search,
                                 @RequestParam(value = "size", defaultValue = "10") int size,
-                                RedirectAttributes redirectAttributes) {
+                                RedirectAttributes redirectAttributes,
+                                HttpServletRequest request) {
         try {
-            User validateUser = getCurrentUser();
+            User validateUser = getCurrentUserFromToken(request);
             if (!validateUser.getRole().equals("ADMIN")) {
                 throw new IllegalArgumentException("권한이 없는 계정입니다.");
             }
@@ -357,9 +419,10 @@ public class AdminController extends BaseController {
                                 @RequestParam(value = "page", defaultValue = "0") int page,
                                 @RequestParam(value = "search", required = false) String search,
                                 @RequestParam(value = "size", defaultValue = "10") int size,
-                                RedirectAttributes redirectAttributes) {
+                                RedirectAttributes redirectAttributes,
+                                HttpServletRequest request) {
         try {
-            User validateUser = getCurrentUser();
+            User validateUser = getCurrentUserFromToken(request);
             if (!validateUser.getRole().equals("ADMIN")) {
                 throw new IllegalArgumentException("권한이 없는 계정입니다.");
             }
@@ -383,10 +446,11 @@ public class AdminController extends BaseController {
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "search", required = false) String searchKeyword,
             Model model,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request) {
 
         try {
-            User validateUser = getCurrentUser();
+            User validateUser = getCurrentUserFromToken(request);
             if (!validateUser.getRole().equals("ADMIN")) {
                 throw new IllegalArgumentException("권한이 없는 계정입니다.");
             }
@@ -430,10 +494,11 @@ public class AdminController extends BaseController {
     @PostMapping("/admin/deleteUser/{id}")
     public String deleteUser(
             @PathVariable long id,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request) {
 
         try {
-            User user = getCurrentUser();
+            User user = getCurrentUserFromToken(request);
 
             if (!user.getRole().equals("ADMIN")) {
                 redirectAttributes.addFlashAttribute("errorMessage", "권한이 없는 계정입니다.");
@@ -459,10 +524,11 @@ public class AdminController extends BaseController {
     @PostMapping("/admin/restoreUser/{id}")
     public String restoreUser(
             @PathVariable Long id,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request) {
 
         try {
-            User user = getCurrentUser();
+            User user = getCurrentUserFromToken(request);
 
             if (!user.getRole().equals("ADMIN")) {
                 redirectAttributes.addFlashAttribute("errorMessage", "권한이 없는 계정입니다.");
@@ -486,10 +552,11 @@ public class AdminController extends BaseController {
 
     @GetMapping("/myInfo")
     public String myInfo(Model model,
-                         RedirectAttributes redirectAttributes) {
+                         RedirectAttributes redirectAttributes,
+                         HttpServletRequest request) {
         System.out.println("요청전달");
         try {
-            User user = getCurrentUser();
+            User user = getCurrentUserFromToken(request);
             model.addAttribute("user", user);
             model.addAttribute("role", user.getRole());
             return "page/myInfo";

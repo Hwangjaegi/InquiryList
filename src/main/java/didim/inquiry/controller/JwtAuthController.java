@@ -68,7 +68,7 @@ public class JwtAuthController {
 
             // JWT 토큰 생성
             System.out.println("인증객체를 JWT토큰으로 생성 (header.payload,signature)");
-            String jwt = jwtTokenProvider.generateTokenFromUsername(loginRequest.getUsername());
+            String jwt = jwtTokenProvider.generateToken(authentication);
             System.out.println("JWT 토큰 생성 완료: " + jwt.substring(0, Math.min(50, jwt.length())) + "...");
 
             // 토큰이 실제로 발행되었는지 확인

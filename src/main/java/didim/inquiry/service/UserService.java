@@ -76,6 +76,11 @@ public class UserService {
         return userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("로그인한 계정 정보가 존재하지 않습니다."));
     }
 
+    // 4. 계정 아이디(username)와 고객코드(customerCode)를 통해 회원정보 조회
+    public User getUserByUsernameAndCustomerCode(String username, String customerCode) {
+        return userRepository.findByUsernameAndCustomerCode(username, customerCode).orElseThrow(() -> new IllegalArgumentException("로그인한 계정 정보가 존재하지 않습니다."));
+    }
+
     // 다중 role 지원
     public Page<User> getUsersByRole(List<String> roles, Pageable pageable) {
         return userRepository.findAllByRoleInOrderByIdDesc(roles, pageable);

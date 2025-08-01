@@ -82,9 +82,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 
                 if (isValid) {
                     System.out.println("검증 성공 후 유저네임을 추출해 userDetailService 메서드호출");
-                    String username = jwtTokenProvider.getUsernameFromToken(jwt);
+                    String usernameWithCustomerCode = jwtTokenProvider.getUsernameFromToken(jwt);
+                    
+                    System.out.println("JWT 토큰에서 추출한 사용자명: " + usernameWithCustomerCode);
                     System.out.println("유저네임을 통해 DB에서 유저조회후 계정정보 및 권한 추출");
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(usernameWithCustomerCode);
                     
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());

@@ -897,6 +897,43 @@
         }
     }
 
+    // 페이지 이동 함수 (JWT 토큰과 함께)
+    function goToPage(url) {
+        const token = localStorage.getItem('jwt_token');
+        if (token) {
+            // JWT 토큰이 있을 때는 /api/auth/inquiryList로 이동
+            if (url === '/inquiryList') {
+                const separator = '/api/auth/inquiryList'.includes('?') ? '&' : '?';
+                window.location.href = '/api/auth/inquiryList' + separator + 'token=' + encodeURIComponent(token);
+            } else {
+                const separator = url.includes('?') ? '&' : '?';
+                window.location.href = url + separator + 'token=' + encodeURIComponent(token);
+            }
+        } else {
+            window.location.href = url;
+        }
+    }
+
+    // 로그아웃 함수
+    function logout() {
+        const token = localStorage.getItem('jwt_token');
+        if (token) {
+            // 서버에 로그아웃 요청
+            fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            }).finally(() => {
+                // localStorage에서 토큰 제거
+                localStorage.removeItem('jwt_token');
+                window.location.href = '/login';
+            });
+        } else {
+            window.location.href = '/logout';
+        }
+    }
+
     // 페이지 로드 시 JWT 토큰 설정
     document.addEventListener('DOMContentLoaded', function() {
         setupJwtToken();
@@ -991,13 +1028,13 @@
     <div class="page-header">
         <img alt="Didim Logo" class="page-logo" src="/image/didimLogo.png">
         <div style="display: flex; gap: 10px;">
-            <button class="create-button" onclick="location.href='/console'">
+            <button class="create-button" onclick="goToPage('/console')">
                 <i class="fas fa-cogs"></i>
                 <span th:if="${role == 'ADMIN'}">어드민페이지</span>
                 <span th:if="${role == 'MANAGER'}">관리자페이지</span>
                 <span th:if="${role == 'USER'}">마이페이지</span>
             </button>
-            <button class="logout-button" onclick="location.href='/logout'">
+            <button class="logout-button" onclick="logout()">
                 <i class="fas fa-sign-out-alt"></i> 로그아웃
             </button>
         </div>
@@ -1007,7 +1044,7 @@
         <p>고객님의 소중한 문의사항을 확인하실 수 있습니다</p>
     </div>
     <div class="action-buttons">
-        <button class="create-button" onclick="location.href='/inquiryWriteForm'" th:if="${role != 'ADMIN'}">
+        <button class="create-button" onclick="goToPage('/inquiryWriteForm')" th:if="${role != 'ADMIN'}">
             <i class="fas fa-plus"></i> 새 문의 작성
         </button>
         <!--        <button class="create-button" onclick="location.href='/console'">-->
