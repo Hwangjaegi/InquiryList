@@ -1,0 +1,47 @@
+{\rtf1\ansi\ansicpg949\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fnil\fcharset129 AppleSDGothicNeo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 [
+\f1 \'bd\'c7\'c1\'a6
+\f0  SSL pem
+\f1 \'c6\'c4\'c0\'cf
+\f0  
+\f1 \'b0\'e6\'b7\'ce
+\f0 ]\
+-> as7-fmapp-kr:~ admin$ sudo ls -l /etc/letsencrypt/live/didim.fmapp.kr\
+Password:\
+total 16\
+-rw-r--r--  1 root  wheel   692  7 31 18:09 README\
+lrwxr-xr-x  1 root  wheel    38  7 31 18:09 cert.pem -> ../../archive/didim.fmapp.kr/cert1.pem\
+lrwxr-xr-x  1 root  wheel    39  7 31 18:09 chain.pem -> ../../archive/didim.fmapp.kr/chain1.pem\
+lrwxr-xr-x  1 root  wheel    43  7 31 18:09 fullchain.pem -> ../../archive/didim.fmapp.kr/fullchain1.pem\
+-rw-------  1 root  wheel  2797  7 31 18:12 keystore.p12\
+lrwxr-xr-x  1 root  wheel    41  7 31 18:09 privkey.pem -> ../../archive/didim.fmapp.kr/privkey1.pem\
+->
+\f1  \'c7\'d8\'b4\'e7 \'c6\'c4\'c0\'cf\'c0\'bb \'bd\'ba\'c7\'c1\'b8\'b5 \'ba\'ce\'c6\'ae\'bf\'a1\'bc\'ad \'bb\'e7\'bf\'eb\'b0\'a1\'b4\'c9\'c7\'d1 p12\'c6\'c4\'c0\'cf\'b7\'ce \'ba\'af\'b0\'e6 \'c7\'d8\'be\'df \'c7\'d4.
+\fs24 \cf0 \CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 [\'bd\'ba\'c7\'c1\'b8\'b5\'ba\'ce\'c6\'ae\'bf\'a1\'bc\'ad \'bb\'e7\'bf\'eb\'c7\'cf\'b5\'b5\'b7\'cf \'ba\'af\'c8\'af\'c7\'d1 SSL \'c6\'c4\'c0\'cf\'b8\'ed : keystore.p12]\
+-> [2025-07-31] : Let\'a1\'afs Encypt SSL \'c0\'ce\'c1\'f5\'bc\'ad \'b9\'df\'b1\'de (\'b1\'e2\'b0\'a3 90\'c0\'cf) -> \'b8\'b8\'b7\'e1\'c0\'cf [2025-10-29]\
+\
+[\'c0\'fc\'c3\'bc\'c1\'a4\'ba\'b8 \'b9\'d7 \'b8\'b8\'b7\'e1\'c0\'cf \'c8\'ae\'c0\'ce\'b9\'e6\'b9\'fd]\
+-> keytool -list -v \\\
+  -keystore /Users/admin/Customer/keystore.p12 \\\
+  -storetype PKCS12\
+-> \'c5\'cd\'b9\'cc\'b3\'ce \'c0\'d4\'b7\'c2 \'bd\'c3 password \'c0\'d4\'b7\'c2\'c7\'cf\'b4\'c2\'b5\'a5 didim7977 \'c0\'d4\'b7\'c2\
+until: \'b7\'ce \'bd\'c3\'c0\'db\'c7\'cf\'b4\'c2 \'b3\'af\'c2\'a5\'b0\'a1 SSL\'c0\'ce\'c1\'f5\'bc\'ad \'b8\'b8\'b7\'e1\'c0\'cf \
+\
+\
+[\'b8\'b8\'b7\'e1\'c0\'cf\'b8\'b8 \'c8\'ae\'c0\'ce\'b9\'e6\'b9\'fd]\
+-> openssl pkcs12 -in /Users/admin/Customer/keystore.p12 -nokeys -clcerts | openssl x509 -noout -enddate\
+-> \'c5\'cd\'b9\'cc\'b3\'ce \'c0\'d4\'b7\'c2 \'bd\'c3 password \'c0\'d4\'b7\'c2\'c7\'cf\'b4\'c2\'b5\'a5 didim7977 \'c0\'d4\'b7\'c2\
+\'b8\'b8\'b7\'e18\'c0\'cf \'c8\'ae\'c0\'ce\'b0\'a1\'b4\'c9\
+}

@@ -8,6 +8,7 @@ import didim.inquiry.security.SecurityUtil;
 import didim.inquiry.service.AnswerService;
 import didim.inquiry.service.InquiryService;
 import didim.inquiry.service.UserService;
+import didim.inquiry.service.EmailService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,16 +41,18 @@ public class AnswerController extends BaseController {
     private final UserService userService;
     private final InquiryService inquiryService;
     private final AnswerService answerService;
+    private final EmailService emailService;
     @Autowired
     private TemplateEngine templateEngine;
     
     @Value("${file.upload}")
     private String uploadDir;
 
-    public AnswerController(UserService userService, InquiryService inquiryService, AnswerService answerService) {
+    public AnswerController(UserService userService, InquiryService inquiryService, AnswerService answerService, EmailService emailService) {
         this.userService = userService;
         this.inquiryService = inquiryService;
         this.answerService = answerService;
+        this.emailService = emailService;
     }
 
 
@@ -145,6 +148,14 @@ public class AnswerController extends BaseController {
             Inquiry inquiry = inquiryService.getInquiryById(inquiryId).orElseThrow(() -> new IllegalArgumentException("해당 문의 없음"));;
             inquiry.setStatus("답변완료");
             inquiryService.saveInquiry(inquiry);
+
+            // 답변 작성자에게 이메일 알림 발송
+            try {
+                emailService.sendAnswerNotification(saveAnswer);
+            } catch (Exception e) {
+                System.err.println("답변 알림 이메일 발송 실패: " + e.getMessage());
+                // 이메일 발송 실패는 답변 등록에 영향을 주지 않도록 함
+            }
 
             Context context = new Context();
             context.setVariable("answer", saveAnswer);

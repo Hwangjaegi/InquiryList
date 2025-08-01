@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // JWT 필터 추가
                 .authorizeHttpRequests(auth -> auth
                         // 공개 접근 가능한 경로들(세션 없어도 접속가능한 url)
-                        .requestMatchers("/api/auth/**", "/api/check-*", "/signup", "/login", "/css/**", "/js/**", 
+                        .requestMatchers("/","/api/auth/**", "/api/check-*", "/signup", "/login", "/css/**", "/js/**",
                                        "/image/**", "/temp/**", "/posts/**", "/uploads/**").permitAll()
                         // 인증이 필요한 경로들 (JWT 또는 세션 인증 필요)
                         .anyRequest().authenticated()

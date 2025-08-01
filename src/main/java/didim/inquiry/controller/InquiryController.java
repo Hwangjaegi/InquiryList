@@ -12,6 +12,7 @@ import didim.inquiry.service.UserService;
 import didim.inquiry.security.JwtTokenProvider;  // 추가
 import didim.inquiry.service.AnswerService;
 import didim.inquiry.service.ManagerService;
+import didim.inquiry.service.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -45,15 +46,17 @@ public class InquiryController extends BaseController {
     private final ProjectService projectService;
     private final ManagerService managerService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final EmailService emailService;
     @Value("${file.upload}")
     private String uploadDir;
 
-    public InquiryController(InquiryService inquiryService, UserService userService, ProjectService projectService, ManagerService managerService, JwtTokenProvider jwtTokenProvider) {
+    public InquiryController(InquiryService inquiryService, UserService userService, ProjectService projectService, ManagerService managerService, JwtTokenProvider jwtTokenProvider, EmailService emailService) {
         this.inquiryService = inquiryService;
         this.userService = userService;
         this.projectService = projectService;
         this.managerService = managerService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.emailService = emailService;
     }
 
     @GetMapping("/inquiryList")
@@ -193,19 +196,20 @@ public class InquiryController extends BaseController {
             inquiry.setWriter(findUser);
             inquiry.setCreatedAt(LocalDateTime.now());
             inquiry.setStatus("답변 대기중");
-            
+
             //프로젝트 조회
             Project selectedProject = projectService.getProject(projectDto.getProjectId());
             inquiry.setProject(selectedProject);
-            
+
             //매니저 설정 (매니저 ID가 있는 경우에만)
+            Manager selectedManager;
             if (managerId != null && managerId > 0) {
-                Manager selectedManager = managerService.getManagerById(managerId);
+                selectedManager = managerService.getManagerById(managerId);
                 if (selectedManager != null) {
                     inquiry.setManager(selectedManager);
                 }
             }
-            
+
             //문의에 이미지가 존재한다면 이미지 경로 변경 및 위치 변경
             String content = inquiry.getContent();
             if (content != null && content.contains("<img")) {
@@ -214,6 +218,15 @@ public class InquiryController extends BaseController {
             }
             //inquiry 레코드 생성
             inquiryService.saveInquiry(inquiry);
+
+            // ADMIN 권한 사용자들에게 이메일 알림 발송
+            try {
+                emailService.sendInquiryNotification(inquiry);
+            } catch (Exception e) {
+                System.err.println("이메일 발송 실패: " + e.getMessage());
+                // 이메일 발송 실패는 문의 등록에 영향을 주지 않도록 함
+            }
+
             redirectAttributes.addFlashAttribute("successMessage", "문의가 성공적으로 등록되었습니다.");
         } catch (Exception e) {
             System.err.println("문의 저장 중 오류 발생 : " + e.getMessage());
@@ -296,12 +309,12 @@ public class InquiryController extends BaseController {
         String role = findUser.getRole();
         Pageable pageable = PageRequest.of(page, 10);
         Page<Inquiry> inquiries = inquiryService.searchInquiries(
-            searchInquiry.getKeyword(),
-            searchInquiry.getYearMonth(),
-            searchInquiry.getStatus(),
-            role,
-            username,
-            pageable
+                searchInquiry.getKeyword(),
+                searchInquiry.getYearMonth(),
+                searchInquiry.getStatus(),
+                role,
+                username,
+                pageable
         );
         inquiries.forEach(inquiry -> {
             String content = inquiry.getContent();

@@ -27,7 +27,7 @@ public class Inquiry {
     @JoinColumn(name = "writer_id" , nullable = false)
     private User writer;          //작성자 이름 또는 ID
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "manager_id")
     private Manager manager;
 

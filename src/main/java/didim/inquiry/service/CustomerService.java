@@ -9,6 +9,7 @@ import java.util.List;
 @Service
 public class CustomerService {
     private final CustomerRepository customerRepository;
+
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
@@ -27,5 +28,9 @@ public class CustomerService {
 
     public boolean existsByCustomerCodeAndStatusActive(String customerCode) {
         return customerRepository.existsByCodeAndStatus(customerCode,"ACTIVE");
+    }
+
+    public void saveCustomer(Customer customer) {
+        customerRepository.save(customer);
     }
 }

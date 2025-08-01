@@ -487,11 +487,12 @@ public class AdminController extends BaseController {
     @GetMapping("/myInfo")
     public String myInfo(Model model,
                          RedirectAttributes redirectAttributes) {
+        System.out.println("요청전달");
         try {
             User user = getCurrentUser();
             model.addAttribute("user", user);
             model.addAttribute("role", user.getRole());
-            return "/page/myInfo";
+            return "page/myInfo";
         } catch (UsernameNotFoundException e) {
             System.err.println("User Not Found Error : " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

@@ -1153,7 +1153,7 @@
                         </th:block>
                     </div>
                 </div>
-                <form action="/answerWrite" class="reply-form" method="post" onclick="event.stopPropagation();"
+                <form class="reply-form" method="post" onclick="event.stopPropagation();"
                       th:if="${inquiry.status != '처리완료' and (role == 'ADMIN' or !#lists.isEmpty(inquiry.answers))}">
                     <input name="inquiry.id" th:value="${inquiry.id}" type="hidden"/>
                     <label>
