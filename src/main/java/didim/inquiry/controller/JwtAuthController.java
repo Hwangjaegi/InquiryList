@@ -40,6 +40,23 @@ public class JwtAuthController {
         this.inquiryService = inquiryService;
     }
 
+    //회원가입 요청 처리
+    @PostMapping("/signup")
+    public String joinUser(User user , Model model){
+        //순서 : 유저코드가 존재하는지 , 유저코드로 처음 가입하는 유저일경우 권한부여 이후로는 일반 사용자권한
+
+        //고객코드가 존재하는지 확인 + 고객코드가 같은 유저중 아이디가 같은 경우가 존재하는지 확인 후 가입처리
+        boolean success = userService.signUpUser(user);
+
+        if (!success){
+            model.addAttribute("errorMessage" , "올바른 요청이 아닙니다.");
+            return "login";
+        }
+
+        model.addAttribute("successMessage","회원가입이 완료되었습니다.");
+        return "redirect:/admin/customerList";
+    }
+
     @PostMapping("/login")
     @ResponseBody
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {

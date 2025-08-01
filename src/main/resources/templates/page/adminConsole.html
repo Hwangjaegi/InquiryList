@@ -757,7 +757,7 @@
             <!-- 검색 -->
             <div class="search-container">
                 <div class="search-icon">🔍</div>
-                <form id="searchForm" method="get" th:action="@{//console(page=0)}">
+                <form id="searchForm" method="get" th:action="@{/console(page=0)}">
                     <input class="search-input" name="search"
                            placeholder="고객 코드 또는 회사명으로 검색..."
                            th:value="${searchKeyword}"
@@ -820,14 +820,14 @@
                         <!-- 첫 페이지 버튼 -->
                         <a class="pagination-button"
                            th:classappend="${customers.getNumber() == 0} ? 'disabled'"
-                           th:href="@{//console(page=0, size=${customers.getSize()}, search=${searchKeyword})}">
+                           th:href="@{/console(page=0, size=${customers.getSize()}, search=${searchKeyword})}">
                             <span class="pagination-nav"><<</span>
                         </a>
 
                         <!-- 이전 그룹 버튼 -->
                         <a class="pagination-button"
                            th:classappend="${!hasPrevGroup} ? 'disabled'"
-                           th:href="@{//console(page=${prevGroupStartPage}, size=${customers.getSize()}, search=${searchKeyword})}">
+                           th:href="@{/console(page=${prevGroupStartPage}, size=${customers.getSize()}, search=${searchKeyword})}">
                             <span class="pagination-nav">이전</span>
                         </a>
 
@@ -835,20 +835,20 @@
                         <a class="pagination-button"
                            th:classappend="${page == customers.getNumber()} ? 'active'"
                            th:each="page : ${#numbers.sequence(startPage, endPage)}"
-                           th:href="@{//console(page=${page}, size=${customers.getSize()}, search=${searchKeyword})}"
+                           th:href="@{/console(page=${page}, size=${customers.getSize()}, search=${searchKeyword})}"
                            th:text="${page + 1}">1</a>
 
                         <!-- 다음 그룹 버튼 -->
                         <a class="pagination-button"
                            th:classappend="${!hasNextGroup} ? 'disabled'"
-                           th:href="@{//console(page=${nextGroupStartPage}, size=${customers.getSize()}, search=${searchKeyword})}">
+                           th:href="@{/console(page=${nextGroupStartPage}, size=${customers.getSize()}, search=${searchKeyword})}">
                             <span class="pagination-nav">다음</span>
                         </a>
 
                         <!-- 마지막 페이지 버튼 -->
                         <a class="pagination-button"
                            th:classappend="${customers.getNumber() == (customers.getTotalPages() - 1)} ? 'disabled'"
-                           th:href="@{//console(page=${customers.getTotalPages() - 1}, size=${customers.getSize()}, search=${searchKeyword})}">
+                           th:href="@{/console(page=${customers.getTotalPages() - 1}, size=${customers.getSize()}, search=${searchKeyword})}">
                             <span class="pagination-nav">>></span>
                         </a>
                     </th:block>

@@ -40,17 +40,18 @@ public class InquiryController extends BaseController {
     private final UserService userService;
     private final ProjectService projectService;
     private final ManagerService managerService;
-    private CustomerService customerService;
+    private final CustomerService customerService;
     private final JwtTokenProvider jwtTokenProvider;
     private final EmailService emailService;
     @Value("${file.upload}")
     private String uploadDir;
 
-    public InquiryController(InquiryService inquiryService, UserService userService, ProjectService projectService, ManagerService managerService, JwtTokenProvider jwtTokenProvider, EmailService emailService) {
+    public InquiryController(InquiryService inquiryService, UserService userService, ProjectService projectService, ManagerService managerService, CustomerService customerService, JwtTokenProvider jwtTokenProvider, EmailService emailService) {
         this.inquiryService = inquiryService;
         this.userService = userService;
         this.projectService = projectService;
         this.managerService = managerService;
+        this.customerService = customerService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.emailService = emailService;
     }
