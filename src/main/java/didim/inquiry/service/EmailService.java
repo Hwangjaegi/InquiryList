@@ -31,7 +31,7 @@ public class EmailService {
     /**
      * 문의 작성 시 ADMIN 권한 사용자들에게 이메일 발송
      */
-    public void sendInquiryNotification(Inquiry inquiry) {
+    public void sendInquiryNotification(Inquiry inquiry , String company) {
         try {
             // ADMIN 권한을 가진 모든 사용자 조회
             Page<User> adminUsersPage = userService.getUsersByRole(List.of("ADMIN"), Pageable.unpaged());
@@ -45,9 +45,7 @@ public class EmailService {
             // 각 ADMIN 사용자에게 이메일 발송
             for (User adminUser : adminUsers) {
                 if (adminUser.getEmail() != null && !adminUser.getEmail().trim().isEmpty()) {
-                    String customerCode = adminUser.getCustomerCode();
-                    Customer customer = customerService.getCustomerByCode(customerCode);
-                    sendInquiryNotificationToAdmin(adminUser, inquiry , customer);
+                    sendInquiryNotificationToAdmin(adminUser, inquiry , company);
                 }
             }
         } catch (Exception e) {
@@ -58,7 +56,7 @@ public class EmailService {
     /**
      * 특정 ADMIN 사용자에게 문의 알림 이메일 발송
      */
-    private void sendInquiryNotificationToAdmin(User adminUser, Inquiry inquiry , Customer customer) {
+    private void sendInquiryNotificationToAdmin(User adminUser, Inquiry inquiry , String company) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(adminUser.getEmail());
@@ -73,7 +71,6 @@ public class EmailService {
                             "새로운 문의가 등록되었습니다.\n\n" +
                             "문의 정보:\n" +
                             "- 회사명: %s\n" +
-                            "- 작성자: %s\n" +
                             "- 담당자: %s\n" +
                             "- 프로젝트: %s\n" +
                             "- 제목: %s\n" +
@@ -82,9 +79,8 @@ public class EmailService {
                             "관리자 콘솔에서 확인하실 수 있습니다.\n" +
                             "감사합니다.",
                     adminUser.getName(),
-                    customer.getCompany(),
-                    inquiry.getWriter().getName(),
-                    inquiry.getManager().getName(),
+                    company,
+                    inquiry.getManager() != null ? inquiry.getManager().getName() : inquiry.getWriter().getName(),
                     inquiry.getProject() != null ? inquiry.getProject().getSubject() : "기타문의",
                     inquiry.getTitle(),
                     inquiry.getContent() != null ? inquiry.getContent().replaceAll("<br>" , "\n").replaceAll("<[^>]*>", "") : "",
@@ -134,7 +130,9 @@ public class EmailService {
             }
 
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(inquiryWriter.getEmail());
+            String toEmail = answer.getInquiry().getManager() != null ?
+                    answer.getInquiry().getManager().getEmail() : inquiryWriter.getEmail();
+            message.setTo(toEmail);
             message.setSubject("[문의 시스템] 문의에 답변이 등록되었습니다");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -147,7 +145,6 @@ public class EmailService {
                             "문의 정보:\n" +
                             "- 문의 제목: %s\n" +
                             "- 답변 작성자: %s\n" +
-                            "- 답변 담당자: %s\n" +
                             "- 답변 내용: %s\n" +
                             "- 답변 일시: %s\n\n" +
                             "문의 목록에서 확인하실 수 있습니다.\n" +
@@ -155,7 +152,6 @@ public class EmailService {
                     inquiryWriter.getName(),
                     answer.getInquiry().getTitle(),
                     answer.getUser().getName(),
-                    answer.getInquiry().getManager().getName(),
                     answer.getContent() != null ? answer.getContent().replaceAll("<br>", "\n").replaceAll("<[^>]*>", "") : "",
                     formattedDate
             );
@@ -163,7 +159,7 @@ public class EmailService {
             message.setText(content);
             mailSender.send(message);
 
-            System.out.println("문의 작성자에게 답변 알림 이메일 발송 완료: " + inquiryWriter.getEmail());
+            System.out.println("문의 작성자에게 답변 알림 이메일 발송 완료: " + toEmail);
         } catch (Exception e) {
             System.err.println("문의 작성자에게 답변 알림 이메일 발송 실패: " + e.getMessage());
         }
@@ -219,7 +215,7 @@ public class EmailService {
                             "감사합니다.",
                     adminUser.getName(),
                     answer.getInquiry().getTitle(),
-                    answer.getUser().getName(),
+                    answer.getInquiry().getManager() != null ? answer.getInquiry().getManager().getName() : answer.getUser().getName(),
                     answer.getContent() != null ? answer.getContent().replaceAll("<br>", "\n").replaceAll("<[^>]*>", "") : "",
                     formattedDate
             );

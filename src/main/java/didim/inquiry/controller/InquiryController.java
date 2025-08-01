@@ -6,13 +6,8 @@ import didim.inquiry.dto.ManagerDto;
 import didim.inquiry.dto.ProjectDto;
 import didim.inquiry.dto.SearchInquiryDto;
 import didim.inquiry.security.SecurityUtil;
-import didim.inquiry.service.InquiryService;
-import didim.inquiry.service.ProjectService;
-import didim.inquiry.service.UserService;
+import didim.inquiry.service.*;
 import didim.inquiry.security.JwtTokenProvider;  // 추가
-import didim.inquiry.service.AnswerService;
-import didim.inquiry.service.ManagerService;
-import didim.inquiry.service.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -45,6 +40,7 @@ public class InquiryController extends BaseController {
     private final UserService userService;
     private final ProjectService projectService;
     private final ManagerService managerService;
+    private CustomerService customerService;
     private final JwtTokenProvider jwtTokenProvider;
     private final EmailService emailService;
     @Value("${file.upload}")
@@ -221,7 +217,9 @@ public class InquiryController extends BaseController {
 
             // ADMIN 권한 사용자들에게 이메일 알림 발송
             try {
-                emailService.sendInquiryNotification(inquiry);
+                String customerCode = findUser.getCustomerCode();
+                String company = customerService.getCustomerByCode(customerCode).getCompany();
+                emailService.sendInquiryNotification(inquiry , company);
             } catch (Exception e) {
                 System.err.println("이메일 발송 실패: " + e.getMessage());
                 // 이메일 발송 실패는 문의 등록에 영향을 주지 않도록 함
