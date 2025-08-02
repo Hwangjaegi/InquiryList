@@ -310,6 +310,49 @@
                 padding: 20px;
             }
         }
+
+        /* 로딩 오버레이 스타일 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #2a9d8f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #1f2a44;
+            font-size: 1rem;
+            font-weight: 500;
+        }
     </style>
 
 </head>
@@ -398,6 +441,14 @@
             </button>
         </div>
     </form>
+</div>
+
+<!-- 로딩 오버레이 -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">문의를 등록하고 있습니다...</div>
+    </div>
 </div>
 
 <!-- 담당자 추가 모달 -->
@@ -575,6 +626,8 @@
     document.getElementById('inquiryForm').onsubmit = function(e) {
         const html = quill.root.innerHTML;
         document.getElementById('hiddenContent').value = html;
+        
+        // 유효성 검사
         if (!document.getElementById('title').value.trim()) {
             alert('제목을 입력하세요.');
             e.preventDefault();
@@ -590,6 +643,15 @@
             e.preventDefault();
             return false;
         }
+        
+        // 로딩 오버레이 표시
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        loadingOverlay.style.display = 'flex';
+        
+        // 폼 제출 버튼 비활성화
+        const submitBtn = document.querySelector('.submit-main-btn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = '등록 중...';
     };
 
     document.getElementById('addManagerModal').addEventListener('click', function(e) {
