@@ -1074,7 +1074,7 @@
             <button class="create-button" onclick="goToPage('/console')">
                 <i class="fas fa-cogs"></i>
                 <span th:if="${role == 'ADMIN'}">어드민페이지</span>
-                <span th:if="${role == 'MANAGER'}">관리자페이지</span>
+                <span th:if="${role == 'MANAGER'}">마이페이지</span>
                 <span th:if="${role == 'USER'}">마이페이지</span>
             </button>
             <button class="logout-button" onclick="logout()">
