@@ -62,12 +62,12 @@
         .header { text-align: center; padding: 30px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); margin-bottom: 30px; }
         .header h1 { font-size: 2rem; font-weight: 600; color: #1f2a44; }
         .header p { font-size: 1rem; color: #64748b; margin-top: 8px; }
-        .content-card { background: #ffffff; border-radius: 12px; padding: 30px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); max-width: 500px; margin: 0 auto; }
-        .form-section { margin-bottom: 30px; }
-        .form-section h3 { color: #1f2a44; margin-bottom: 20px; font-size: 1.3rem; font-weight: 600; }
-        .form-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .content-card { background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); max-width: 500px; margin: 0 auto; }
+        .form-section { margin-bottom: 20px; }
+        .form-section h3 { color: #1f2a44; margin-bottom: 15px; font-size: 1.2rem; font-weight: 600; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         .form-label { font-weight: 600; color: #1f2a44; font-size: 0.95rem; }
-        .form-input { padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fafafa; color: #1f2a44; font-size: 0.9rem; transition: border-color 0.2s ease; font-family: inherit; }
+        .form-input { padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fafafa; color: #1f2a44; font-size: 0.9rem; transition: border-color 0.2s ease; font-family: inherit; }
         .form-input:focus { outline: none; border-color: #2a9d8f; background: #ffffff; }
         .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease; text-decoration: none; display: inline-block; align-items: center; gap: 6px; }
         .btn-primary { background: #2a9d8f; color: white; }
@@ -133,7 +133,8 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">이메일</label>
-                        <input class="form-input" name="email" required th:value="${user.email}" type="email">
+                        <input class="form-input" id="emailInput" name="email" required th:value="${user.email}" type="email">
+                        <div id="emailValidationMessage" style="font-size: 0.85rem; margin-top: 4px; display: none;"></div>
                     </div>
                 </div>
                 <div class="form-section">
@@ -162,11 +163,11 @@
                 <div class="form-group" style="justify-content: flex-end;">
                     <button class="btn btn-primary" type="submit">저장</button>
                 </div>
-                <div class="message-alert message-success" th:if="${successMessage}">
+                <div class="message-alert message-success" th:if="${successMessage}" id="successMessage">
                     <span class="message-icon">✅</span>
                     <span th:text="${successMessage}"></span>
                 </div>
-                <div class="message-alert message-error" th:if="${errorMessage}">
+                <div class="message-alert message-error" th:if="${errorMessage}" id="errorMessage">
                     <span class="message-icon">❌</span>
                     <span th:text="${errorMessage}"></span>
                 </div>
@@ -280,6 +281,22 @@
     document.addEventListener('DOMContentLoaded', function () {
         // JWT 토큰 설정
         setupJwtToken();
+        
+        // 성공/에러 메시지 3초 후 자동 숨김
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        if (successMessage) {
+            setTimeout(function() {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+        
+        if (errorMessage) {
+            setTimeout(function() {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
         const telInput = document.querySelector('input[name="tel"]');
         if (telInput) {
             telInput.addEventListener('input', function (e) {
@@ -296,6 +313,62 @@
                 }
                 e.target.value = formatted;
             });
+        }
+
+        // 이메일 검증 기능
+        const emailInput = document.getElementById('emailInput');
+        const originalEmail = emailInput.value; // 현재 사용자의 원본 이메일
+        
+        if (emailInput) {
+            emailInput.addEventListener('blur', function() {
+                const email = emailInput.value.trim();
+                const validationMessage = document.getElementById('emailValidationMessage');
+                
+                // 이메일이 비어있으면 검증 메시지 숨김
+                if (!email) {
+                    validationMessage.style.display = 'none';
+                    return;
+                }
+                
+                // 이메일 형식 검증
+                if (!email.includes('@')) {
+                    showEmailValidationMessage('❌ 올바르지 않은 이메일 형식입니다.', 'error');
+                    return;
+                }
+                
+                // 원본 이메일과 동일하면 검증 메시지 숨김
+                if (email === originalEmail) {
+                    validationMessage.style.display = 'none';
+                    return;
+                }
+                
+                // AJAX로 이메일 중복 확인
+                fetch(`/api/check-email?email=${encodeURIComponent(email)}`, { 
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        showEmailValidationMessage('❌ 이미 사용중인 이메일입니다.', 'error');
+                    } else {
+                        showEmailValidationMessage('✔️ 사용할 수 있는 이메일입니다!', 'success');
+                    }
+                })
+                .catch(() => {
+                    showEmailValidationMessage('❌ 서버 오류. 다시 시도하세요.', 'error');
+                });
+            });
+        }
+        
+        // 이메일 검증 메시지 표시 함수
+        function showEmailValidationMessage(message, type) {
+            const validationMessage = document.getElementById('emailValidationMessage');
+            validationMessage.textContent = message;
+            validationMessage.style.color = type === 'success' ? '#2a9d8f' : '#e53e3e';
+            validationMessage.style.display = 'block';
         }
 
         const currentPasswordInput = document.getElementById('currentPasswordInput');
@@ -373,6 +446,19 @@
             const newPassword = document.querySelector('input[name="newPassword"]').value;
             const confirmPassword = document.querySelector('input[name="confirmPassword"]').value;
             const newPasswordError = document.getElementById('newPasswordError');
+            const emailInput = document.getElementById('emailInput');
+            const emailValidationMessage = document.getElementById('emailValidationMessage');
+
+            // 이메일 검증 확인
+            if (emailInput.value !== originalEmail && emailValidationMessage.style.display === 'block') {
+                const isEmailValid = emailValidationMessage.textContent.includes('✔️');
+                if (!isEmailValid) {
+                    e.preventDefault();
+                    alert('이메일을 올바르게 입력해주세요.');
+                    emailInput.focus();
+                    return;
+                }
+            }
 
             // 비밀번호 변경 시도(셋 중 하나라도 입력)인데, 나머지 입력이 빠진 경우
             if (currentPassword || newPassword || confirmPassword) {
@@ -419,7 +505,7 @@
                 newPasswordError.style.display = 'none';
             }
         });
-    }); // ← 이 부분이 반드시 필요!
+    });
 </script>
 </body>
 </html> 

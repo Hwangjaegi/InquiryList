@@ -34,6 +34,10 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import didim.inquiry.security.JwtTokenProvider;
 
 @Controller
 public class AnswerController extends BaseController {
@@ -44,6 +48,8 @@ public class AnswerController extends BaseController {
     private final EmailService emailService;
     @Autowired
     private TemplateEngine templateEngine;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
     
     @Value("${file.upload}")
     private String uploadDir;
@@ -84,7 +90,13 @@ public class AnswerController extends BaseController {
     // 답글용 임시 이미지 업로드
     @PostMapping("/uploadAnswerTempImage")
     @ResponseBody
-    public Map<String, String> uploadAnswerTempImage(@RequestParam("image") MultipartFile file) throws IOException {
+    public Map<String, String> uploadAnswerTempImage(@RequestParam("image") MultipartFile file, HttpServletRequest request) throws IOException {
+        // JWT 토큰으로 사용자 인증 확인
+        User currentUser = getCurrentUserFromToken(request);
+        if (currentUser == null) {
+            throw new RuntimeException("인증이 필요합니다.");
+        }
+        
         if (file.isEmpty()) {
             throw new RuntimeException("파일이 없습니다.");
         }
@@ -114,20 +126,44 @@ public class AnswerController extends BaseController {
 
     @PostMapping("/answerWriteAjax")
     @ResponseBody
-    public java.util.Map<String, Object> answerWriteAjax(Answer answer) {
+    public Map<String, Object> answerWriteAjax(Answer answer, @RequestParam(value = "imageUrls", required = false) String imageUrlsJson, HttpServletRequest request) {
         java.util.Map<String, Object> result = new java.util.HashMap<>();
         try {
-            User findUser = getCurrentUser();
+            User findUser = getCurrentUserFromToken(request);
             answer.setUser(findUser);
             
             // 디버깅: 콘텐츠 확인
             System.out.println("=== 답글 작성 디버깅 ===");
             System.out.println("원본 콘텐츠: " + answer.getContent());
-            System.out.println("콘텐츠 길이: " + (answer.getContent() != null ? answer.getContent().length() : 0));
-            System.out.println("temp 포함 여부: " + (answer.getContent() != null && answer.getContent().contains("/temp/")));
+            System.out.println("이미지 URL JSON: " + imageUrlsJson);
+            
+            // 이미지 URL들을 콘텐츠에 추가
+            String content = answer.getContent();
+            if (imageUrlsJson != null && !imageUrlsJson.isEmpty()) {
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    List<String> imageUrls = objectMapper.readValue(imageUrlsJson, new TypeReference<List<String>>() {});
+                    
+                    if (!imageUrls.isEmpty()) {
+                        // 이미지 HTML 생성
+                        StringBuilder imageHtml = new StringBuilder();
+                        for (String imageUrl : imageUrls) {
+                            imageHtml.append("<img src=\"").append(imageUrl).append("\" style=\"max-width: 100%; height: auto; border-radius: 4px; margin: 5px 0;\"><br>");
+                        }
+                        
+                        // 텍스트 콘텐츠와 이미지 HTML 결합
+                        String newContent = content + (content != null && !content.trim().isEmpty() ? "\n\n" : "") + imageHtml.toString();
+                        answer.setContent(newContent);
+                        
+                        System.out.println("이미지 추가 후 콘텐츠: " + answer.getContent());
+                    }
+                } catch (Exception e) {
+                    System.err.println("이미지 URL 파싱 오류: " + e.getMessage());
+                }
+            }
             
             // 답글에 temp 이미지가 있다면 posts로 이동
-            String content = answer.getContent();
+            content = answer.getContent();
             if (content != null && content.contains("/temp/")) {
                 System.out.println("temp 이미지 발견! 이동 처리 시작...");
                 String updatedContent = moveImageFromTempToPosts(content);
@@ -246,5 +282,46 @@ public class AnswerController extends BaseController {
         }
 
         return updatedContent.toString();
+    }
+
+    // JWT 토큰에서 사용자 정보 가져오기
+    private User getCurrentUserFromToken(HttpServletRequest request) {
+        String token = extractTokenFromRequest(request);
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            String usernameWithCustomerCode = jwtTokenProvider.getUsernameFromToken(token);
+            
+            System.out.println("JWT 토큰에서 추출한 사용자명: " + usernameWithCustomerCode);
+            
+            // username|customerCode 형태인 경우
+            if (usernameWithCustomerCode != null && usernameWithCustomerCode.contains("|")) {
+                String[] parts = usernameWithCustomerCode.split("\\|");
+                if (parts.length == 2) {
+                    String username = parts[0];
+                    String customerCode = parts[1];
+                    return userService.getUserByUsernameAndCustomerCode(username, customerCode);
+                }
+            }
+            
+            // username만 있는 경우 (기존 방식)
+            return userService.getUserByUsername(usernameWithCustomerCode);
+        }
+        return getCurrentUser(); // JWT 토큰이 없으면 세션 기반 인증 사용
+    }
+
+    // 요청에서 JWT 토큰 추출
+    private String extractTokenFromRequest(HttpServletRequest request) {
+        // 1. Authorization 헤더에서 Bearer 토큰 확인
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+
+        // 2. URL 파라미터에서 토큰 확인
+        String tokenParam = request.getParameter("token");
+        if (tokenParam != null && !tokenParam.trim().isEmpty()) {
+            return tokenParam;
+        }
+
+        return null;
     }
 }
