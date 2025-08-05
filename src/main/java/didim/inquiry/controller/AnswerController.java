@@ -148,7 +148,7 @@ public class AnswerController extends BaseController {
                         // 이미지 HTML 생성
                         StringBuilder imageHtml = new StringBuilder();
                         for (String imageUrl : imageUrls) {
-                            imageHtml.append("<img src=\"").append(imageUrl).append("\" style=\"max-width: 100%; height: auto; border-radius: 4px; margin: 5px 0;\"><br>");
+                            imageHtml.append("<img src=\"").append(imageUrl).append("\" class=\"answer-img\" \"><br>");
                         }
                         
                         // 텍스트 콘텐츠와 이미지 HTML 결합

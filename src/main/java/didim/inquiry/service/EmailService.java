@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 public class EmailService {
@@ -27,6 +28,9 @@ public class EmailService {
 
     @Autowired
     private CustomerService customerService;
+
+    @Value("${spring.mail.from}")
+    private String fromEmail;
 
     /**
      * 문의 작성 시 ADMIN 권한 사용자들에게 이메일 발송
@@ -59,6 +63,7 @@ public class EmailService {
     private void sendInquiryNotificationToAdmin(User adminUser, Inquiry inquiry , String company) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail); // 추가
             message.setTo(adminUser.getEmail());
             message.setSubject("[문의 시스템] 새로운 문의가 등록되었습니다");
 
@@ -76,7 +81,7 @@ public class EmailService {
                             "- 제목: %s\n" +
                             "- 내용: %s\n" +
                             "- 등록일시: %s\n\n" +
-                            "관리자 콘솔에서 확인하실 수 있습니다.\n" +
+                            "문의목록에서 확인하실 수 있습니다.\n" +
                             "감사합니다.",
                     adminUser.getName(),
                     company,
@@ -130,6 +135,7 @@ public class EmailService {
             }
 
             SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail); // 추가
             String toEmail = answer.getInquiry().getManager() != null ?
                     answer.getInquiry().getManager().getEmail() : inquiryWriter.getEmail();
             message.setTo(toEmail);
@@ -196,6 +202,7 @@ public class EmailService {
     private void sendAnswerNotificationToAdmin(User adminUser, Answer answer) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail); // 추가
             message.setTo(adminUser.getEmail());
             message.setSubject("[문의 시스템] 문의에 추가 답변이 등록되었습니다");
 
@@ -211,7 +218,7 @@ public class EmailService {
                             "- 문의 작성자: %s\n" +
                             "- 답변 내용: %s\n" +
                             "- 답변 일시: %s\n\n" +
-                            "관리자 콘솔에서 확인하실 수 있습니다.\n" +
+                            "문의목록에서 확인하실 수 있습니다.\n" +
                             "감사합니다.",
                     adminUser.getName(),
                     answer.getInquiry().getTitle(),

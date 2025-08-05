@@ -28,30 +28,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String requestURI = request.getRequestURI();
+        
+        // 정적 리소스는 필터 자체를 거치지 않도록 설정
+        return requestURI.startsWith("/css/") ||
+               requestURI.startsWith("/js/") ||
+               requestURI.startsWith("/image/") ||
+               requestURI.startsWith("/temp/") ||
+               requestURI.startsWith("/posts/") ||
+               requestURI.startsWith("/uploads/") ||
+               requestURI.startsWith("/error");
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         
-        // JWT 필터는 인증이 필요한 요청에만 적용
+        // shouldNotFilter에서 처리되므로 여기서는 정적 리소스 체크 불필요
         String requestURI = request.getRequestURI();
         
         System.out.println("=== JWT 필터 진입 ===");
         System.out.println("요청 URL: " + requestURI);
         
-        // 공개 경로는 JWT 필터를 거치지 않음 (SecurityConfig에서 이미 permitAll 처리됨)
+        // 공개 경로는 JWT 필터를 거치지 않음
         if (requestURI.equals("/login") ||
             requestURI.equals("/signup") ||
-//            requestURI.startsWith("/api/auth/") ||
-            requestURI.startsWith("/api/check-") ||
-            requestURI.startsWith("/css/") ||
-            requestURI.startsWith("/js/") ||
-            requestURI.startsWith("/image/") ||
-            requestURI.startsWith("/temp/") ||
-            requestURI.startsWith("/posts/") ||
-            requestURI.startsWith("/uploads/") ||
-            requestURI.startsWith("/error")) {
+            requestURI.startsWith("/api/check-")) {
             
             System.out.println("공개 경로 - JWT 검증 건너뛰기: " + requestURI);
-            // 공개 경로는 JWT 검증 없이 통과
             filterChain.doFilter(request, response);
             return;
         }
