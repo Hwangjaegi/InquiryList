@@ -36,6 +36,7 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
             "AND (:start IS NULL OR i.createdAt >= :start) " +
             "AND (:end IS NULL OR i.createdAt <= :end) " +
             "AND (:statuses IS NULL OR i.status IN :statuses) " +
+            "AND (:projectId IS NULL OR i.project.id = :projectId) " +
             "ORDER BY i.createdAt DESC")
     Page<Inquiry> findInquiriesBySearchWithAdmin(
             @Param("title") String title,
@@ -43,6 +44,7 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
             @Param("statuses") List<String> statuses,
+            @Param("projectId") Long projectId,
             Pageable pageable);
 
     // 사용자용: 본인 문의만 검색
@@ -53,6 +55,7 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
             "AND (:start IS NULL OR i.createdAt >= :start) " +
             "AND (:end IS NULL OR i.createdAt <= :end) " +
             "AND (:statuses IS NULL OR i.status IN :statuses) " +
+            "AND (:projectId IS NULL OR i.project.id = :projectId) " +
             "AND w.username = :username " +
             "ORDER BY i.createdAt DESC")
     Page<Inquiry> findInquiriesBySearchWithUserByUsername(
@@ -61,6 +64,7 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
             @Param("statuses") List<String> statuses,
+            @Param("projectId") Long projectId,
             @Param("username") String username,
             Pageable pageable);
 
@@ -79,8 +83,9 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
             "AND (:statuses IS NULL OR i.status IN :statuses) " +
             "AND (:start IS NULL OR i.createdAt >= :start) " +
             "AND (:end IS NULL OR i.createdAt <= :end) " +
+            "AND (:projectId IS NULL OR i.project.id = :projectId) " +
             "ORDER BY i.createdAt DESC")
-    Page<Inquiry> findInquiriesByKeywordForAdmin(@Param("keyword") String keyword, @Param("statuses") List<String> statuses, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end, Pageable pageable);
+    Page<Inquiry> findInquiriesByKeywordForAdmin(@Param("keyword") String keyword, @Param("statuses") List<String> statuses, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end, @Param("projectId") Long projectId, Pageable pageable);
 
     @EntityGraph(attributePaths = {"answers", "answers.user"})
     @Query("SELECT i FROM Inquiry i JOIN i.writer w " +
@@ -91,8 +96,9 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
             "AND (:statuses IS NULL OR i.status IN :statuses) " +
             "AND (:start IS NULL OR i.createdAt >= :start) " +
             "AND (:end IS NULL OR i.createdAt <= :end) " +
+            "AND (:projectId IS NULL OR i.project.id = :projectId) " +
             "AND w.username = :username " +
             "ORDER BY i.createdAt DESC")
-    Page<Inquiry> findInquiriesByKeywordForUser(@Param("keyword") String keyword, @Param("statuses") List<String> statuses, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end, @Param("username") String username, Pageable pageable);
+    Page<Inquiry> findInquiriesByKeywordForUser(@Param("keyword") String keyword, @Param("statuses") List<String> statuses, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end, @Param("projectId") Long projectId, @Param("username") String username, Pageable pageable);
 
 }

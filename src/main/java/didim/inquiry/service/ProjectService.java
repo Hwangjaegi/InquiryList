@@ -41,7 +41,7 @@ public class ProjectService {
         return projectRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
     public Page<Project> getAllProjectsBySearch(String search, Pageable pageable) {
-        return projectRepository.findAllBySubjectContainingOrderByCreatedAtDesc(search, pageable);
+        return projectRepository.findBySubjectOrCustomerCodeContainingIgnoreCase(search, pageable);
     }
     public Project saveProjectWithCustomer(ProjectDto projectDto, Customer customer) {
         Project project = Project.from(projectDto, customer);
@@ -71,6 +71,15 @@ public class ProjectService {
 
     public Page<Project> getAllProjectsByCustomerIdAndSearch(Long customerCodeId, String searchKeyword, Pageable pageable) {
         return projectRepository.findByCustomerIdAndSubjectContainingOrderByCreatedAtDesc(customerCodeId,searchKeyword,pageable);
+    }
+
+    public long countAllProjects() {
+        return projectRepository.countAllProjects();
+    }
+
+    public long countNewProjectsThisMonth() {
+        java.time.LocalDateTime startOfMonth = java.time.LocalDateTime.now().withDayOfMonth(1).toLocalDate().atStartOfDay();
+        return projectRepository.countNewProjectsThisMonth(startOfMonth);
     }
 
 //    // 서버구동 시 subject='기타문의' 프로젝트가 없으면 자동 생성

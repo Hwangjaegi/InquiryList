@@ -38,7 +38,7 @@
         }
 
         .page-logo {
-            width: 90px;
+            width: 140px;
             height: auto;
         }
 
@@ -371,6 +371,12 @@
             width: fit-content;
         }
 
+        .inquiry-text img{
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
 
         .answer-text {
             background: #2a9d8f;
@@ -844,9 +850,29 @@
                 max-width: 100%;
             }
 
+            .inquiry-text img, .answer-text img {
+                max-width: 100%;
+                height: auto;
+            }
+
             .modal-content {
                 width: 95%;
                 padding: 15px;
+            }
+        }
+
+        /* 더 작은 화면에서의 이미지 처리 */
+        @media (max-width: 480px) {
+            .inquiry-text, .answer-text {
+                max-width: 100%;
+                padding: 10px 12px;
+            }
+            
+            .inquiry-text img, .answer-text img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 3px;
+                margin: 3px 0;
             }
         }
         .answer-date.left-date {
@@ -1009,14 +1035,8 @@
         });
         if (!isActive) {
             content.classList.add("active");
-            const replyForm = content.querySelector('.reply-form');
-            if (replyForm) {
-                replyForm.scrollIntoView({ behavior: "smooth", block: "center" });
-                const textarea = replyForm.querySelector('textarea');
-                if (textarea) {
-                    setTimeout(() => textarea.focus(), 400);
-                }
-            }
+            // 문의 헤더로 스크롤 이동
+            header.scrollIntoView({ behavior: "smooth", block: "start" });
         }
     }
 
@@ -1077,12 +1097,11 @@
 
 <div class="container">
     <div class="page-header">
-        <img alt="Didim Logo" class="page-logo" src="/image/didimLogo.png">
+        <img alt="Didim Logo" class="page-logo" src="/image/didimLogoKo.png">
         <div style="display: flex; gap: 10px;">
             <button class="create-button" onclick="goToPage('/console')">
                 <i class="fas fa-cogs"></i>
                 <span th:if="${role == 'ADMIN'}">어드민페이지</span>
-                <span th:if="${role == 'MANAGER'}">마이페이지</span>
                 <span th:if="${role == 'USER'}">마이페이지</span>
             </button>
             <button class="logout-button" onclick="logout()">
@@ -1098,12 +1117,6 @@
         <button class="create-button" onclick="goToPage('/inquiryWriteForm')" th:if="${role != 'ADMIN'}">
             <i class="fas fa-plus"></i> 새 문의 작성
         </button>
-        <!--        <button class="create-button" onclick="location.href='/console'">-->
-        <!--            <i class="fas fa-cogs"></i>-->
-        <!--            <span th:if="${role == 'ADMIN'}">어드민페이지</span>-->
-        <!--            <span th:if="${role == 'MANAGER'}">관리자페이지</span>-->
-        <!--            <span th:if="${role == 'USER'}">마이페이지</span>-->
-        <!--        </button>-->
     </div>
     <div class="search-bar">
         <form action="/searchInquiries" class="search-form" id="searchForm" method="get">
@@ -1112,6 +1125,14 @@
                    th:value="${searchInquiry?.keyword ?: ''}" type="text">
             <input class="month-input" name="yearMonth" placeholder="년월 선택" th:value="${searchInquiry?.yearMonth ?: ''}"
                    type="month">
+            <select class="month-input" name="projectId">
+                <option value="">프로젝트 선택</option>
+                <option th:each="project : ${projectList}"
+                        th:text="${project.subject}"
+                        th:value="${project.id}"
+                        th:selected="${searchInquiry?.projectId == project.id}">
+                </option>
+            </select>
             <div class="status-checkboxes">
                 <div class="checkbox-item">
                     <input id="status-pending" name="status"
@@ -1287,27 +1308,27 @@
             startPage=${(currentPage / pageSize) * pageSize},
             endPage=${startPage + pageSize - 1 > totalPages - 1 ? totalPages - 1 : startPage + pageSize - 1}">
             <a class="pagination-button"
-               th:href="${searchInquiry != null} ? @{/searchInquiries(page=0, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=0)}"
+               th:href="${searchInquiry != null} ? @{/searchInquiries(page=0, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, projectId=${searchInquiry.projectId ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=0)}"
                th:if="${startPage > 0}">
                 <i class="fas fa-angle-double-left"></i>
             </a>
             <a class="pagination-button"
-               th:href="${searchInquiry != null} ? @{/searchInquiries(page=${startPage - 1}, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${startPage - 1})}"
+               th:href="${searchInquiry != null} ? @{/searchInquiries(page=${startPage - 1}, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, projectId=${searchInquiry.projectId ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${startPage - 1})}"
                th:if="${startPage > 0}">
                 <i class="fas fa-chevron-left"></i> 이전
             </a>
             <a class="pagination-button" th:classappend="${page == currentPage} ? 'active'"
                th:each="page : ${#numbers.sequence(startPage, endPage)}"
-               th:href="${searchInquiry != null} ? @{/searchInquiries(page=${page}, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${page})}"
+               th:href="${searchInquiry != null} ? @{/searchInquiries(page=${page}, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, projectId=${searchInquiry.projectId ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${page})}"
                th:text="${page + 1}">
             </a>
             <a class="pagination-button"
-               th:href="${searchInquiry != null} ? @{/searchInquiries(page=${endPage + 1}, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${endPage + 1})}"
+               th:href="${searchInquiry != null} ? @{/searchInquiries(page=${endPage + 1}, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, projectId=${searchInquiry.projectId ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${endPage + 1})}"
                th:if="${endPage < totalPages - 1}">
                 다음 <i class="fas fa-chevron-right"></i>
             </a>
             <a class="pagination-button"
-               th:href="${searchInquiry != null} ? @{/searchInquiries(page=${totalPages - 1}, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${totalPages - 1})}"
+               th:href="${searchInquiry != null} ? @{/searchInquiries(page=${totalPages - 1}, keyword=${searchInquiry.keyword ?: ''}, yearMonth=${searchInquiry.yearMonth ?: ''}, projectId=${searchInquiry.projectId ?: ''}, status=${searchInquiry.status})} : @{/inquiryList(page=${totalPages - 1})}"
                th:if="${endPage < totalPages - 1}">
                 <i class="fas fa-angle-double-right"></i>
             </a>

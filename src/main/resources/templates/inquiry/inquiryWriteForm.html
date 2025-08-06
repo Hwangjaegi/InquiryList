@@ -419,7 +419,8 @@
             <select id="project" name="projectId" required>
                 <option th:each="project : ${projectList}"
                         th:text="${project.subject}"
-                        th:value="${project.id}">
+                        th:value="${project.id}"
+                        th:selected="${project.id == selectedProjectId}">
                 </option>
             </select>
         </div>

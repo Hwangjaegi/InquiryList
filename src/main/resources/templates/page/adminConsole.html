@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="/image/didimIcon.png" rel="icon" type="image/png">
-    <title>어드민-고객코드관리</title>
+            <link href="/image/didimIcon.png" rel="icon" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <title>어드민-고객코드관리</title>
     <style>
         * {
             margin: 0;
@@ -645,7 +646,37 @@
             }
         }
         .nav-section { margin-bottom: 20px; }
-        .nav-section-title { color: #1f2a44; font-size: 1rem; font-weight: 600; margin-bottom: 10px; padding-left: 10px; }
+        .nav-section-title { color: #1f2a44; font-size: 1rem; font-weight: 600; }
+
+        /* 새로운 디자인 특징 */
+        .nav-section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .back-button {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            color: #64748b;
+            width: 21px;
+            height: 21px;
+            padding: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            margin-right: 10px;
+        }
+
+        .back-button:hover {
+            background: #e6f4f1;
+            border-color: #2a9d8f;
+            color: #2a9d8f;
+            transform: translateY(-1px);
+        }
         .project-table {
             width: 100%;
             border-collapse: collapse;
@@ -683,30 +714,36 @@
 <body>
 <div class="container">
     <aside class="sidebar">
-        <h2>어드민페이지</h2>
+<!--        <h2>관리자페이지</h2>-->
         <nav class="sidebar-nav">
             <div class="nav-section">
-                <div class="nav-section-title">관리 메뉴</div>
+                <div class="nav-section-header">
+                    <button class="back-button" onclick="goToPage('/inquiryList')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="nav-section-title">관리항목</div>
+                </div>
                 <a class="menu-item" onclick="goToPage('/myInfo')">🙍‍♂️ 내정보</a>
-                <a class="menu-item active" onclick="goToPage('/console')">🪪 고객 코드 관리</a>
-                <a class="menu-item" onclick="goToPage('/admin/customerList')">👤 사용자 관리</a>
-                <a class="menu-item" onclick="goToPage('/admin/projectListAdmin')">📋 프로젝트 목록</a>
+                <a class="menu-item active" onclick="goToPage('/console')">🪪 고객코드</a>
+                <a class="menu-item" onclick="goToPage('/admin/customerList')">👤 사용자</a>
+                <a class="menu-item" onclick="goToPage('/admin/projectListAdmin')">📋 프로젝트</a>
             </div>
-            <div class="nav-section">
-                <div class="nav-section-title">기타</div>
-                <a class="menu-item" onclick="goToPage('/inquiryList')">📋 문의리스트</a>
-                <a class="menu-item menu-item-logout" onclick="logout()">🚪 로그아웃</a>
-            </div>
+<!--            <div class="nav-section">-->
+<!--                <div class="nav-section-title">기타</div>-->
+<!--                <a class="menu-item" onclick="goToPage('/inquiryList')">📋 문의리스트</a>-->
+<!--                <a class="menu-item menu-item-logout" onclick="logout()">🚪 로그아웃</a>-->
+<!--            </div>-->
         </nav>
     </aside>
 
     <main class="main-content">
-        <div class="header">
-            <h1>고객 코드 관리</h1>
-            <p>고객 코드를 생성, 조회, 삭제할 수 있습니다.</p>
-        </div>
+<!--        <div class="header">-->
+<!--            <h1>고객 코드 관리</h1>-->
+<!--            <p>고객 코드를 생성, 조회, 삭제할 수 있습니다.</p>-->
+<!--        </div>-->
 
         <div class="content-card">
+            
             <!-- 통계 섹션 -->
             <div class="stats">
                 <div class="stat-card">
@@ -723,35 +760,11 @@
                 </div>
             </div>
 
-            <!-- 새 고객 추가 폼 -->
-            <div class="form-section">
-                <h3>새 고객 코드 생성</h3>
-                <form action="/createCode" method="post">
-                    <div class="form-group">
-                        <input name="code" placeholder="고객 코드 입력 (예: CU001)" required type="text">
-                    </div>
-                    <div class="form-group">
-                        <textarea name="company" placeholder="회사명을 입력하세요." rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-button-container">
-                            <button class="btn btn-primary" type="submit">추가</button>
-                            <!-- 메시지 영역 -->
-                            <div th:if="${successMessage != null}">
-                                <div class="message-alert message-success">
-                                    <span class="message-icon">✅</span>
-                                    <span th:text="${successMessage}">성공 메시지</span>
-                                </div>
-                            </div>
-                            <div th:if="${errorMessage != null}">
-                                <div class="message-alert message-error">
-                                    <span class="message-icon">❌</span>
-                                    <span th:text="${errorMessage}">오류 메시지</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+            <!-- 고객코드 추가 버튼 -->
+            <div style="margin-bottom: 30px; text-align: right;">
+                <button class="btn btn-primary" onclick="openAddCustomerModal()">
+                    <i class="fas fa-plus"></i> 고객코드 추가
+                </button>
             </div>
 
             <!-- 검색 -->
@@ -763,6 +776,20 @@
                            th:value="${searchKeyword}"
                            type="text">
                 </form>
+            </div>
+
+            <!-- 메시지 영역 -->
+            <div th:if="${successMessage != null}">
+                <div class="message-alert message-success">
+                    <span class="message-icon">✅</span>
+                    <span th:text="${successMessage}">성공 메시지</span>
+                </div>
+            </div>
+            <div th:if="${errorMessage != null}">
+                <div class="message-alert message-error">
+                    <span class="message-icon">❌</span>
+                    <span th:text="${errorMessage}">오류 메시지</span>
+                </div>
             </div>
 
             <!-- 고객 목록 -->
@@ -797,8 +824,8 @@
                             <td class="project-actions">
                                 <button class="btn btn-edit" type="button"
                                         th:data-id="${customer.id}" th:data-code="${customer.code}" th:data-company="${customer.company}" th:data-status="${customer.status}">수정</button>
-                                <button class="btn btn-delete" type="button"
-                                        th:data-id="${customer.id}" th:data-code="${customer.code}">삭제</button>
+<!--                                <button class="btn btn-delete" type="button"-->
+<!--                                        th:data-id="${customer.id}" th:data-code="${customer.code}">삭제</button>-->
                             </td>
                         </tr>
                     </tbody>
@@ -875,7 +902,7 @@
                     <input class="form-input" id="editCode" name="code" required type="text">
                 </div>
                 <div class="form-row">
-                    <label class="form-label">설명</label>
+                    <label class="form-label">회사명</label>
                     <textarea class="form-input" id="editcompany" name="company" rows="3"></textarea>
                 </div>
                 <div class="form-row">
@@ -894,23 +921,49 @@
     </div>
 </div>
 
-<!-- 삭제 확인 모달 -->
-<div class="modal" id="deleteModal">
+<!-- 고객코드 추가 모달 -->
+<div class="modal" id="addCustomerModal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title">고객 코드 삭제</h3>
-            <button class="modal-close" type="button">×</button>
+            <h3 class="modal-title">고객코드 추가</h3>
+            <button class="modal-close" onclick="closeAddCustomerModal()">×</button>
         </div>
-        <div class="modal-body">
-            <p>정말로 <strong id="deleteCustomerCode"></strong> 고객 코드를 삭제하시겠습니까?</p>
-            <p style="color: #f44336; font-size: 0.9rem; margin-top: 10px;">이 작업은 되돌릴 수 없습니다.</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" type="button">취소</button>
-            <button class="btn btn-danger" type="button">삭제</button>
-        </div>
+        <form action="/createCode" id="addCustomerForm" method="post">
+            <div class="modal-body">
+                <div class="form-row">
+                    <label class="form-label">고객 코드 *</label>
+                    <input class="form-input" id="addCode" name="code" placeholder="고객 코드 입력 (예: CU001)" required type="text">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">회사명</label>
+                    <textarea class="form-input" id="addCompany" name="company" placeholder="회사명을 입력하세요." rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddCustomerModal()" type="button">취소</button>
+                <button class="btn btn-primary" type="submit">추가</button>
+            </div>
+        </form>
     </div>
 </div>
+
+<!--&lt;!&ndash; 삭제 확인 모달 &ndash;&gt;-->
+<!--<div class="modal" id="deleteModal">-->
+<!--    <div class="modal-content">-->
+<!--        <div class="modal-header">-->
+<!--            <h3 class="modal-title">고객 코드 삭제</h3>-->
+<!--            <button class="modal-close" type="button">×</button>-->
+<!--        </div>-->
+<!--        <div class="modal-body">-->
+<!--            <p>정말로 <strong id="deleteCustomerCode"></strong> 고객 코드를 삭제하시겠습니까?</p>-->
+<!--            <p style="color: #f44336; font-size: 0.9rem; margin-top: 10px;">이 작업은 되돌릴 수 없습니다.</p>-->
+<!--        </div>-->
+<!--        <div class="modal-footer">-->
+<!--            <button class="btn btn-secondary" type="button">취소</button>-->
+<!--            <button class="btn btn-danger" type="button">삭제</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 <script th:inline="javascript">
     // JWT 토큰 확인 및 설정
@@ -1016,8 +1069,8 @@
 
     let currentEditId = null;
     let currentDeleteId = null;
-    const currentPage = [[${customers.getNumber()}]];
-    const searchKeyword = [[${searchKeyword != null ? searchKeyword : ''}]];
+    const currentPage = /*[[${customers.getNumber()}]]*/ 0;
+    const searchKeyword = /*[[${searchKeyword != null ? searchKeyword : ''}]]*/ '';
 
     function openEditModal(id, code, company, status) {
         if (!id || !code) {
@@ -1064,16 +1117,33 @@
         console.log('Delete modal closed');
     }
 
-    function confirmDelete() {
-        if (!currentDeleteId) {
-            console.error('No delete ID set');
-            return;
-        }
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = `/admin/deleteCode/${currentDeleteId}?page=${currentPage}&search=${encodeURIComponent(searchKeyword)}`;
-        document.body.appendChild(form);
-        form.submit();
+<!--    function confirmDelete() {-->
+<!--        if (!currentDeleteId) {-->
+<!--            console.error('No delete ID set');-->
+<!--            return;-->
+<!--        }-->
+<!--        const form = document.createElement('form');-->
+<!--        form.method = 'POST';-->
+<!--        form.action = `/admin/deleteCode/${currentDeleteId}?page=${currentPage}&search=${encodeURIComponent(searchKeyword)}`;-->
+<!--        document.body.appendChild(form);-->
+<!--        form.submit();-->
+<!--    }-->
+
+    // 고객코드 추가 모달 관련 함수들
+    function openAddCustomerModal() {
+        const modal = document.getElementById('addCustomerModal');
+        modal.classList.add('show');
+        resetAddCustomerForm();
+    }
+
+    function closeAddCustomerModal() {
+        const modal = document.getElementById('addCustomerModal');
+        modal.classList.remove('show');
+        resetAddCustomerForm();
+    }
+
+    function resetAddCustomerForm() {
+        document.getElementById('addCustomerForm').reset();
     }
 
     // 이벤트 리스너 설정
@@ -1113,11 +1183,12 @@
             button.addEventListener('click', () => {
                 closeEditModal();
                 closeDeleteModal();
+                closeAddCustomerModal();
             });
         });
 
         // 삭제 확인 버튼
-        document.querySelector('.btn-danger').addEventListener('click', confirmDelete);
+<!--        document.querySelector('.btn-danger').addEventListener('click', confirmDelete);-->
 
         // 모달 외부 클릭으로 닫기
         document.querySelectorAll('.modal').forEach(modal => {
@@ -1125,6 +1196,7 @@
                 if (event.target === modal) {
                     closeEditModal();
                     closeDeleteModal();
+                    closeAddCustomerModal();
                 }
             });
         });
@@ -1134,6 +1206,7 @@
             if (event.key === 'Escape') {
                 closeEditModal();
                 closeDeleteModal();
+                closeAddCustomerModal();
             }
         });
 

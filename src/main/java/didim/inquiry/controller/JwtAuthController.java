@@ -2,14 +2,17 @@ package didim.inquiry.controller;
 
 import didim.inquiry.domain.Answer;
 import didim.inquiry.domain.Inquiry;
+import didim.inquiry.domain.Project;
 import didim.inquiry.domain.User;
 import didim.inquiry.dto.SearchInquiryDto;
 import didim.inquiry.security.JwtTokenProvider;
 import didim.inquiry.service.InquiryService;
+import didim.inquiry.service.ProjectService;
 import didim.inquiry.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,34 +36,48 @@ public class JwtAuthController {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
     private final InquiryService inquiryService;
+    private final ProjectService projectService;
 
-    public JwtAuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService, InquiryService inquiryService) {
+    public JwtAuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService, InquiryService inquiryService, ProjectService projectService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
         this.inquiryService = inquiryService;
+        this.projectService = projectService;
     }
 
-    //회원가입 요청 처리
-    @PostMapping("/signup")
-    public String joinUser(User user , Model model , RedirectAttributes redirectAttributes){
-        //순서 : 유저코드가 존재하는지 , 유저코드로 처음 가입하는 유저일경우 권한부여 이후로는 일반 사용자권한
-
-        //고객코드가 존재하는지 확인 + 고객코드가 같은 유저중 아이디가 같은 경우가 존재하는지 확인 후 가입처리
-        boolean success = userService.signUpUser(user);
-
-        if (!success){
-            model.addAttribute("errorMessage" , "올바른 요청이 아닙니다.");
+    // 관리자용 최소 정보 회원가입 (이름, 이메일, 전화번호 공란 허용)
+    @PostMapping("/minimal-signup")
+    public String minimalSignup(@RequestParam String customerCode,
+                               @RequestParam String username,
+                               @RequestParam String password,
+                               @RequestParam(required = false) String name,
+                               @RequestParam(required = false) String email,
+                               @RequestParam(required = false) String tel,
+                               Model model,
+                               RedirectAttributes redirectAttributes) {
+        User user = new User();
+        user.setCustomerCode(customerCode);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setName(name == null ? "" : name);
+        user.setEmail(email == null ? "" : email);
+        user.setTel(tel == null ? "" : tel);
+        // 기본 권한 USER로 설정 (필요시 로직 조정)
+        user.setRole("USER");
+        boolean success = userService.signUpUserAllowBlank(user);
+        if (!success) {
+            model.addAttribute("errorMessage", "가입에 실패했습니다. (중복/고객코드/비밀번호 등 확인)");
             return "login";
         }
-
-        redirectAttributes.addFlashAttribute("successMessage" , "회원가입이 완료되었습니다.");
+        redirectAttributes.addFlashAttribute("successMessage", "계정이 생성되었습니다. 사용자에게 계정정보를 전달하세요.");
         return "redirect:/admin/customerList";
     }
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request ,
+                                   @RequestParam(value = "customerId" , required = false) String customerId  ) {
         try {
             System.out.println("=== JwtAuthController JWT 로그인 시도 ===");
             System.out.println("사용자명: " + loginRequest.getUsername());
@@ -215,34 +232,32 @@ public class JwtAuthController {
     @GetMapping("/inquiryList")
     public String inquiryListByApi(Model model, HttpServletRequest request,
                           @RequestParam(defaultValue = "0") int page,
-                          @RequestParam(value = "token", required = false) String token) {
+                          @RequestParam(value = "token", required = false) String token,
+                          @RequestParam(value = "projectId" , required = false) Long projectId  ){
 
         System.out.println("=== 컨트롤러에서 직접 토큰 처리 ===");
         System.out.println("요청 시간: " + new Date());
         System.out.println("요청 URL: " + request.getRequestURL());
         System.out.println("URL 파라미터 토큰: " + (token != null ? token.substring(0, Math.min(50, token.length())) + "..." : "null"));
 
+
+        System.out.println("프로젝트 아이디 : " + projectId);
+        if (projectId != null){
+            HttpSession session = request.getSession();
+            session.setAttribute("projectId",projectId);
+
+            System.out.println("세션 프로젝트 아이디 : " + session.getAttribute("projectId"));
+        }
+
+
+
+
         try {
             // 1. URL 파라미터에서 토큰 확인 , api 로그인 후 새로고침 시 토큰이 사라지는 문제가있어 쿠키에서 조회하는 방식으로 설정
             if (token == null) {
-                System.out.println("URL 파라미터에 토큰이 없음, 쿠키에서 토큰 확인");
-                
-//                // 쿠키에서 JWT 토큰 확인
-//                Cookie[] cookies = request.getCookies();
-//                if (cookies != null) {
-//                    for (Cookie cookie : cookies) {
-//                        if ("jwt_token".equals(cookie.getName())) {
-//                            token = cookie.getValue();
-//                            System.out.println("쿠키에서 JWT 토큰 발견: " + token.substring(0, Math.min(50, token.length())) + "...");
-//                            break;
-//                        }
-//                    }
-//                }
-                
-                // 쿠키에도 토큰이 없으면 세션 인증 확인
-                if (token == null) {
-                    System.out.println("쿠키에도 토큰이 없음, 세션 인증 확인");
-                    
+                System.out.println("URL 파라미터에 토큰이 없음 , 세션확인");
+
+
                     // 세션 인증 상태 확인
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                     if (authentication != null && authentication.isAuthenticated() &&
@@ -262,13 +277,13 @@ public class JwtAuthController {
                         System.out.println("세션 사용자 역할: " + role);
 
                         // 세션 인증으로 inquiryList 처리
-                        return processInquiryList(model, role, username, page);
+                        return processInquiryList(model, role, username, page, request);
                     } else {
                         System.out.println("세션 인증도 유효하지 않음");
                         return "redirect:/login?error=no_token";
                     }
                 }
-            }
+
 
             // 2. JWT 토큰 검증
             if (!jwtTokenProvider.validateToken(token)) {
@@ -305,7 +320,7 @@ public class JwtAuthController {
             System.out.println("사용자 역할: " + role);
 
             // 6. JWT 토큰으로 inquiryList 처리
-            return processInquiryList(model, role, username, page);
+            return processInquiryList(model, role, username, page, request);
 
         } catch (Exception e) {
             System.out.println("=== 컨트롤러 토큰 처리 중 오류 발생 ===");
@@ -318,12 +333,22 @@ public class JwtAuthController {
     }
     
     // 공통 inquiryList 처리 메서드
-    private String processInquiryList(Model model, String role, String username, int page) {
+    private String processInquiryList(Model model, String role, String username, int page, HttpServletRequest request) {
         try {
             // 검색 조건 설정
             SearchInquiryDto searchInquiryDto = new SearchInquiryDto();
             if (role.equals("ADMIN")) {
                 searchInquiryDto.setStatus(Arrays.asList("답변 대기중", "답변완료"));
+            }
+
+            // 세션에서 projectId 가져오기
+            HttpSession session = request.getSession();
+            Long projectId = (Long) session.getAttribute("projectId");
+            System.out.println("JWT 세션에서 가져온 projectId: " + projectId);
+            
+            // projectId가 있으면 검색 조건에 추가
+            if (projectId != null) {
+                searchInquiryDto.setProjectId(projectId);
             }
 
             // 페이지당 10개 문의 조회 (페이징 적용)
@@ -361,6 +386,15 @@ public class JwtAuthController {
             
             User findUser = userService.getUserByUsername(username);
             model.addAttribute("user", findUser);
+            
+            // 사용자의 고객코드에 해당하는 프로젝트 목록 추가
+            String customerCode = findUser.getCustomerCode();
+            List<Project> userProjects = (customerCode != null && !customerCode.isBlank()) ?
+                    projectService.getProjectListByCustomerCode(customerCode, Pageable.unpaged()).getContent() :
+                    List.of();
+            model.addAttribute("projectList", userProjects);
+
+            //FM api 로그인 시 프로젝트
 
             System.out.println("세션 인증으로 inquiryList 페이지 렌더링 완료");
             return "inquiry/inquiryList";

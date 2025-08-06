@@ -16,5 +16,6 @@ public class SearchInquiryDto {
     private List<String> status;
     private String title;
     private String writer;
+    private Long projectId; // 프로젝트 ID로 검색
 
 }

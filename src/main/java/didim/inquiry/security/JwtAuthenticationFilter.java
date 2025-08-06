@@ -57,6 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             requestURI.startsWith("/api/check-")) {
             
             System.out.println("공개 경로 - JWT 검증 건너뛰기: " + requestURI);
+            // 공개 경로는 JWT 검증 없이 통과
             filterChain.doFilter(request, response);
             return;
         }

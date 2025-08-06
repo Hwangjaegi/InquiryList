@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="/image/didimIcon.png" rel="icon" type="image/png">
-    <title>프로젝트 목록</title>
+            <link href="/image/didimIcon.png" rel="icon" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <title>프로젝트 목록</title>
     <style>
         * {
             margin: 0;
@@ -94,8 +95,37 @@
             color: #1f2a44; 
             font-size: 1rem; 
             font-weight: 600; 
-            margin-bottom: 10px; 
-            padding-left: 10px; 
+            
+        }
+
+        /* 새로운 디자인 특징 */
+        .nav-section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .back-button {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            color: #64748b;
+            width: 21px;
+            height: 21px;
+            padding: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            margin-right: 10px;
+        }
+
+        .back-button:hover {
+            background: #e6f4f1;
+            border-color: #2a9d8f;
+            color: #2a9d8f;
+            transform: translateY(-1px);
         }
 
         .main-content {
@@ -122,6 +152,31 @@
             font-size: 1rem;
             color: #64748b;
             margin-top: 8px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2a9d8f;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
         }
 
         .content-card {
@@ -541,51 +596,71 @@
 <body>
 <div class="container">
     <aside class="sidebar">
-        <h2>어드민페이지</h2>
+<!--        <h2>관리자페이지</h2>-->
         <nav class="sidebar-nav">
             <div class="nav-section">
-                <div class="nav-section-title">관리 메뉴</div>
+                <div class="nav-section-header">
+                    <button class="back-button" onclick="goToPage('/inquiryList')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="nav-section-title">관리항목</div>
+                </div>
                 <a class="menu-item" onclick="goToPage('/myInfo')">🙍‍♂️ 내정보</a>
-                <a class="menu-item" onclick="goToPage('/console')">👥 고객 코드 관리</a>
-                <a class="menu-item" onclick="goToPage('/admin/customerList')">👤 사용자 관리</a>
-                <a class="menu-item active" onclick="goToPage('/admin/projectListAdmin')">📋 프로젝트 목록</a>
+                <a class="menu-item" onclick="goToPage('/console')">👥 고객코드</a>
+                <a class="menu-item" onclick="goToPage('/admin/customerList')">👤 사용자</a>
+                <a class="menu-item active" onclick="goToPage('/admin/projectListAdmin')">📋 프로젝트</a>
             </div>
-            <div class="nav-section">
-                <div class="nav-section-title">기타</div>
-                <a class="menu-item" onclick="goToPage('/inquiryList')">📋 문의리스트</a>
-                <a class="menu-item menu-item-logout" onclick="logout()">🚪 로그아웃</a>
-            </div>
+<!--            <div class="nav-section">-->
+<!--                <div class="nav-section-title">기타</div>-->
+<!--                <a class="menu-item" onclick="goToPage('/inquiryList')">📋 문의리스트</a>-->
+<!--                <a class="menu-item menu-item-logout" onclick="logout()">🚪 로그아웃</a>-->
+<!--            </div>-->
         </nav>
     </aside>
     <main class="main-content">
-        <div class="header">
-            <h1>프로젝트 목록</h1>
-            <p>전체 프로젝트를 확인하고 관리할 수 있습니다.</p>
-        </div>
+<!--        <div class="header">-->
+<!--            <h1>프로젝트 목록</h1>-->
+<!--            <p>전체 프로젝트를 확인하고 관리할 수 있습니다.</p>-->
+<!--        </div>-->
         <div class="content-card">
-            <div class="form-section">
-                <h3>프로젝트 추가</h3>
-                <form id="addProjectForm" method="post" th:action="@{/admin/projectAdd}">
-                    <div class="form-group" style="align-items: center;">
-                        <label class="form-label" for="projectSubject">프로젝트명</label>
-                        <input class="form-input" id="projectSubject" name="projectSubject" placeholder="프로젝트 제목" required type="text">
-                        <label class="form-label" for="customerCode">고객코드</label>
-                        <select class="form-input" id="customerCode" name="customerId" required>
-                            <option disabled selected value="">고객코드를 선택하세요</option>
-                            <option th:each="customer : ${customerList}" th:text="${customer.code}" th:value="${customer.id}"></option>
-                        </select>
-                        <button class="btn btn-primary" style="margin-left: 10px;" type="submit">추가</button>
-                    </div>
-                    <div class="message-alert message-success" th:if="${successMessage}">
-                        <span class="message-icon">✅</span>
-                        <span th:text="${successMessage}"></span>
-                    </div>
-                    <div class="message-alert message-error" th:if="${errorMessage}">
-                        <span class="message-icon">❌</span>
-                        <span th:text="${errorMessage}"></span>
-                    </div>
+            
+            <!-- 메시지 영역 -->
+            <div class="message-alert message-success" th:if="${successMessage}">
+                <span class="message-icon">✅</span>
+                <span th:text="${successMessage}"></span>
+            </div>
+            <div class="message-alert message-error" th:if="${errorMessage}">
+                <span class="message-icon">❌</span>
+                <span th:text="${errorMessage}"></span>
+            </div>
+
+            <!-- 통계 섹션 (블록형) -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" th:text="${totalProjects}">0</div>
+                    <div class="stat-label">총 프로젝트 수</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" th:text="${newProjects}">0</div>
+                    <div class="stat-label">신규 프로젝트 (이번 달)</div>
+                </div>
+            </div>
+
+            <!-- 프로젝트 추가 버튼 -->
+            <div style="margin-bottom: 30px; text-align: right;">
+                <button class="btn btn-primary" onclick="openAddProjectModal()">
+                    <i class="fas fa-plus"></i> 프로젝트 추가
+                </button>
+            </div>
+            
+            <!-- 검색 필터 -->
+            <div class="search-container">
+                <div class="search-icon" id="searchProjectIcon">🔍</div>
+                <form id="searchProjectForm" method="get" th:action="@{/admin/projectListAdmin}">
+                    <input class="search-input" name="search" placeholder="프로젝트명, 고객코드로 검색..." th:value="${searchKeyword}" type="text">
                 </form>
             </div>
+            
             <div class="project-list">
                 <table class="project-table">
                     <thead>
@@ -650,8 +725,35 @@
                 </div>
             </div>
         </div>
-    </main>
-</div>
+
+        <!-- 프로젝트 추가 모달 -->
+        <div class="modal" id="addProjectModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">프로젝트 추가</h3>
+                    <button class="modal-close" onclick="closeAddProjectModal()">×</button>
+                </div>
+                <form id="addProjectForm" method="post" th:action="@{/admin/projectAdd}">
+                    <div class="modal-body">
+                        <div class="form-row">
+                            <label class="form-label">프로젝트명 *</label>
+                            <input class="form-input" id="addProjectSubject" name="projectSubject" placeholder="프로젝트 제목" required type="text">
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">고객코드 *</label>
+                            <select class="form-input" id="addCustomerCode" name="customerId" required>
+                                <option disabled selected value="">고객코드를 선택하세요</option>
+                                <option th:each="customer : ${customerList}" th:text="${customer.code}" th:value="${customer.id}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeAddProjectModal()" type="button">취소</button>
+                        <button class="btn btn-primary" type="submit">추가</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 <!-- 프로젝트 수정 모달  -->
 <div class="modal" id="editProjectModal">
     <div class="modal-content">
@@ -915,6 +1017,31 @@
         (window._deleteProjectHiddenInputs||[]).forEach(input => form.appendChild(input));
         document.body.appendChild(form);
         form.submit();
+    }
+
+    // 검색 필터 동작
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.querySelector('.search-input');
+        const searchForm = document.getElementById('searchProjectForm');
+        const searchIcon = document.getElementById('searchProjectIcon');
+        searchInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                searchForm.submit();
+            }
+        });
+        searchIcon.addEventListener('click', function() {
+            searchForm.submit();
+        });
+    });
+    // 프로젝트 추가 모달 관련 함수
+    function openAddProjectModal() {
+        document.getElementById('addProjectModal').classList.add('show');
+        document.getElementById('addProjectForm').reset();
+    }
+    function closeAddProjectModal() {
+        document.getElementById('addProjectModal').classList.remove('show');
+        document.getElementById('addProjectForm').reset();
     }
 </script>
 </body>

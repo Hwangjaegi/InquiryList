@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
         name = "user",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"customerCode"}),
-                @UniqueConstraint(columnNames = {"username"}),
-                @UniqueConstraint(columnNames = {"email"})
+                @UniqueConstraint(columnNames = {"username"})
         }
 )
 @Getter @Setter

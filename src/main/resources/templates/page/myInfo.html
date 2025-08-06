@@ -4,120 +4,157 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link href="/image/didimIcon.png" rel="icon" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>내정보</title>
-    <style>
-        /* 기존 스타일 복사 */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: "Noto Sans KR", sans-serif; background: #f8fafc; min-height: 100vh; padding: 20px; color: #1f2a44; }
-        .container { display: flex; min-height: 100vh; }
-        .sidebar { width: 250px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); padding: 20px; transition: all 0.3s ease; margin-right: 20px; }
-        .sidebar h2 { color: #1f2a44; margin-bottom: 30px; text-align: center; font-size: 1.5rem; font-weight: 600; }
-        .menu-item {
-            display: block;
-            padding: 12px 16px;
-            margin-bottom: 8px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            color: #1f2a44;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        .menu-item:hover {
-            background: #e6f4f1;
-            border-color: #2a9d8f;
-            color: #2a9d8f;
-            transform: translateY(-1px);
-        }
-        .menu-item.active {
-            background: #2a9d8f;
-            color: white;
-            border-color: #2a9d8f;
-        }
-        .menu-item-logout {
-            background: #e53e3e;
-            border: 1px solid #e53e3e;
-            color: white;
-        }
-        .menu-item-logout:hover {
-            background: #c53030;
-            border-color: #c53030;
-            color: white;
-            transform: translateY(-1px);
-        }
-        .nav-section {
-            margin-bottom: 20px;
-        }
-        .nav-section-title {
-            color: #1f2a44;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            padding-left: 10px;
-        }
-        .main-content { flex: 1; padding: 0; }
-        .header { text-align: center; padding: 30px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); margin-bottom: 30px; }
-        .header h1 { font-size: 2rem; font-weight: 600; color: #1f2a44; }
-        .header p { font-size: 1rem; color: #64748b; margin-top: 8px; }
-        .content-card { background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); max-width: 500px; margin: 0 auto; }
-        .form-section { margin-bottom: 20px; }
-        .form-section h3 { color: #1f2a44; margin-bottom: 15px; font-size: 1.2rem; font-weight: 600; }
-        .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
-        .form-label { font-weight: 600; color: #1f2a44; font-size: 0.95rem; }
-        .form-input { padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fafafa; color: #1f2a44; font-size: 0.9rem; transition: border-color 0.2s ease; font-family: inherit; }
-        .form-input:focus { outline: none; border-color: #2a9d8f; background: #ffffff; }
-        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease; text-decoration: none; display: inline-block; align-items: center; gap: 6px; }
-        .btn-primary { background: #2a9d8f; color: white; }
-        .btn-primary:hover { background: #237c70; transform: translateY(-1px); }
-        .btn-secondary { background: #e2e8f0; color: #1f2a44; }
-        .btn-secondary:hover { background: #cbd5e1; transform: translateY(-1px); }
-        .message-alert { padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; animation: slideInRight 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1); white-space: nowrap; margin-bottom: 10px; }
-        .message-success { background: #2a9d8f; color: white; }
-        .message-error { background: #e53e3e; color: white; }
-        .message-icon { font-size: 1.1rem; }
-        .btn-disabled, .btn[disabled] {
-            background: #ccc !important;
-            color: #888 !important;
-            cursor: not-allowed !important;
-            box-shadow: none !important;
-            border: none !important;
-            opacity: 0.7;
-        }
-    </style>
 </head>
+<style>
+    /* 기존 스타일 복사 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Noto Sans KR", sans-serif; background: #f8fafc; min-height: 100vh; padding: 20px; color: #1f2a44; }
+    .container { display: flex; min-height: 100vh; }
+    .sidebar { width: 250px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); padding: 20px; transition: all 0.3s ease; margin-right: 20px; }
+    .sidebar h2 { color: #1f2a44; margin-bottom: 30px; text-align: center; font-size: 1.5rem; font-weight: 600; }
+    .menu-item {
+        display: block;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        color: #1f2a44;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+    .menu-item:hover {
+        background: #e6f4f1;
+        border-color: #2a9d8f;
+        color: #2a9d8f;
+        transform: translateY(-1px);
+    }
+    .menu-item.active {
+        background: #2a9d8f;
+        color: white;
+        border-color: #2a9d8f;
+    }
+    .menu-item-logout {
+        background: #e53e3e;
+        border: 1px solid #e53e3e;
+        color: white;
+    }
+    .menu-item-logout:hover {
+        background: #c53030;
+        border-color: #c53030;
+        color: white;
+        transform: translateY(-1px);
+    }
+    .nav-section {
+        margin-bottom: 20px;
+    }
+    .nav-section-title {
+        color: #1f2a44;
+        font-size: 1rem;
+        font-weight: 600;
+        padding-left: 10px;
+    }
+    .main-content { flex: 1; padding: 0; }
+    .header { text-align: center; padding: 30px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); margin-bottom: 30px; }
+    .header h1 { font-size: 2rem; font-weight: 600; color: #1f2a44; }
+    .header p { font-size: 1rem; color: #64748b; margin-top: 8px; }
+    .content-card { background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); max-width: 500px; margin: 0 auto; }
+    .form-section { margin-bottom: 20px; }
+    .form-section h3 { color: #1f2a44; margin-bottom: 15px; font-size: 1.2rem; font-weight: 600; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+    .form-label { font-weight: 600; color: #1f2a44; font-size: 0.95rem; }
+    .form-input { padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fafafa; color: #1f2a44; font-size: 0.9rem; transition: border-color 0.2s ease; font-family: inherit; }
+    .form-input:focus { outline: none; border-color: #2a9d8f; background: #ffffff; }
+    .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease; text-decoration: none; display: inline-block; align-items: center; gap: 6px; }
+    .btn-primary { background: #2a9d8f; color: white; }
+    .btn-primary:hover { background: #237c70; transform: translateY(-1px); }
+    .btn-secondary { background: #e2e8f0; color: #1f2a44; }
+    .btn-secondary:hover { background: #cbd5e1; transform: translateY(-1px); }
+    .message-alert { padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; animation: slideInRight 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1); white-space: nowrap; margin-bottom: 10px; }
+    .message-success { background: #2a9d8f; color: white; }
+    .message-error { background: #e53e3e; color: white; }
+    .message-icon { font-size: 1.1rem; }
+    .btn-disabled, .btn[disabled] {
+        background: #ccc !important;
+        color: #888 !important;
+        cursor: not-allowed !important;
+        box-shadow: none !important;
+        border: none !important;
+        opacity: 0.7;
+    }
+
+    /* 새로운 디자인 특징 */
+    .nav-section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .back-button {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        color: #64748b;
+        width: 21px;
+        height: 21px;
+        padding: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+    }
+
+    .back-button:hover {
+        background: #e6f4f1;
+        border-color: #2a9d8f;
+        color: #2a9d8f;
+        transform: translateY(-1px);
+    }
+
+    .back-icon {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+</style>
 <body>
 <div class="container">
     <aside class="sidebar">
-        <h2 th:if="${role == 'ADMIN' OR role == 'MANAGER'}">마이페이지</h2>
-        <h2 th:if="${role == 'USER'}">마이페이지</h2>
         <nav class="sidebar-nav">
             <div class="nav-section">
-                <div class="nav-section-title">관리 메뉴</div>
+                <div class="nav-section-header">
+                    <button class="back-button" onclick="goToPage('/inquiryList')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="nav-section-title">관리항목</div>
+                </div>
                 <a class="menu-item active" onclick="goToPage('/myInfo')">🙍‍♂️ 내정보</a>
-                <a class="menu-item" onclick="goToPage('/console')" th:if="${role == 'ADMIN'}">👥 고객 코드 관리</a>
+                <a class="menu-item" onclick="goToPage('/console')" th:if="${role == 'ADMIN'}">👥 고객코드</a>
                 <!-- 관리자일 경우 -->
-                <a class="menu-item" onclick="goToPage('/admin/customerList')" th:if="${role == 'ADMIN'}">👤 사용자 관리</a>
-                <a class="menu-item" onclick="goToPage('/admin/projectListAdmin')" th:if="${role == 'ADMIN'}">📋 프로젝트 목록</a>
+                <a class="menu-item" onclick="goToPage('/admin/customerList')" th:if="${role == 'ADMIN'}">👤 사용자</a>
+                <a class="menu-item" onclick="goToPage('/admin/projectListAdmin')" th:if="${role == 'ADMIN'}">📋 프로젝트</a>
                 <!-- 사용자일 경우 -->
-                <a class="menu-item" onclick="goToPage('/console')" th:if="${role == 'MANAGER' or role == 'USER'}">👥 담당자 목록</a>
-                <a class="menu-item" onclick="goToPage('/projectList')" th:if="${role == 'MANAGER' or role == 'USER'}">📋 프로젝트
-                    목록</a>
+                <a class="menu-item" onclick="goToPage('/console')" th:if="${role == 'MANAGER' or role == 'USER'}">👥 담당자</a>
+                <a class="menu-item" onclick="goToPage('/projectList')" th:if="${role == 'MANAGER' or role == 'USER'}">📋 프로젝트</a>
             </div>
-            <div class="nav-section">
-                <div class="nav-section-title">기타</div>
-                <a class="menu-item" onclick="goToPage('/inquiryList')">📋 문의리스트</a>
-                <a class="menu-item menu-item-logout" onclick="logout()">🚪 로그아웃</a>
-            </div>
+<!--            <div class="nav-section">-->
+<!--                <div class="nav-section-title">기타</div>-->
+<!--                <a class="menu-item" onclick="goToPage('/inquiryList')">📋 문의리스트</a>-->
+<!--                <a class="menu-item menu-item-logout" onclick="logout()">🚪 로그아웃</a>-->
+<!--            </div>-->
         </nav>
     </aside>
     <main class="main-content">
-        <div class="header">
-            <h1>내정보</h1>
-            <p>내 계정 정보를 확인하고 수정할 수 있습니다.</p>
-        </div>
+<!--        <div class="header">-->
+<!--            <h1>내정보</h1>-->
+<!--            <p>내 계정 정보를 확인하고 수정할 수 있습니다.</p>-->
+<!--        </div>-->
         <div class="content-card">
             <form id="myInfoForm" method="post" th:action="@{/user/updateMyInfo}">
                 <div class="form-section">

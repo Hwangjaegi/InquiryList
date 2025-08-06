@@ -9,6 +9,7 @@ import didim.inquiry.security.SecurityUtil;
 import didim.inquiry.service.*;
 import didim.inquiry.security.JwtTokenProvider;  // 추가
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -118,11 +119,25 @@ public class InquiryController extends BaseController {
         // * 기본적으로 답변상태 체크처리를 위해 추가
         model.addAttribute("searchInquiry", searchInquiryDto);
         model.addAttribute("role", role);
+        
+        // 사용자의 고객코드에 해당하는 프로젝트 목록 추가
+        String customerCode = findUser.getCustomerCode();
+        List<Project> userProjects = (customerCode != null && !customerCode.isBlank()) ?
+                projectService.getProjectListByCustomerCode(customerCode, Pageable.unpaged()).getContent() :
+                List.of();
+        model.addAttribute("projectList", userProjects);
+        
         return "inquiry/inquiryList";
     }
 
     @GetMapping("/inquiryWriteForm")
-    public String inquiryWriteForm(Model model, RedirectAttributes redirectAttributes) {
+    public String inquiryWriteForm(Model model,
+                                   RedirectAttributes redirectAttributes,
+                                   HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Long projectId = (Long) session.getAttribute("projectId");
+        System.out.println("projectid : " + projectId);
+
         User user = getCurrentUser();
         model.addAttribute("user", user);
 
@@ -142,6 +157,7 @@ public class InquiryController extends BaseController {
 
         model.addAttribute("projectList", projectList);
         model.addAttribute("managers", managers);
+        model.addAttribute("selectedProjectId", projectId);
         return "inquiry/inquiryWriteForm";
     }
 
@@ -311,6 +327,7 @@ public class InquiryController extends BaseController {
                 searchInquiry.getKeyword(),
                 searchInquiry.getYearMonth(),
                 searchInquiry.getStatus(),
+                searchInquiry.getProjectId(),
                 role,
                 username,
                 pageable
@@ -331,6 +348,14 @@ public class InquiryController extends BaseController {
         model.addAttribute("inquiries", inquiries);
         model.addAttribute("role", role);
         model.addAttribute("searchInquiry", searchInquiry);
+        
+        // 사용자의 고객코드에 해당하는 프로젝트 목록 추가
+        String customerCode = findUser.getCustomerCode();
+        List<Project> userProjects = (customerCode != null && !customerCode.isBlank()) ?
+                projectService.getProjectListByCustomerCode(customerCode, Pageable.unpaged()).getContent() :
+                List.of();
+        model.addAttribute("projectList", userProjects);
+        
         return "inquiry/inquiryList";
     }
 }

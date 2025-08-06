@@ -74,6 +74,8 @@ public class InquiryService {
             end = yearMonth.atEndOfMonth().atTime(23, 59, 59); // 2024-07-31T23:59:59
         }
 
+        Long projectId = searchInquiry.getProjectId();
+
         if ("ADMIN".equals(role)) {
             return inquiryRepository.findInquiriesBySearchWithAdmin(
                     searchInquiry.getTitle(),
@@ -81,6 +83,7 @@ public class InquiryService {
                     start,
                     end,
                     statuses,
+                    projectId,
                     pageable
             );
         } else {
@@ -90,6 +93,7 @@ public class InquiryService {
                     start,
                     end,
                     statuses,
+                    projectId,
                     username,
                     pageable
             );
@@ -97,7 +101,7 @@ public class InquiryService {
     }
 
     // 일반적인 사용자 및 어드민이 검색필터를 통해 검색한 결과를 가져오는 메서드
-    public Page<Inquiry> searchInquiries(String keyword, String yearMonth, List<String> statuses, String role, String username, Pageable pageable) {
+    public Page<Inquiry> searchInquiries(String keyword, String yearMonth, List<String> statuses, Long projectId, String role, String username, Pageable pageable) {
         if (statuses == null || statuses.isEmpty()) {
             statuses = null;
         }
@@ -116,9 +120,9 @@ public class InquiryService {
             System.out.println("start : " + start + "end : " + end);
         }
         if ("ADMIN".equals(role)) {
-            return inquiryRepository.findInquiriesByKeywordForAdmin(keyword, statuses, start, end, pageable);
+            return inquiryRepository.findInquiriesByKeywordForAdmin(keyword, statuses, start, end, projectId, pageable);
         } else {
-            return inquiryRepository.findInquiriesByKeywordForUser(keyword, statuses, start, end, username, pageable);
+            return inquiryRepository.findInquiriesByKeywordForUser(keyword, statuses, start, end, projectId, username, pageable);
         }
     }
 }

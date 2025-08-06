@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="/image/didimIcon.png" rel="icon" type="image/png">
-    <title>담당 목록</title>
+            <link href="/image/didimIcon.png" rel="icon" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <title>담당 목록</title>
     <style>
         * {
             margin: 0;
@@ -107,8 +108,41 @@
             color: #1f2a44;
             font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 10px;
-            padding-left: 10px;
+        }
+
+        /* 새로운 디자인 특징 */
+        .nav-section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .back-button {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            color: #64748b;
+            width: 21px;
+            height: 21px;
+            padding: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .back-button:hover {
+            background: #e6f4f1;
+            border-color: #2a9d8f;
+            color: #2a9d8f;
+            transform: translateY(-1px);
+        }
+
+        .back-icon {
+            font-size: 1.2rem;
+            font-weight: bold;
         }
 
         .main-content {
@@ -679,27 +713,32 @@
 <body>
 <div class="container">
     <aside class="sidebar">
-        <h2>마이페이지</h2>
+<!--        <h2>마이페이지</h2>-->
         <nav class="sidebar-nav">
             <div class="nav-section">
-                <div class="nav-section-title">관리 메뉴</div>
+                <div class="nav-section-header">
+                    <button class="back-button" onclick="goToPage('/inquiryList')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="nav-section-title"> 관리항목</div>
+                </div>
                 <a class="menu-item" onclick="goToPage('/myInfo')">🙍‍♂️ 내정보</a>
-                <a class="menu-item active" onclick="goToPage('/console')">👥 담당자 목록</a>
-                <a class="menu-item" onclick="goToPage('/projectList')">📋 프로젝트 목록</a>
+                <a class="menu-item active" onclick="goToPage('/console')">👥 담당자</a>
+                <a class="menu-item" onclick="goToPage('/projectList')">📋 프로젝트</a>
             </div>
-            <div class="nav-section">
-                <div class="nav-section-title">기타</div>
-                <a class="menu-item" onclick="goToPage('/inquiryList')">📋 문의리스트</a>
-                <a class="menu-item menu-item-logout" onclick="logout()">🚪 로그아웃</a>
-            </div>
+<!--            <div class="nav-section">-->
+<!--                <div class="nav-section-title">기타</div>-->
+<!--                <a class="menu-item" onclick="goToPage('/inquiryList')">📋 문의리스트</a>-->
+<!--                <a class="menu-item menu-item-logout" onclick="logout()">🚪 로그아웃</a>-->
+<!--            </div>-->
         </nav>
     </aside>
 
     <main class="main-content">
-        <div class="header">
-            <h1>담당자 목록</h1>
-            <p>나의 담당자 정보를 확인할 수 있습니다.</p>
-        </div>
+<!--        <div class="header">-->
+<!--            <h1>담당자 목록</h1>-->
+<!--            <p>나의 담당자 정보를 확인할 수 있습니다.</p>-->
+<!--        </div>-->
 
         <div class="content-card">
             <!-- 통계 섹션 -->

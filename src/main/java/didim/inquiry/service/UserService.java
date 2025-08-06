@@ -51,16 +51,51 @@ public class UserService {
             return false;
         }
 
-        // 고객코드로 처음 가입한 사람은 관리자 권한 부여
-        if (userRepository.findByCustomerCode(user.getCustomerCode()).isEmpty()) {
-            if (user.getUsername().equals("admin") && user.getCustomerCode().equals("D000001")) {
-                user.setRole("ADMIN");
-            } else {
-                user.setRole("MANAGER");
-            }
-        }
+//        // 고객코드로 처음 가입한 사람은 관리자 권한 부여
+//        if (userRepository.findByCustomerCode(user.getCustomerCode()).isEmpty()) {
+//            if (user.getUsername().equals("admin") && user.getCustomerCode().equals("D000001")) {
+//                user.setRole("ADMIN");
+//            } else {
+//                user.setRole("MANAGER");
+//            }
+//        }
 
         //가입된 정보가 없을 경우 패스워드 암호화 처리 후 가입처리
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return true;
+    }
+
+    // 관리자 최소정보 회원가입 (이름, 이메일, 전화번호 공란 허용)
+    public boolean signUpUserAllowBlank(User user) {
+        // 고객코드가 생성되어있고 활성화 되어있는지 확인
+        boolean exists = adminRepository.existsByCodeAndStatus(user.getCustomerCode(), "ACTIVE");
+        if (!exists) {
+            return false;
+        }
+        // 아이디 중복 방지
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            return false;
+        }
+        // 비밀번호 8자리 이상
+        if (user.getPassword() == null || user.getPassword().length() < 8) {
+            return false;
+        }
+        // 이메일이 비어있지 않으면 중복 체크
+        if (user.getEmail() != null && !user.getEmail().isBlank()) {
+            if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+                return false;
+            }
+        }
+//        // 고객코드로 처음 가입한 사람은 관리자 권한 부여
+//        if (userRepository.findByCustomerCode(user.getCustomerCode()).isEmpty()) {
+//            if (user.getUsername().equals("admin") && user.getCustomerCode().equals("D000001")) {
+//                user.setRole("ADMIN");
+//            } else {
+//                user.setRole("MANAGER");
+//            }
+//        }
+        // 패스워드 암호화 후 저장
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
@@ -228,5 +263,42 @@ public class UserService {
 
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    // 고객코드 상태 확인 (ACTIVE가 아니면 false)
+    public boolean isCustomerCodeActive(String customerCode) {
+        return adminRepository.existsByCodeAndStatus(customerCode, "ACTIVE");
+    }
+
+    // 관리자용 사용자 정보 수정
+    @Transactional
+    public void updateUserByAdmin(UserDto userDto) {
+        User user = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        // username 중복 체크 (자신 제외)
+        if (!user.getUsername().equals(userDto.getUsername())) {
+            if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
+                throw new IllegalArgumentException("이미 사용 중인 아이디입니다.");
+            }
+        }
+
+        // email 중복 체크 (자신 제외, 빈 값이 아닌 경우만)
+        if (userDto.getEmail() != null && !userDto.getEmail().isBlank()) {
+            if (!userDto.getEmail().equals(user.getEmail())) {
+                if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+                    throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+                }
+            }
+        }
+
+        // 사용자 정보 업데이트
+        user.setUsername(userDto.getUsername());
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        user.setTel(userDto.getTel());
+        user.setRole(userDto.getRole());
+
+        userRepository.save(user);
     }
 }
