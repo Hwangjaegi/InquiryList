@@ -42,7 +42,7 @@ public class ManagerService {
     }
 
     public List<Manager> findByUserId(Long userId) {
-        return managerRepository.findAllByUserId(userId);
+        return managerRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
     }
 
     // ID로 매니저 조회
@@ -52,7 +52,7 @@ public class ManagerService {
     
     // 특정 사용자 ID로 매니저 페이징 조회
     public Page<Manager> getManagersByUserId(Long userId, Pageable pageable) {
-        return managerRepository.findAllByUserId(userId, pageable);
+        return managerRepository.findAllByUserIdOrderByCreatedAtDesc(userId, pageable);
     }
     
     // 특정 사용자 ID로 매니저 검색

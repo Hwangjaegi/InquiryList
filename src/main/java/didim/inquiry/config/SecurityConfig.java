@@ -9,10 +9,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfig {
@@ -52,14 +54,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // 최신 스타일로 CSRF 비활성화
-//                .addFilterBefore(refererFilter, UsernamePasswordAuthenticationFilter.class)  // RefererFilter 추가
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // JWT 필터 추가
+//                .csrf(csrf -> csrf
+//                        .ignoringRequestMatchers("/api/auth/**", "/api/check-*")  // API 엔드포인트는 CSRF 제외
+//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                )
+                .csrf(csrf -> csrf.disable())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        // 공개 접근 가능한 경로들(세션 없어도 접속가능한 url)
                         .requestMatchers("/","/api/auth/**", "/api/check-*", "/signup", "/login", "/css/**", "/js/**",
                                        "/image/**", "/temp/**", "/posts/**", "/uploads/**").permitAll()
-                        // 인증이 필요한 경로들 (JWT 또는 세션 인증 필요)
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -70,16 +73,16 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
-                        .maximumSessions(10)  // 최대 세션 수 제한
-                        .maxSessionsPreventsLogin(false)  // 기존 세션 무효화
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)  // 원래 설정으로 복원
+                        .maximumSessions(10)
+                        .maxSessionsPreventsLogin(false)
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout")       // /logout url요청을 가로채서 세션 삭제
-                        .logoutSuccessUrl("/login") // 세션삭제 성공 시 이동할 url 요청
-                        .deleteCookies("jwt_token", "JSESSIONID")  // JWT 토큰과 세션 쿠키 삭제
-                        .invalidateHttpSession(true)  // HTTP 세션 무효화
-                        .clearAuthentication(true)   // 인증 정보 클리어
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .deleteCookies("jwt_token", "JSESSIONID")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
                         .permitAll()
                 )
                 .userDetailsService(customUserDetailsService);

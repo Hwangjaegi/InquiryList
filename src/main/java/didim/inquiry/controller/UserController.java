@@ -90,6 +90,21 @@ public class UserController extends BaseController{
         return Collections.singletonMap("exists", exists);
     }
 
+    @GetMapping("/api/check-customerCode-signup")
+    @ResponseBody
+    public Map<String, Boolean> checkCustomerCodeForSignup(@RequestParam String customerCode) {
+        // 고객코드가 존재하고 활성화되어 있는지 확인
+        boolean customerExists = userService.isCustomerCodeActive(customerCode);
+        
+        // 고객코드로 이미 USER 역할의 사용자가 있는지 확인
+        boolean userExists = userService.existsByCustomerCode(customerCode);
+        
+        // 고객코드가 존재하지 않거나 이미 사용자가 있으면 중복으로 처리
+        boolean exists = !customerExists || userExists;
+        
+        return Collections.singletonMap("exists", exists);
+    }
+
     //시큐리티 로그아웃 후 재 로그인시 에러 확인 후 처리
     @GetMapping("/error")
     public String errorPage(HttpServletRequest request, Model model) {

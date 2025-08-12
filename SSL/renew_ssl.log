@@ -1,0 +1,122 @@
+=== 1. Let’s Encrypt 인증서 강제 갱신 시작 ===
+sudo: certbot: command not found
+ERROR: 인증서 갱신 실패
+=== 1. Let’s Encrypt 인증서 강제 갱신 시작 ===
+sudo: certbot: command not found
+ERROR: 인증서 갱신 실패
+=== 1. Let’s Encrypt 인증서 강제 갱신 시작 ===
+sudo: certbot: command not found
+ERROR: 인증서 갱신 실패
+/Users/admin/InquiryList/SSL/renew_ssl.sh: line 12: LAST_RUN_DATE: command not found
+=== 1. Let’s Encrypt 인증서 강제 갱신 시작 ===
+No entry for terminal type "unknown";
+using dumb terminal settings.
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Processing /etc/letsencrypt/renewal/didim.fmapp.kr.conf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/Users/admin/InquiryList/SSL/renew_ssl.sh: line 12: LAST_RUN_DATE: command not found
+=== 1. Let’s Encrypt 인증서 강제 갱신 시작 ===
+No entry for terminal type "unknown";
+using dumb terminal settings.
+Another instance of Certbot is already running.
+Ask for help or search for solutions at https://community.letsencrypt.org. See the logfile /tmp/certbot-log-nteuzpgs/log or re-run Certbot with -v for more details.
+ERROR: 인증서 갱신 실패
+Renewing an existing certificate for didim.fmapp.kr
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Congratulations, all renewals succeeded: 
+  /etc/letsencrypt/live/didim.fmapp.kr/fullchain.pem (success)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+=== 2. PKCS#12 키스토어 재생성 ===
+=== 3. Spring Boot 서비스 재시작 ===
+=== 완료 ===
+/Users/admin/InquiryList/SSL/renew_ssl.sh: line 12: LAST_RUN_DATE: command not found
+=== 1. Let’s Encrypt 인증서 강제 갱신 시작 ===
+No entry for terminal type "unknown";
+using dumb terminal settings.
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Processing /etc/letsencrypt/renewal/didim.fmapp.kr.conf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Renewing an existing certificate for didim.fmapp.kr
+Failed to renew certificate didim.fmapp.kr with error: urn:ietf:params:acme:error:rateLimited :: There were too many requests of a given type :: too many certificates (5) already issued for this exact set of identifiers in the last 168h0m0s, retry after 2025-08-12 15:50:52 UTC: see https://letsencrypt.org/docs/rate-limits/#new-certificates-per-exact-set-of-identifiers
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+All renewals failed. The following certificates could not be renewed:
+  /etc/letsencrypt/live/didim.fmapp.kr/fullchain.pem (failure)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1 renew failure(s), 0 parse failure(s)
+Ask for help or search for solutions at https://community.letsencrypt.org. See the logfile /var/log/letsencrypt/letsencrypt.log or re-run Certbot with -v for more details.
+ERROR: 인증서 갱신 실패
+/Users/admin/InquiryList/SSL/renew_ssl.sh: line 12: LAST_RUN_DATE: command not found
+=== 1. Let’s Encrypt 인증서 강제 갱신 시작 ===
+No entry for terminal type "unknown";
+using dumb terminal settings.
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Processing /etc/letsencrypt/renewal/didim.fmapp.kr.conf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Renewing an existing certificate for didim.fmapp.kr
+Failed to renew certificate didim.fmapp.kr with error: urn:ietf:params:acme:error:rateLimited :: There were too many requests of a given type :: too many certificates (5) already issued for this exact set of identifiers in the last 168h0m0s, retry after 2025-08-12 15:01:07 UTC: see https://letsencrypt.org/docs/rate-limits/#new-certificates-per-exact-set-of-identifiers
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+All renewals failed. The following certificates could not be renewed:
+  /etc/letsencrypt/live/didim.fmapp.kr/fullchain.pem (failure)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1 renew failure(s), 0 parse failure(s)
+Ask for help or search for solutions at https://community.letsencrypt.org. See the logfile /var/log/letsencrypt/letsencrypt.log or re-run Certbot with -v for more details.
+ERROR: 인증서 갱신 실패
+=== 1. Let’s Encrypt 인증서 강제 갱신 시작 ===
+No entry for terminal type "unknown";
+using dumb terminal settings.
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Processing /etc/letsencrypt/renewal/didim.fmapp.kr.conf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+=== 1. Let’s Encrypt 인증서 강제 갱신 시작 ===
+No entry for terminal type "unknown";
+using dumb terminal settings.
+Another instance of Certbot is already running.
+Ask for help or search for solutions at https://community.letsencrypt.org. See the logfile /tmp/certbot-log-o164fwqo/log or re-run Certbot with -v for more details.
+ERROR: 인증서 갱신 실패
+Renewing an existing certificate for didim.fmapp.kr
+Failed to renew certificate didim.fmapp.kr with error: urn:ietf:params:acme:error:rateLimited :: There were too many requests of a given type :: too many certificates (5) already issued for this exact set of identifiers in the last 168h0m0s, retry after 2025-08-12 15:29:40 UTC: see https://letsencrypt.org/docs/rate-limits/#new-certificates-per-exact-set-of-identifiers
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+All renewals failed. The following certificates could not be renewed:
+  /etc/letsencrypt/live/didim.fmapp.kr/fullchain.pem (failure)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1 renew failure(s), 0 parse failure(s)
+Ask for help or search for solutions at https://community.letsencrypt.org. See the logfile /var/log/letsencrypt/letsencrypt.log or re-run Certbot with -v for more details.
+ERROR: 인증서 갱신 실패
+=== 1. Let’s Encrypt 인증서 강제 갱신 시작 ===
+No entry for terminal type "unknown";
+using dumb terminal settings.
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Processing /etc/letsencrypt/renewal/didim.fmapp.kr.conf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Renewing an existing certificate for didim.fmapp.kr
+Failed to renew certificate didim.fmapp.kr with error: urn:ietf:params:acme:error:rateLimited :: There were too many requests of a given type :: too many certificates (5) already issued for this exact set of identifiers in the last 168h0m0s, retry after 2025-08-12 15:04:10 UTC: see https://letsencrypt.org/docs/rate-limits/#new-certificates-per-exact-set-of-identifiers
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+All renewals failed. The following certificates could not be renewed:
+  /etc/letsencrypt/live/didim.fmapp.kr/fullchain.pem (failure)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1 renew failure(s), 0 parse failure(s)
+Ask for help or search for solutions at https://community.letsencrypt.org. See the logfile /var/log/letsencrypt/letsencrypt.log or re-run Certbot with -v for more details.
+/Users/admin/InquiryList/SSL/renew_ssl.sh: line 47: unexpected EOF while looking for matching `"'
+/Users/admin/InquiryList/SSL/renew_ssl.sh: line 50: syntax error: unexpected end of file
+[2025-08-12 09:52:00] === 1. Let’s Encrypt 인증서 갱신 시작 ===
+/Users/admin/InquiryList/SSL/renew_ssl.sh: line 49: unexpected EOF while looking for matching `"'
+/Users/admin/InquiryList/SSL/renew_ssl.sh: line 52: syntax error: unexpected end of file
+현재 인증서 남은 일 수: 88 일
+인증서가 아직 88 일 남아 갱신하지 않습니다.
+현재 인증서 남은 일 수: 88 일
+인증서가 아직 88 일 남아 갱신하지 않습니다.

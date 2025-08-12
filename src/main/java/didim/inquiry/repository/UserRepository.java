@@ -82,4 +82,21 @@ public interface UserRepository extends JpaRepository<User,Long> {
     boolean existsByEmail(String email);
 
     Optional<User> findByUsernameAndCustomerCode(String username, String customerCode);
+    
+    // 고객코드와 역할로 사용자 조회 (USER 역할 중복 방지용)
+    Optional<User> findByCustomerCodeAndRole(String customerCode, String role);
+    
+    // 현재 사용자를 제외한 모든 사용자 조회
+    Page<User> findAllByIdNotOrderByIdDesc(Long userId, Pageable pageable);
+    
+    // 현재 사용자를 제외하고 검색
+    @Query("SELECT u FROM User u WHERE u.id <> :userId AND (" +
+            "LOWER(u.customerCode) LIKE LOWER(CONCAT('%', :search , '%')) OR " +
+            "LOWER(u.name) LIKE LOWER(CONCAT('%', :search , '%')) OR " +
+            "LOWER(u.username) LIKE LOWER(CONCAT('%', :search , '%')) OR " +
+            "u.tel LIKE CONCAT('%', :search , '%') OR " +
+            "LOWER(u.email) LIKE LOWER(CONCAT('%', :search , '%')) OR " +
+            "LOWER(u.role) LIKE LOWER(CONCAT('%', :search , '%'))" +
+            ") ORDER BY u.createdAt DESC")
+    Page<User> searchAllFieldsExceptUser(@Param("userId") Long userId, @Param("search") String search, Pageable pageable);
 }

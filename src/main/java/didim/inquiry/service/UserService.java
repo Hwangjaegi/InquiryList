@@ -87,14 +87,14 @@ public class UserService {
                 return false;
             }
         }
-//        // 고객코드로 처음 가입한 사람은 관리자 권한 부여
-//        if (userRepository.findByCustomerCode(user.getCustomerCode()).isEmpty()) {
-//            if (user.getUsername().equals("admin") && user.getCustomerCode().equals("D000001")) {
-//                user.setRole("ADMIN");
-//            } else {
-//                user.setRole("MANAGER");
-//            }
-//        }
+        
+        // USER 역할인 경우: 고객코드당 1개만 허용
+        if ("USER".equals(user.getRole())) {
+            if (userRepository.findByCustomerCodeAndRole(user.getCustomerCode(), "USER").isPresent()) {
+                return false;
+            }
+        }
+        
         // 패스워드 암호화 후 저장
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -124,6 +124,16 @@ public class UserService {
     // 다중 role 지원
     public Page<User> searchUsersByRoleAndKeyword(List<String> roles, String keyword, Pageable pageable) {
         return userRepository.findAllByRoleInAndUsernameContainingOrEmailContainingOrderByIdDesc(roles, keyword, keyword, pageable);
+    }
+
+    // 현재 사용자를 제외한 모든 사용자 조회
+    public Page<User> getAllUsersExceptCurrent(Long currentUserId, Pageable pageable) {
+        return userRepository.findAllByIdNotOrderByIdDesc(currentUserId, pageable);
+    }
+
+    // 현재 사용자를 제외하고 검색
+    public Page<User> searchAllUsersExceptCurrent(Long currentUserId, String keyword, Pageable pageable) {
+        return userRepository.searchAllFieldsExceptUser(currentUserId, keyword, pageable);
     }
 
     //실제론 삭제하지 않고 DeleteFlag를 true로 바꾼다.

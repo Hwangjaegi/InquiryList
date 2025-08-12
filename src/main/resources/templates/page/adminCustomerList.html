@@ -333,6 +333,16 @@
             color: white;
         }
 
+        .status-admin {
+            background: #e53e3e;
+            color: white;
+        }
+
+        .status-manager {
+            background: #3b82f6;
+            color: white;
+        }
+
         .status-inactive {
             background: #94a3b8;
             color: white;
@@ -904,6 +914,9 @@
                 <button class="btn btn-primary" onclick="openAddUserModal()">
                     <i class="fas fa-plus"></i> 사용자 추가
                 </button>
+                <button class="btn btn-primary" onclick="openAddAdminModal()" style="margin-left: 10px;">
+                    <i class="fas fa-user-shield"></i> 어드민 추가
+                </button>
             </div>
 
             <!-- 검색 -->
@@ -950,11 +963,14 @@
                             <td class="user-email" th:text="${user.email}">user@example.com</td>
                             <td class="user-tel" th:text="${user.tel}">010-1234-1234</td>
                             <td class="user-role">
-                                <span class="status-badge status-user" th:text="${user.role}">USER</span>
+                                <span class="status-badge" 
+                                      th:classappend="${user.role == 'ADMIN'} ? 'status-admin' : 
+                                                     (${user.role == 'MANAGER'} ? 'status-manager' : 'status-user')" 
+                                      th:text="${user.role}">USER</span>
                             </td>
                             <td class="user-actions">
                                 <!-- 고객코드가 비활성화된 경우 -->
-                                <span class="status-badge status-inactive" th:if="${!customerStatusMap.get(user.customerCode)}">고객코드미존재</span>
+                                <span class="status-badge status-inactive" th:if="${!customerStatusMap.get(user.customerCode)}">고객코드비활성</span>
                                 
                                 <!-- 고객코드가 활성화된 경우에만 관리 버튼 표시 -->
                                 <div th:if="${customerStatusMap.get(user.customerCode)}">
@@ -1064,8 +1080,8 @@
                 <div class="form-row">
                     <label class="form-label">권한 *</label>
                     <select class="form-input" id="editRole" name="role" required>
-                        <option value="USER">USER</option>
-                        <option value="MANAGER">MANAGER</option>
+                        <option value="USER">USER</option>                        
+                        <option value="ADMIN">ADMIN</option>
                     </select>
                 </div>
             </div>
@@ -1157,6 +1173,62 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeAddUserModal()" type="button">취소</button>
                 <button class="btn btn-primary" disabled id="addUserBtn" type="submit">사용자 추가</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 어드민 추가 모달 -->
+<div class="modal" id="addAdminModal">
+    <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+            <h3 class="modal-title">어드민 추가</h3>
+            <button class="modal-close" onclick="closeAddAdminModal()">×</button>
+        </div>
+        <form id="addAdminForm" method="post" th:action="@{/api/auth/minimal-signup}">
+            <div class="modal-body">
+                <div class="form-row">
+                    <label class="form-label">고객코드 *</label>
+                    <input class="form-input" id="addAdminCustomerCode" name="customerCode" 
+                           th:value="${currentUser.customerCode}" readonly type="text">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">아이디 *</label>
+                    <input class="form-input" id="addAdminUsername" name="username" 
+                           placeholder="아이디를 입력하세요" required type="text">
+                    <div id="adminUsernameValidationMessage" style="font-size: 0.85rem; margin-top: 4px; display: none;"></div>
+                </div>
+                <div class="form-row">
+                    <label class="form-label">비밀번호 *</label>
+                    <input class="form-input" id="addAdminPassword" name="password" 
+                           placeholder="비밀번호를 입력하세요" required type="password">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">비밀번호 확인 *</label>
+                    <input class="form-input" id="addAdminPasswordConfirm" name="passwordConfirm" 
+                           placeholder="비밀번호를 다시 입력하세요" required type="password">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">이름 <span class="no-required">*필수입력 제외</span></label>
+                    <input class="form-input" id="addAdminName" name="name" 
+                           placeholder="이름을 입력하세요" type="text">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">이메일 <span class="no-required">*필수입력 제외</span></label>
+                    <input class="form-input" id="addAdminEmail" name="email" 
+                           placeholder="이메일을 입력하세요" type="email">
+                    <div id="adminEmailValidationMessage" style="font-size: 0.85rem; margin-top: 4px; display: none;"></div>
+                </div>
+                <div class="form-row">
+                    <label class="form-label">전화번호 <span class="no-required">*필수입력 제외</span></label>
+                    <input class="form-input" id="addAdminTel" maxlength="13" name="tel" 
+                           placeholder="전화번호를 입력하세요 (예: 010-1234-5678)" type="text">
+                </div>
+                <input name="role" type="hidden" value="ADMIN">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddAdminModal()" type="button">취소</button>
+                <button class="btn btn-primary" disabled id="addAdminBtn" type="submit">어드민 추가</button>
             </div>
         </form>
     </div>
@@ -1274,6 +1346,12 @@
     let passwordMatch = false;
     let emailChecked = false;
     let customerCodeChecked = false;
+
+    // 어드민 추가 모달 관련 변수
+    let adminUsernameChecked = false;
+    let adminPasswordValid = false;
+    let adminPasswordMatch = false;
+    let adminEmailChecked = false;
 
     function handleEditClick(button) {
         const id = button.dataset.id;
@@ -1827,6 +1905,241 @@
         }
     });
 
+    // 어드민 추가 모달 관련 함수들
+    function openAddAdminModal() {
+        const modal = document.getElementById('addAdminModal');
+        modal.classList.add('show');
+        resetAddAdminForm();
+        setupAddAdminValidation();
+    }
+
+    function closeAddAdminModal() {
+        const modal = document.getElementById('addAdminModal');
+        modal.classList.remove('show');
+        resetAddAdminForm();
+    }
+
+    function resetAddAdminForm() {
+        document.getElementById('addAdminForm').reset();
+        adminUsernameChecked = false;
+        adminPasswordValid = false;
+        adminPasswordMatch = false;
+        adminEmailChecked = false;
+        updateAddAdminBtnState();
+        
+        // 메시지 div들 제거
+        const messageDivs = document.querySelectorAll('.admin-validation-message');
+        messageDivs.forEach(div => div.remove());
+        
+        // 검증 메시지들 숨김
+        document.getElementById('adminUsernameValidationMessage').style.display = 'none';
+        document.getElementById('adminEmailValidationMessage').style.display = 'none';
+    }
+
+    function setupAddAdminValidation() {
+        const addAdminUsername = document.getElementById('addAdminUsername');
+        const addAdminPassword = document.getElementById('addAdminPassword');
+        const addAdminPasswordConfirm = document.getElementById('addAdminPasswordConfirm');
+        const addAdminEmail = document.getElementById('addAdminEmail');
+        const addAdminTel = document.getElementById('addAdminTel');
+
+        // 전화번호 자동 하이픈 추가
+        addAdminTel.addEventListener('input', function(e) {
+            const cursorPosition = e.target.selectionStart;
+            const oldValue = e.target.value;
+            const newValue = formatPhoneNumber(e.target.value);
+            e.target.value = newValue;
+            
+            const diff = newValue.length - oldValue.length;
+            if (diff > 0) {
+                e.target.setSelectionRange(cursorPosition + diff, cursorPosition + diff);
+            }
+        });
+
+        // 아이디 중복확인
+        addAdminUsername.addEventListener('blur', function() {
+            const username = addAdminUsername.value.trim();
+            if (!username) {
+                removeAdminValidationMessage('username');
+                adminUsernameChecked = false;
+                updateAddAdminBtnState();
+                return;
+            }
+            
+            fetch(`/api/check-username?username=${encodeURIComponent(username)}`, { method: 'GET' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        showAdminValidationMessage('username', '❌ 사용할 수 없는 아이디입니다.', 'error');
+                        adminUsernameChecked = false;
+                    } else {
+                        showAdminValidationMessage('username', '✔️ 사용할 수 있는 아이디입니다!', 'success');
+                        adminUsernameChecked = true;
+                    }
+                    updateAddAdminBtnState();
+                })
+                .catch(() => {
+                    showAdminValidationMessage('username', '❌ 서버 오류. 다시 시도하세요.', 'error');
+                    adminUsernameChecked = false;
+                    updateAddAdminBtnState();
+                });
+        });
+
+        // 비밀번호 길이 체크
+        addAdminPassword.addEventListener('blur', function() {
+            const password = addAdminPassword.value;
+            if (!password) {
+                removeAdminValidationMessage('password');
+                adminPasswordValid = false;
+                updateAddAdminBtnState();
+                return;
+            }
+            
+            if (password.length < 8) {
+                showAdminValidationMessage('password', '❌ 패스워드는 8자리 이상으로 사용해주세요.', 'error');
+                adminPasswordValid = false;
+            } else {
+                showAdminValidationMessage('password', '✔️ 패스워드가 유효합니다.', 'success');
+                adminPasswordValid = true;
+            }
+            updateAddAdminBtnState();
+        });
+
+        // 비밀번호 확인 체크
+        addAdminPasswordConfirm.addEventListener('blur', function() {
+            const password = addAdminPassword.value;
+            const passwordConfirm = addAdminPasswordConfirm.value;
+            
+            if (!passwordConfirm) {
+                removeAdminValidationMessage('passwordConfirm');
+                adminPasswordMatch = false;
+                updateAddAdminBtnState();
+                return;
+            }
+            
+            if (password !== passwordConfirm) {
+                showAdminValidationMessage('passwordConfirm', '❌ 비밀번호가 일치하지 않습니다.', 'error');
+                adminPasswordMatch = false;
+            } else {
+                showAdminValidationMessage('passwordConfirm', '✔️ 패스워드가 일치합니다!', 'success');
+                adminPasswordMatch = true;
+            }
+            updateAddAdminBtnState();
+        });
+
+        // 이메일 중복확인
+        addAdminEmail.addEventListener('blur', function() {
+            const email = addAdminEmail.value.trim();
+            if (!email) {
+                removeAdminValidationMessage('email');
+                adminEmailChecked = false;
+                updateAddAdminBtnState();
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                showAdminValidationMessage('email', '❌ 올바르지 않은 이메일입니다.', 'error');
+                adminEmailChecked = false;
+                updateAddAdminBtnState();
+                return;
+            }
+            
+            fetch(`/api/check-email?email=${encodeURIComponent(email)}`, { method: 'GET' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        showAdminValidationMessage('email', '❌ 이미 사용중인 이메일입니다.', 'error');
+                        adminEmailChecked = false;
+                    } else {
+                        showAdminValidationMessage('email', '✔️ 사용할 수 있는 이메일입니다!', 'success');
+                        adminEmailChecked = true;
+                    }
+                    updateAddAdminBtnState();
+                })
+                .catch(() => {
+                    showAdminValidationMessage('email', '❌ 서버 오류. 다시 시도하세요.', 'error');
+                    adminEmailChecked = false;
+                    updateAddAdminBtnState();
+                });
+        });
+    }
+
+    function showAdminValidationMessage(fieldId, message, type) {
+        removeAdminValidationMessage(fieldId);
+        
+        const input = document.getElementById('addAdmin' + fieldId.charAt(0).toUpperCase() + fieldId.slice(1));
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'admin-validation-message';
+        messageDiv.style.fontSize = '0.85rem';
+        messageDiv.style.marginTop = '4px';
+        messageDiv.style.color = type === 'success' ? '#2a9d8f' : '#e53e3e';
+        messageDiv.innerHTML = message;
+        
+        input.parentNode.appendChild(messageDiv);
+    }
+
+    function removeAdminValidationMessage(fieldId) {
+        const input = document.getElementById('addAdmin' + fieldId.charAt(0).toUpperCase() + fieldId.slice(1));
+        const messageDiv = input.parentNode.querySelector('.admin-validation-message');
+        if (messageDiv) {
+            messageDiv.remove();
+        }
+    }
+
+    function updateAddAdminBtnState() {
+        const addAdminBtn = document.getElementById('addAdminBtn');
+        const email = document.getElementById('addAdminEmail').value.trim();
+        
+        // 이메일이 입력된 경우에만 이메일 검증 필요
+        const emailValidationRequired = email && email.includes('@');
+        const emailValidationPassed = !emailValidationRequired || adminEmailChecked;
+        
+        if (adminUsernameChecked && adminPasswordValid && adminPasswordMatch && emailValidationPassed) {
+            addAdminBtn.disabled = false;
+            addAdminBtn.style.opacity = '1';
+        } else {
+            addAdminBtn.disabled = true;
+            addAdminBtn.style.opacity = '0.6';
+        }
+    }
+
+    // 어드민 추가 폼 제출 처리
+    document.getElementById('addAdminForm').addEventListener('submit', function(e) {
+        const username = document.getElementById('addAdminUsername').value.trim();
+        const email = document.getElementById('addAdminEmail').value.trim();
+        
+        // 필수 필드 검증
+        if (!username) {
+            e.preventDefault();
+            showMessage('아이디를 입력해주세요.', 'error');
+            document.getElementById('addAdminUsername').focus();
+            return false;
+        }
+        
+        // 아이디 중복 체크
+        if (!adminUsernameChecked) {
+            e.preventDefault();
+            showMessage('아이디 중복 확인을 해주세요.', 'error');
+            document.getElementById('addAdminUsername').focus();
+            return false;
+        }
+        
+        // 이메일이 입력된 경우 중복 체크
+        if (email && !adminEmailChecked) {
+            e.preventDefault();
+            showMessage('이메일 중복 확인을 해주세요.', 'error');
+            document.getElementById('addAdminEmail').focus();
+            return false;
+        }
+        
+        // 비밀번호 검증
+        if (!adminPasswordValid || !adminPasswordMatch) {
+            e.preventDefault();
+            showMessage('비밀번호를 올바르게 입력해주세요.', 'error');
+            return false;
+        }
+    });
+
     // 메시지 표시 함수
     function showMessage(message, type) {
         // 새 메시지 생성
@@ -1872,6 +2185,7 @@
         const deleteModal = document.getElementById('deleteModal');
         const restoreModal = document.getElementById('restoreModal');
         const addUserModal = document.getElementById('addUserModal');
+        const addAdminModal = document.getElementById('addAdminModal');
 
         if (event.target === editModal) {
             closeEditModal();
@@ -1884,6 +2198,9 @@
         }
         if (event.target === addUserModal) {
             closeAddUserModal();
+        }
+        if (event.target === addAdminModal) {
+            closeAddAdminModal();
         }
     }
 </script>

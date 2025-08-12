@@ -4,7 +4,9 @@ import didim.inquiry.domain.Customer;
 import didim.inquiry.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CustomerService {
@@ -32,5 +34,15 @@ public class CustomerService {
 
     public void saveCustomer(Customer customer) {
         customerRepository.save(customer);
+    }
+
+    // active인 고객코드 조회
+    public List<Customer> findAllByActive(String active) {
+        return customerRepository.findAllByStatus(active);
+    }
+    
+    // 여러 고객코드의 상태 확인
+    public List<Customer> findAllByCodeInAndStatus(Set<String> codes, String status) {
+        return customerRepository.findByCodeInAndStatus(new ArrayList<>(codes), status);
     }
 }

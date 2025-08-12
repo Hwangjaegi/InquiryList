@@ -1,17 +1,52 @@
 {\rtf1\ansi\ansicpg949\cocoartf2639
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fnil\fcharset129 AppleSDGothicNeo-Regular;}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
-{\*\expandedcolortbl;;\csgray\c0;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 AppleColorEmoji;\f1\fnil\fcharset129 AppleSDGothicNeo-Regular;\f2\fnil\fcharset0 Menlo-Regular;
+\f3\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;\cssrgb\c0\c0\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww19760\viewh11740\viewkind0
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
 
-\f0\fs22 \cf2 \CocoaLigature0 [
+\f0\fs36 \cf2 \CocoaLigature0 \uc0\u55357 \u56393 
+\f1 \'bf\'f6\'c5\'a9\'c7\'c3\'b7\'ce\'bf\'ec
+\f0 \uc0\u55357 \u56392 
+\f1 \
+1. \'c5\'cd\'b9\'cc\'b3\'ce \'c0\'d4\'b7\'c2 : sudo crontab -e / \'c4\'c4\'c7\'bb\'c5\'cd \'be\'cf\'c8\'a3 \'c0\'d4\'b7\'c2\
+\
+2. 14 * * * * /Users/admin/InquiryList/SSL/renew_ssl.sh >> /Users/admin/InquiryList/SSL/renew_ssl.log 2>&1\
+  -> * * * * * \'c0\'c7 \'c0\'c7\'b9\'cc : 1\'b9\'f8\'c2\'b0* = \'ba\'d0 / 2\'b9\'f8\'c2\'b0* = \'bd\'c3 / 3\'b9\'f8\'c2\'b0* = \'c0\'cf / 4\'b9\'f8\'c2\'b0* = \'bf\'f9 / 5\'b9\'f8\'c2\'b0* = \'bf\'e4\'c0\'cf(\'c0\'cf=0 ~ \'c5\'e4=6)\
+  -> 14 * * * * = 14\'ba\'d0\'b8\'b6\'b4\'d9 renew_ssl.sh\'b8\'a6 \'bd\'c7\'c7\'e0\'c7\'cf\'b6\'f3\'b4\'c2 \'c0\'c7\'b9\'cc.\
+\
+3. crontab \'b5\'ee\'b7\'cf\'c0\'bb \'c5\'eb\'c7\'d8 sh\'b0\'a1 \'bd\'c7\'c7\'e0\'b5\'c9 \'b0\'e6\'bf\'ec \'c7\'f6\'c0\'e7 SSL\'c0\'c7 \'c0\'af\'c8\'bf\'b1\'e2\'b0\'a3\'c0\'bb \'b0\'e8\'bb\'ea \
+  -> renew_ssl.log \'c6\'c4\'c0\'cf\'bf\'a1\'bc\'ad \'b7\'ce\'b1\'d7\'b7\'ce \'c8\'ae\'c0\'ce\'b0\'a1\'b4\'c9\
+  -> \'b3\'b2\'c0\'ba\'b1\'e2\'b0\'a3\'c0\'cc 30\'c0\'cf \'c3\'ca\'b0\'fa\'c0\'cf \'b0\'e6\'bf\'ec \'b0\'bb\'bd\'c5\'c0\'bb \'bd\'c3\'b5\'b5\'c7\'cf\'c1\'f6 \'be\'ca\'c0\'bd. \
+  -> \'b3\'b2\'c0\'ba\'b1\'e2\'b0\'a3\'c0\'cc 30\'c0\'cf \'b9\'cc\'b8\'b8\'c0\'cf \'b0\'e6\'bf\'ec \'b0\'bb\'bd\'c5\'c0\'bb \'bd\'c3\'b5\'b5\'c7\'d4.\
+\
+4. \'b0\'bb\'bd\'c5 \'bd\'c3\'b5\'b5 \'bd\'c3 \'bf\'f6\'c5\'a9\'c7\'c3\'b7\'ce\'bf\'ec\
+  1) Let\'a1\'afs encrypt SSL \'c0\'e7\'b0\'bb\'bd\'c5 \'c8\'c4 \'c0\'fa\'c0\'e5\
+  2) \'bd\'ba\'c7\'c1\'b8\'b5\'ba\'ce\'c6\'ae\'bf\'a1\'bc\'ad \'bb\'e7\'bf\'eb \'c7\'d2 \'bc\'f6 \'c0\'d6\'b4\'c2 P12 \'c8\'ae\'c0\'e5\'c0\'da \'c6\'c4\'c0\'cf\'b7\'ce \'ba\'af\'c8\'af\'c7\'cf\'bf\'a9 \'c7\'c1\'b7\'ce\'c1\'a7\'c6\'ae SSL \'c6\'fa\'b4\'f5\'bf\'a1 \'b1\'e2\'c1\'b8\'c6\'c4\'c0\'cf \'b5\'a4\'be\'ee\'be\'ba\'bf\'ec\'b1\'e2\
+  3) \'c0\'a5\'bc\'ad\'b9\'f6 \'c0\'e7\'bd\'c3\'c0\'db\'c7\'cf\'bf\'a9 \'bb\'f5\'b7\'ce\'bf\'ee SSL \'c0\'fb\'bf\'eb\
+    -> \'c0\'a5 \'bc\'ad\'b9\'f6\'b4\'c2 plist \'bc\'ad\'ba\'f1\'bd\'ba\'b8\'a6 \'b5\'ee\'b7\'cf\'c7\'d8 \'bd\'ba\'c7\'c1\'b8\'b5\'ba\'ce\'c6\'ae Jar \'c6\'c4\'c0\'cf\'c0\'bb \'bd\'c3\'bd\'ba\'c5\'db\'bb\'f3\'bf\'a1\'bc\'ad \'bd\'c7\'c7\'e0\'c7\'d8 \'b9\'e8\'c6\'f7\'c7\'cf\'b0\'ed \'c0\'d6\'b4\'d9.\
+    -> \'c7\'d8\'b4\'e7 plist\'b8\'a6 unload -> load \'c7\'cf\'b8\'e9 \'c0\'e7\'bd\'c3\'c0\'db\'c7\'cf\'b4\'c2 \'c8\'bf\'b0\'fa\'b8\'a6 \'b0\'a1\'c1\'ae\'bf\'c2\'b4\'d9.\
+    * \'b5\'ee\'b7\'cf\'c7\'d1 plist\'b0\'e6\'b7\'ce = /Library/LaunchDaemons/com.inquiry.ssl.springBoot.plist\
+\
+\
+5. \'b0\'e1\'b7\'d0 : crontab\'bf\'a1 \'b5\'ee\'b7\'cf\'c7\'d1 \'b3\'af\'c2\'a5 \'b9\'d7 \'bd\'c3\'b0\'a3\'bf\'a1 renew_ssl.sh\'bd\'c7\'c7\'e0 -> SSL\'c0\'c7 \'c0\'af\'c8\'bf\'b1\'e2\'b0\'a3 \'c3\'bc\'c5\'a9 \'c8\'c4 30\'c0\'cf \'b9\'cc\'b8\'b8\'c0\'cf \'b0\'e6\'bf\'ec \'b0\'bb\'bd\'c5 \'bd\'c3\'b5\'b5\
+-> SSL \'c0\'e7\'b0\'bb\'bd\'c5 \'b9\'d7 p12\'c6\'c4\'c0\'cf \'bb\'fd\'bc\'ba \'c8\'c4 \'c7\'c1\'b7\'ce\'c1\'a7\'c6\'ae \'c6\'fa\'b4\'f5\'c0\'c7 \'b1\'e2\'c1\'b8p12\'c6\'c4\'c0\'cf\'bf\'a1 \'b5\'a4\'be\'ee\'be\'ba\'bf\'f2 -> \'c0\'a5\'bc\'ad\'b9\'f6 \'b9\'e8\'c6\'f7\'c1\'df\'c0\'ce plist\'b8\'a6 unload -> load\'c7\'cf\'bf\'a9 \'c0\'e7\'bd\'c7\'c7\'e0\'c7\'d8\'bc\'ad \'c0\'fb\'bf\'eb\
+\
+
+\f2\fs22 \
+\
+\
+\'97 
+\f1 \'b8\'de\'b8\'f0
+\f2  \'97 \
+[
 \f1 \'bd\'c7\'c1\'a6
-\f0  SSL pem
+\f2  SSL pem
 \f1 \'c6\'c4\'c0\'cf
-\f0  
+\f2  
 \f1 \'b0\'e6\'b7\'ce
-\f0 ]\
+\f2 ]\
 -> as7-fmapp-kr:~ admin$ sudo ls -l /etc/letsencrypt/live/didim.fmapp.kr\
 Password:\
 total 16\
@@ -26,10 +61,35 @@ lrwxr-xr-x  1 root  wheel    41  7 31 18:09 privkey.pem -> ../../archive/didim.f
 \fs24 \cf0 \CocoaLigature1 \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 \cf0 \
+[p12\'c6\'c4\'c0\'cf \'bb\'fd\'bc\'ba]\
+openssl pkcs12 -export \\\
+  -in cert.pem \\ : \'bc\'ad\'b9\'f6\'c0\'ce\'c1\'f5\'bc\'ad\
+  -inkey privkey.pem \\ : \'b0\'b3\'c0\'ce\'c5\'b0\
+  -certfile chain.pem \\ : \'c1\'df\'b0\'a3CA \'c0\'ce\'c1\'f5\'bc\'ad \'c3\'bc\'c0\'ce\
+  -name springboot \\ : \'c5\'b0 \'c0\'fa\'c0\'e5\'bc\'d2 \'be\'c8\'bf\'a1 \'c5\'b0 \'ba\'b0\'c4\'aa\
+  -out keystore.p12 : \'bb\'fd\'bc\'ba\'c7\'d2 p12 \'c6\'c4\'c0\'cf\'c0\'cc\'b8\'a7\
+  - \'bd\'c7\'c1\'a6 \'bb\'fd\'bc\'ba\'c7\'d1 \'c5\'cd\'b9\'cc\'b3\'ce \'c0\'d4\'b7\'c2\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
-\cf0 \
+
+\f2\fs22 \cf2 \CocoaLigature0     ->as7-fmapp-kr:~ admin$ sudo openssl pkcs12 -export -in /etc/letsencrypt/live/didim.fmapp.kr/cert.pem -inkey /etc/letsencrypt/live/didim.fmapp.kr/privkey.pem -certfile /etc/letsencrypt/live/didim.fmapp.kr/chain.pem -name tomcat -out /Users/admin/InquiryList/SSL/keystore.p12
+\f1\fs24 \cf0 \CocoaLigature1 \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf0 [\'bd\'ba\'c7\'c1\'b8\'b5\'ba\'ce\'c6\'ae\'bf\'a1\'bc\'ad \'bb\'e7\'bf\'eb\'c7\'cf\'b5\'b5\'b7\'cf \'ba\'af\'c8\'af\'c7\'d1 SSL \'c6\'c4\'c0\'cf\'b8\'ed : keystore.p12]\
+\cf0 \
+[springboot application.properties \'bc\'bc\'c6\'c3]\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f3 \cf0 \expnd0\expndtw0\kerning0
+server.port=443\
+server.ssl.enabled=true\
+-store=/Users/admin/InquiryList/SSL/keystore.p12\
+server.ssl.key-store-password=didim7977\
+server.ssl.key-store-type=PKCS12\
+server.ssl.key-alias=tomcat\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1 \cf0 \kerning1\expnd0\expndtw0 \
+\
+[\'bd\'ba\'c7\'c1\'b8\'b5\'ba\'ce\'c6\'ae\'bf\'a1\'bc\'ad \'bb\'e7\'bf\'eb\'c7\'cf\'b5\'b5\'b7\'cf \'ba\'af\'c8\'af\'c7\'d1 SSL \'c6\'c4\'c0\'cf\'b8\'ed : keystore.p12]\
 -> [2025-07-31] : Let\'a1\'afs Encypt SSL \'c0\'ce\'c1\'f5\'bc\'ad \'b9\'df\'b1\'de (\'b1\'e2\'b0\'a3 90\'c0\'cf) -> \'b8\'b8\'b7\'e1\'c0\'cf [2025-10-29]\
 \
 [\'c0\'fc\'c3\'bc\'c1\'a4\'ba\'b8 \'b9\'d7 \'b8\'b8\'b7\'e1\'c0\'cf \'c8\'ae\'c0\'ce\'b9\'e6\'b9\'fd]\
@@ -44,4 +104,107 @@ until: \'b7\'ce \'bd\'c3\'c0\'db\'c7\'cf\'b4\'c2 \'b3\'af\'c2\'a5\'b0\'a1 SSL\'c
 -> openssl pkcs12 -in /Users/admin/Customer/keystore.p12 -nokeys -clcerts | openssl x509 -noout -enddate\
 -> \'c5\'cd\'b9\'cc\'b3\'ce \'c0\'d4\'b7\'c2 \'bd\'c3 password \'c0\'d4\'b7\'c2\'c7\'cf\'b4\'c2\'b5\'a5 didim7977 \'c0\'d4\'b7\'c2\
 \'b8\'b8\'b7\'e18\'c0\'cf \'c8\'ae\'c0\'ce\'b0\'a1\'b4\'c9\
+\
+[\'b0\'ad\'c1\'a6 \'c0\'e7\'b0\'bb\'bd\'c5]\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf2 \CocoaLigature0 as7-fmapp-kr:~ admin$ sudo certbot renew --force-renewal\
+Saving debug log to /var/log/letsencrypt/letsencrypt.log\
+\
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\
+Processing /etc/letsencrypt/renewal/didim.fmapp.kr.conf\
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\
+Renewing an existing certificate for didim.fmapp.kr
+\f1\fs24 \cf0 \CocoaLigature1 \
+\
+\
+- \'c0\'da\'b5\'bf \'c0\'e7\'b0\'bb\'bd\'c5 + p12\'c6\'c4\'c0\'cf \'bb\'fd\'bc\'ba \'bd\'a9 \'bd\'ba\'c5\'a9\'b8\'b3\'c6\'ae \'c0\'db\'bc\'ba\
+- /Users/admin/InquiryList/SSL/renew_ssl.sh \'c6\'c4\'c0\'cf\'bf\'a1 \'bd\'a9 \'bd\'ba\'c5\'a9\'b8\'b3\'c6\'ae \'c0\'db\'bc\'ba \
+  * \'bd\'a9 \'bd\'ba\'c5\'a9\'b8\'b3\'c6\'ae\'b0\'a1 \'bd\'c7\'c7\'e0\'b5\'c7\'b8\'e9 ssl\'c0\'bb \'c0\'da\'b5\'bf\'c0\'b8\'b7\'ce \'c0\'e7 \'b0\'bb\'bd\'c5\'c7\'cf\'b8\'e7 \'b0\'bb\'bd\'c5\'b5\'c8 pem\'c6\'c4\'c0\'cf\'c0\'bb \'c5\'eb\'c7\'d8 p12\'c6\'c4\'c0\'cf\'c0\'bb \'bb\'fd\'bc\'ba\'c7\'d8 SSL\'c6\'fa\'b4\'f5\'be\'c8\'bf\'a1 keystore.p12\'c6\'c4\'c0\'cf\'b7\'ce \'c0\'fa\'c0\'e5\'bd\'c3\'c5\'b2\'b4\'d9.\
+  * \'c0\'fa\'c0\'e5 \'c8\'c4 \'b9\'e8\'c6\'f7\'b5\'c8 \'bd\'ba\'c7\'c1\'b8\'b5 \'c7\'c1\'b7\'ce\'c1\'a7\'c6\'ae\'b8\'a6 \'c0\'e7\'bd\'c3\'b5\'bf \'c7\'d8\'c1\'d6\'b8\'e9 \'c0\'fb\'bf\'eb\'b5\'c8\'b4\'d9.\
+\
+- \'c0\'da\'b5\'bf\'c8\'ad \'b9\'e6\'b9\'fd\
+1. [/Library/LaunchDaemons/ \'c6\'fa\'b4\'f5\'bf\'a1 plist \'c6\'c4\'c0\'cf \'bb\'fd\'bc\'ba \'b9\'d7 \'b1\'c7\'c7\'d1 \'ba\'ce\'bf\'a9]\
+  * sudo nano /Library/LaunchDaemons/com.inquiry.ssl.springBoot.plist \'b7\'ce plist \'c6\'c4\'c0\'cf\'bb\'fd\'bc\'ba \'c8\'c4 \'c0\'d4\'b7\'c2\
+  * sudo chown root:wheel /Library/LaunchDaemons/com.inquiry.ssl.springBoot.plist ( \'b1\'c7\'c7\'d1\'ba\'af\'b0\'e6 )\
+  * sudo chmod 644 /Library/LaunchDaemons/com.inquiry.ssl.springBoot.plist ( \'b1\'c7\'c7\'d1\'ba\'af\'b0\'e6 )\
+\
+2. \'bc\'ad\'ba\'f1\'bd\'ba \'bd\'c3\'bd\'ba\'c5\'db\'bf\'a1 \'b5\'ee\'b7\'cf\'c7\'cf\'bf\'a9 \'c0\'a5\'bc\'ad\'b9\'f6\'b8\'a6 \'c0\'da\'b5\'bf\'c0\'b8\'b7\'ce \'bd\'c7\'c7\'e0\'bd\'c3\'c5\'b2\'b4\'d9.\
+  * sudo launchctl load /Library/LaunchDaemons/com.inquiry.ssl.springBoot.plist \'b7\'ce \'bc\'ad\'ba\'f1\'bd\'ba \'b5\'ee\'b7\'cf\
+  * \'b5\'ee\'b7\'cf\'bd\'c3 jar\'c6\'c4\'c0\'cf\'c0\'bb \'bd\'c3\'bd\'ba\'c5\'db\'c0\'cc \'bd\'c7\'c7\'e0\'bd\'c3\'c4\'d1 \'b9\'e8\'c6\'f7\'b8\'a6 \'c0\'da\'b5\'bf\'c8\'ad\'c7\'d1\'b4\'d9. \
+  * 
+\f2\fs22 \cf2 \CocoaLigature0 sudo launchctl list | grep com.inquiry.ssl.springBoot 
+\f1 \'b7\'ce
+\f2  
+\f1 \'bc\'ad\'ba\'f1\'bd\'ba
+\f2  
+\f1 \'b5\'ee\'b7\'cf
+\f2  
+\f1 \'c8\'ae\'c0\'ce\
+\
+3. \'bd\'a9 \'bd\'ba\'c5\'a9\'b8\'b3\'c6\'ae\'bf\'a1\'bc\'ad ssl \'c0\'e7\'b0\'bb\'bd\'c5 -> p12\'c6\'c4\'c0\'cf \'ba\'af\'b0\'e6 \'c8\'c4 \'c6\'fa\'b4\'f5\'bf\'a1 \'c0\'fa\'c0\'e5 -> \'c7\'c1\'b7\'ce\'c1\'a7\'c6\'ae \'bc\'ad\'ba\'f1\'bd\'ba \'b5\'ee\'b7\'cf \'c7\'d8\'c1\'a6 \'c8\'c4 \'c0\'e7\'b5\'ee\'b7\'cf \'c7\'cf\'bf\'a9 \'c0\'fb\'bf\'eb\
+\
+4. \'c1\'a4\'c7\'d8\'c1\'f8 \'c1\'d6\'b1\'e2\'bf\'a1 \'bd\'a9 \'bd\'ba\'c5\'a9\'b8\'b3\'c6\'ae\'b8\'a6 \'bd\'c7\'c7\'e0\'bd\'c3\'c4\'d1 SSL \'c0\'e7\'b0\'bb\'bd\'c5 \'b9\'d7 \'bc\'ad\'b9\'f6 \'c0\'e7\'ba\'ce\'c6\'c3 \'c3\'b3\'b8\'ae \'c7\'cf\'b1\'e2 \
+  * sudo crontab -e \'b8\'a6 \'c5\'cd\'b9\'cc\'b3\'ce\'bf\'a1 \'c0\'d4\'b7\'c2 \'c8\'c4 i\'b8\'a6 \'b4\'ad\'b7\'af \'c0\'d4\'b7\'c2\'b8\'f0\'b5\'e5\'b7\'ce \'c0\'fc\'c8\'af\
+  * \'bd\'c7\'c7\'e0\'c7\'cf\'b0\'ed\'c0\'da \'c7\'cf\'b4\'c2 \'bd\'a9 \'bd\'ba\'c5\'a9\'b8\'b3\'c6\'ae\'b8\'a6 \'ba\'d0 ,\'bd\'c3 , \'c0\'cf ,\'bf\'f9 ,\'c1\'d6 \'b4\'dc\'c0\'a7\'b7\'ce \'bd\'c7\'c7\'e0\'c7\'d2 \'bc\'f6 \'c0\'d6\'b5\'b5\'b7\'cf \'bc\'bc\'c6\'c3 \'c8\'c4 esc\'b8\'a6 \'b4\'a9\'b8\'a3\'b0\'ed :wq\'b7\'ce \'c0\'fa\'c0\'e5\'c8\'c4 \'b3\'aa\'bf\'c0\'b1\'e2\
+  * 
+\f2 * 5 1 * * /Users/admin/InquiryList/SSL/renew_ssl.sh >> /Users/admin/InquiryList/SSL/renew_ssl.log 2>&1 \
+  -> 
+\f1 \'b8\'c5\'bf\'f91\'c0\'cf \'bf\'c0\'c0\'fc5\'bd\'c3\'bf\'a1 sh \'bd\'c7\'c7\'e0\'bf\'e4\'c3\'bb\
+\
+5. \'b8\'c5\'bf\'f9 1\'c0\'cf\'bf\'a1 sh\'b8\'a6 \'c5\'eb\'c7\'d8 \'c0\'ce\'c1\'f5\'bc\'ad \'c0\'e7\'b0\'bb\'bd\'c5 \'b9\'d7 \'c0\'fb\'bf\'eb \
+\
+\
+-> crontab\'c0\'bb \'c5\'eb\'c7\'d1 sh \'bd\'c7\'c7\'e0 \'bd\'c3 \'b9\'df\'bb\'fd\'c7\'d1 \'b9\'ae\'c1\'a6 \
+ (1) certbot \'c8\'af\'b8\'ed\'ba\'af\'bc\'f6 \'c3\'a3\'c1\'f6\'b8\'f8\'c7\'cf\'b4\'c2 \'b9\'ae\'c1\'a6 => sh\'c6\'c4\'c0\'cf\'bf\'a1\'bc\'ad \'c0\'fd\'b4\'eb\'b0\'e6\'b7\'ce\'b7\'ce \'ba\'af\'b0\'e6\
+\
+\
+\
+\
+ ===         ===         === ===         ===         === ===         ===         === ===         ===         === ===         ===         ===\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs48 \uc0\u11088 \u65039 
+\f1  \'c5\'d7\'bd\'ba\'c6\'ae \'b9\'e6\'b9\'fd 
+\f0 \uc0\u11088 \u65039 
+\f1 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs24 \cf0 \CocoaLigature1 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs36 \cf0 [\'b0\'ad\'c1\'a6 \'c0\'ce\'c1\'f5\'bc\'ad \'c0\'e7\'b0\'bb\'bd\'c5 \'c5\'d7\'bd\'ba\'c6\'ae]
+\fs24 \
+- 
+\f2\fs22 \cf2 \CocoaLigature0 as7-fmapp-kr:SSL admin$ sudo ./renew_ssl.sh 
+\f1 \'b8\'a6 \'c5\'cd\'b9\'cc\'b3\'ce\'b7\'ce \'bd\'c7\'c7\'e0\'c7\'d8 \'bd\'a9 \'bd\'ba\'c5\'a9\'b8\'b3\'c6\'ae\'b8\'a6 \'bd\'c7\'c7\'e0 ( \'b0\'ad\'c1\'a6 \'c0\'ce\'c1\'f5\'bc\'ad \'c0\'e7\'b0\'bb\'bd\'c5 \'bd\'ba\'c5\'a9\'b8\'b3\'c6\'ae )\
+ -> \'c0\'ce\'c1\'f5\'bc\'ad \'c0\'e7\'b0\'bb\'bd\'c5 \'b5\'c7\'be\'fa\'b4\'c2\'c1\'f6 \'c3\'bc\'c5\'a9\
+    * \'bb\'fd\'bc\'ba\'c0\'cf \'b8\'b8\'b7\'e1\'c0\'cf \'c3\'bc\'c5\'a9\
+ -> p12 \'c6\'c4\'c0\'cf \'c0\'e7\'b0\'bb\'bd\'c5\'b5\'c8 \'c0\'ce\'c1\'f5\'bc\'ad\'b7\'ce \'bb\'fd\'bc\'ba\'b5\'c8 \'c6\'c4\'c0\'cf\'c0\'ce\'c1\'f6 \'c3\'bc\'c5\'a9\
+    * \'bb\'fd\'bc\'ba\'c0\'cf \'b8\'b8\'b7\'e1\'c0\'cf \'c3\'bc\'c5\'a9\
+ -> plist\'b8\'a6 \'c5\'eb\'c7\'d8 \'bc\'ad\'b9\'f6\'b8\'a6 \'c0\'e7\'bd\'c3\'c0\'db \'c1\'99\'b4\'c2\'c1\'f6 \'b7\'ce\'b1\'d7\'b8\'a6 \'c5\'eb\'c7\'d8 \'c8\'ae\'c0\'ce \
+    * /Users/admin/InquiryList/build/log \'bf\'a1\'bc\'ad \'b7\'ce\'b1\'d7 \'c8\'ae\'c0\'ce \'b0\'a1\'b4\'c9\
+\
+\
+
+\fs36 \cf0 \CocoaLigature1 [\'c1\'a4\'c7\'d8\'c1\'f8 \'c1\'d6\'b1\'e2 \'c0\'ce\'c1\'f5\'bc\'ad \'c0\'e7\'b0\'bb\'bd\'c5 \'c5\'d7\'bd\'ba\'c6\'ae]
+\fs24 \
+- crontab\'bf\'a1 \'c1\'a4\'c0\'c7\'c7\'d1 \'c1\'d6\'b1\'e2\'b7\'ce sh \'bd\'c7\'c7\'e0 \'b5\'c7\'b4\'c2\'c1\'f6 \'c5\'d7\'bd\'ba\'c6\'ae\
+- sh \'b7\'ce\'b1\'d7 \'c8\'ae\'c0\'ce\
+  * /Users/admin/InquiryList/SSL/renew_ssl.log \'bf\'a1\'bc\'ad \'c8\'ae\'c0\'ce\
+  \
+\
+
+\fs36 [\'c5\'d7\'bd\'ba\'c6\'ae \'b0\'b3\'b9\'df\'c1\'df\'c0\'ce \'b0\'e6\'bf\'ec plist \'ba\'f1\'c8\'b0\'bc\'ba\'c8\'ad\'c7\'cf\'b1\'e2]\
+- 
+\fs24 \expnd0\expndtw0\kerning0
+sudo launchctl unload /Library/LaunchDaemons/com.inquiry.ssl.springBoot.plist\
+\kerning1\expnd0\expndtw0 \
+\
+\
+\
+\
+\
+\
 }

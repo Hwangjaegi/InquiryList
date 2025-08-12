@@ -14,14 +14,15 @@ import java.util.List;
 public interface ManagerRepository extends JpaRepository<Manager , Long> {
     boolean existsByEmail(String email);
 
-    List<Manager> findAllByUserId(Long userId);
+    List<Manager> findAllByUserIdOrderByCreatedAtDesc(Long userId);
     
     // 특정 사용자 ID로 매니저 페이징 조회
-    Page<Manager> findAllByUserId(Long userId, Pageable pageable);
+    Page<Manager> findAllByUserIdOrderByCreatedAtDesc(Long userId, Pageable pageable);
     
     // 특정 사용자 ID로 매니저 검색 (이름, 전화번호, 이메일)
     @Query("SELECT m FROM Manager m WHERE m.user.id = :userId AND " +
-           "(m.name LIKE %:keyword% OR m.tel LIKE %:keyword% OR m.email LIKE %:keyword%)")
+           "(m.name LIKE %:keyword% OR m.tel LIKE %:keyword% OR m.email LIKE %:keyword%) " +
+            "ORDER BY m.createdAt DESC")
     Page<Manager> findByUserIdAndKeyword(@Param("userId") Long userId, @Param("keyword") String keyword, Pageable pageable);
     
     // 특정 사용자 ID로 매니저 개수 조회

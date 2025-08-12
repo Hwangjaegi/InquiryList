@@ -70,10 +70,10 @@
         <div class="col align-items-center flex-col sign-up">
             <div class="form-wrapper align-items-center">
                 <!-- 회원가입 폼 -->
-                <form class="form sign-up" id="signupForm" method="post" th:action="@{/signup}">
+                <form class="form sign-up" id="signupForm" method="post" action="/signup">
                     <div class="input-group">
                         <i class='bx bxs-customerCode'></i>
-                        <input name="customerCode" placeholder="고객코드" required type="text">
+                        <input id="signupCustomerCode" name="customerCode" placeholder="고객코드" required type="text">
                     </div>
                     <div class="input-group" style="position:relative;">
                         <i class='bx bxs-user'></i>
@@ -115,7 +115,7 @@
         <!-- SIGN IN -->
         <div class="col align-items-center flex-col sign-in">
             <div class="form-wrapper align-items-center">
-                <form class="form sign-in" id="sign-in-form" method="post" th:action="@{/signin}">
+                <form class="form sign-in" id="sign-in-form" method="post" action="/signin">
                     <div class="input-group">
                         <i class='bx bxs-user'></i>
                         <input id="customerCodeInput" placeholder="고객코드" required type="text">
@@ -298,10 +298,12 @@
             document.getElementById('customerCodeInput').value = '';
         });
 
+        const signupCustomerCodeInput = document.getElementById('signupCustomerCode');
         const signupUsernameInput = document.getElementById('signupUsername');
         const signupPasswordInput = document.getElementById('signupPassword');
         const signupPasswordConfirmInput = document.getElementById('signupPasswordConfirm');
         const signupBtn = document.getElementById('signupBtn');
+        let customerCodeChecked = false;
         let usernameChecked = false;
         let passwordValid = false;
         let passwordMatch = false;
@@ -326,7 +328,7 @@
         }
         // 버튼 활성화/비활성화 상태 관리 함수
         function updateSignupBtnState() {
-            if (usernameChecked && passwordValid && passwordMatch && emailChecked) {
+            if (customerCodeChecked && usernameChecked && passwordValid && passwordMatch && emailChecked) {
                 signupBtn.disabled = false;
                 signupBtn.classList.remove('btn-disabled');
                 signupBtn.classList.add('btn-primary');
@@ -336,6 +338,47 @@
                 signupBtn.classList.remove('btn-primary');
             }
         }
+        
+        // 고객코드 중복확인 (input) → blur에서만 메시지 div 생성/업데이트
+        signupCustomerCodeInput.addEventListener('input', function() {
+            const customerCode = signupCustomerCodeInput.value.trim();
+            let customerCodeMsgDiv = document.getElementById('signupCustomerCodeMsgDiv');
+            if (!customerCode && customerCodeMsgDiv) customerCodeMsgDiv.remove();
+        });
+        
+        signupCustomerCodeInput.addEventListener('blur', function() {
+            const customerCode = signupCustomerCodeInput.value.trim();
+            let customerCodeMsgDiv = document.getElementById('signupCustomerCodeMsgDiv');
+            if (!customerCode) {
+                if (customerCodeMsgDiv) customerCodeMsgDiv.remove();
+                customerCodeChecked = false;
+                signupBtn.disabled = true;
+                return;
+            }
+            if (!customerCodeMsgDiv) customerCodeMsgDiv = getOrCreateMsgDiv('signupCustomerCodeMsgDiv', 'red');
+            fetch(`/api/check-customerCode-signup?customerCode=${encodeURIComponent(customerCode)}`, { method: 'GET' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        customerCodeMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 등록되지 않았거나 이미 사용중인 고객코드입니다.';
+                        customerCodeMsgDiv.style.color = 'red';
+                        customerCodeChecked = false;
+                        signupBtn.disabled = true;
+                    } else {
+                        customerCodeMsgDiv.innerHTML = '<span style="font-size:1.1em; color:green;">✔️</span> 사용할 수 있는 고객코드입니다!';
+                        customerCodeMsgDiv.style.color = 'green';
+                        customerCodeChecked = true;
+                        updateSignupBtnState();
+                    }
+                })
+                .catch(() => {
+                    customerCodeMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 서버 오류. 다시 시도하세요.';
+                    customerCodeMsgDiv.style.color = 'red';
+                    customerCodeChecked = false;
+                    signupBtn.disabled = true;
+                });
+        });
+        
         // 아이디 중복확인 (input) → blur에서만 메시지 div 생성/업데이트
         signupUsernameInput.addEventListener('input', function() {
             const username = signupUsernameInput.value.trim();
@@ -484,10 +527,17 @@
         });
         // 회원가입 submit 시 체크 (비밀번호 일치도 추가)
         document.getElementById('signupForm').addEventListener('submit', function(e) {
+            const customerCodeMsgDiv = getOrCreateMsgDiv('signupCustomerCodeMsgDiv', 'red');
             const idMsgDiv = getOrCreateMsgDiv('signupIdMsgDiv', 'red');
             const pwMsgDiv = getOrCreateMsgDiv('signupPwMsgDiv', 'red');
             const pwMatchDiv = getOrCreateMsgDiv('signupPwMatchMsgDiv', 'red');
             const emailMsgDiv = getOrCreateMsgDiv('signupEmailMsgDiv', 'red');
+            
+            if (!customerCodeChecked) {
+                e.preventDefault();
+                customerCodeMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 고객코드를 확인해주세요.';
+                customerCodeMsgDiv.style.color = 'red';
+            }
             if (!usernameChecked) {
                 e.preventDefault();
                 idMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 아이디 중복확인을 해주세요.';

@@ -2,6 +2,7 @@ package didim.inquiry.service;
 
 import didim.inquiry.domain.Project;
 import didim.inquiry.dto.ProjectDto;
+import didim.inquiry.repository.AdminRepository;
 import didim.inquiry.repository.ProjectRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.data.domain.Page;
@@ -16,10 +17,12 @@ import java.time.LocalDateTime;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final AdminRepository adminRepository;
     private final CustomerService customerService;
 
-    public ProjectService(ProjectRepository projectRepository, CustomerService customerService) {
+    public ProjectService(ProjectRepository projectRepository, AdminRepository adminRepository, CustomerService customerService) {
         this.projectRepository = projectRepository;
+        this.adminRepository = adminRepository;
         this.customerService = customerService;
     }
 
@@ -80,6 +83,10 @@ public class ProjectService {
     public long countNewProjectsThisMonth() {
         java.time.LocalDateTime startOfMonth = java.time.LocalDateTime.now().withDayOfMonth(1).toLocalDate().atStartOfDay();
         return projectRepository.countNewProjectsThisMonth(startOfMonth);
+    }
+
+    public Boolean isCustomerCodeActive(String code) {
+        return adminRepository.existsByCodeAndStatus(code,"ACTIVE");
     }
 
 //    // 서버구동 시 subject='기타문의' 프로젝트가 없으면 자동 생성

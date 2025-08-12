@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-            <link href="/image/didimIcon.png" rel="icon" type="image/png">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-        <title>담당 목록</title>
+    <link href="/image/didimIcon.png" rel="icon" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>담당 목록</title>
     <style>
         * {
             margin: 0;
@@ -22,8 +22,6 @@
         }
 
         .container {
-            margin: 0 auto;
-            width: 100%;
             display: flex;
             min-height: 100vh;
         }
@@ -82,7 +80,7 @@
 
         .menu-item-danger:hover {
             background: #fee2e2;
-            border-color: #fca5a5;
+            border-color: #f87171;
             color: #b91c1c;
             transform: translateY(-1px);
         }
@@ -110,7 +108,6 @@
             font-weight: 600;
         }
 
-        /* 새로운 디자인 특징 */
         .nav-section-header {
             display: flex;
             align-items: center;
@@ -130,7 +127,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
-            flex-shrink: 0;
+            margin-right: 10px;
         }
 
         .back-button:hover {
@@ -138,11 +135,6 @@
             border-color: #2a9d8f;
             color: #2a9d8f;
             transform: translateY(-1px);
-        }
-
-        .back-icon {
-            font-size: 1.2rem;
-            font-weight: bold;
         }
 
         .main-content {
@@ -286,6 +278,23 @@
             transform: translateY(-1px);
         }
 
+        .add-manager-btn {
+            background: #2a9d8f;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .add-manager-btn:hover {
+            background: #237c70;
+            transform: translateY(-1px);
+        }
+
         .manager-list {
             margin-top: 30px;
         }
@@ -403,6 +412,8 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            justify-content: flex-end;
+            margin-bottom: 20px;
         }
 
         .message-alert {
@@ -410,12 +421,13 @@
             border-radius: 6px;
             font-size: 0.85rem;
             font-weight: 500;
-            display: flex;
+            display: none;
             align-items: center;
             gap: 6px;
             animation: slideInRight 0.3s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             white-space: nowrap;
+            margin-bottom: 10px;
         }
 
         .message-success {
@@ -488,6 +500,10 @@
             transition: transform 0.3s ease;
         }
 
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
         .modal-header {
             display: flex;
             justify-content: space-between;
@@ -554,14 +570,21 @@
             background: #ffffff;
         }
 
+        .form-input:disabled {
+            background: rgba(200, 200, 200, 0.5);
+            color: #666;
+            cursor: not-allowed;
+            border-color: rgba(200, 200, 200, 0.5);
+        }
+
         .consent-container {
             margin: 20px 0;
             padding: 15px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(168, 230, 207, 0.5);
             border-radius: 8px;
             font-size: 0.9rem;
-            color: #1f2a44;
+            color: #333;
             line-height: 1.5;
         }
 
@@ -570,7 +593,7 @@
         }
 
         .consent-container strong {
-            color: #2a9d8f;
+            color: #4a9b8e;
         }
 
         .consent-checkbox {
@@ -588,7 +611,7 @@
 
         .consent-checkbox label {
             font-size: 0.9rem;
-            color: #1f2a44;
+            color: #333;
             cursor: pointer;
         }
 
@@ -636,6 +659,45 @@
             align-items: center;
             gap: 4px;
             font-size: 0.85rem;
+        }
+
+        .disabled-row {
+            background: #f0f0f0 !important;
+            color: #aaa !important;
+            opacity: 0.7;
+        }
+
+        .btn-disabled {
+            background: #ccc !important;
+            color: #888 !important;
+            cursor: not-allowed !important;
+            border-color: #ccc !important;
+            pointer-events: none;
+        }
+
+        .btn-restore {
+            background: #10b981;
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            margin-left: 4px;
+        }
+
+        .btn-restore:hover {
+            background: #059669;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes slideInRight {
@@ -702,55 +764,45 @@
                 font-size: 0.8rem;
             }
         }
-
-        @media (max-width: 1024px) {
-            .manager-table .manager-actions {
-                margin-left: auto;
-            }
-        }
     </style>
 </head>
 <body>
 <div class="container">
     <aside class="sidebar">
-<!--        <h2>마이페이지</h2>-->
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-header">
                     <button class="back-button" onclick="goToPage('/inquiryList')">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <div class="nav-section-title"> 관리항목</div>
+                    <div class="nav-section-title">관리항목</div>
                 </div>
                 <a class="menu-item" onclick="goToPage('/myInfo')">🙍‍♂️ 내정보</a>
                 <a class="menu-item active" onclick="goToPage('/console')">👥 담당자</a>
                 <a class="menu-item" onclick="goToPage('/projectList')">📋 프로젝트</a>
             </div>
-<!--            <div class="nav-section">-->
-<!--                <div class="nav-section-title">기타</div>-->
-<!--                <a class="menu-item" onclick="goToPage('/inquiryList')">📋 문의리스트</a>-->
-<!--                <a class="menu-item menu-item-logout" onclick="logout()">🚪 로그아웃</a>-->
-<!--            </div>-->
         </nav>
     </aside>
 
     <main class="main-content">
-<!--        <div class="header">-->
-<!--            <h1>담당자 목록</h1>-->
-<!--            <p>나의 담당자 정보를 확인할 수 있습니다.</p>-->
-<!--        </div>-->
-
         <div class="content-card">
             <!-- 통계 섹션 -->
             <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-number" th:text="${totalUser}">0</div>
+                    <div class="stat-number" id="totalManager" th:text="${totalManager}">0</div>
                     <div class="stat-label">등록된 담당자</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM')}">2024-01</div>
                     <div class="stat-label">현재 월</div>
                 </div>
+            </div>
+
+            <!-- 담당자 추가 버튼 -->
+            <div class="form-button-container">
+                <button class="add-manager-btn" onclick="openAddManagerModal()" type="button">
+                    <i class="fas fa-plus"></i> 담당자 추가
+                </button>
             </div>
 
             <!-- 검색 -->
@@ -763,68 +815,95 @@
 
             <!-- 담당자 목록 -->
             <div class="manager-list">
-                <div class="empty-state" th:if="${totalUser == 0}">
+                <div class="empty-state" id="emptyState" th:if="${totalManager == 0}">
                     <div class="empty-state-icon">👥</div>
                     <div class="empty-state-text">등록된 담당자가 없습니다</div>
-                    <div class="empty-state-subtext">새 담당자를 추가하려면 관리자에게 문의하세요.</div>
+                    <div class="empty-state-subtext">새 담당자를 추가하려면 위의 버튼을 클릭하세요.</div>
                 </div>
 
-                <table class="manager-table" th:unless="${totalUser == 0}">
+                <table class="manager-table" id="managerTable" th:unless="${totalManager == 0}">
                     <thead>
                     <tr>
                         <th>이름</th>
                         <th>전화번호</th>
                         <th>이메일</th>
                         <th>등록일</th>
-                        <th>권한</th>
+                        <th>상태</th>
+                        <th>작업</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:classappend="${user.deleteFlag} ? 'disabled-row' : ''" th:data-id="${user.id}"
-                        th:each="user : ${userList}">
-                        <td th:text="${user.name}">담당자 이름</td>
-                        <td th:text="${user.tel}">010-1234-5678</td>
-                        <td th:text="${user.email}">email@example.com</td>
-                        <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd')}">2024-01-01</td>
-                        <td th:text="${user.role}">USER</td>
+                    <tr th:classappend="${manager.deleteFlag} ? 'disabled-row' : ''" th:data-id="${manager.id}"
+                        th:each="manager : ${managerList}">
+                        <td th:text="${manager.name}">담당자 이름</td>
+                        <td th:text="${manager.tel}">010-1234-5678</td>
+                        <td th:text="${manager.email}">email@example.com</td>
+                        <td th:text="${#temporals.format(manager.createdAt, 'yyyy-MM-dd')}">2024-01-01</td>
+                        <td th:text="${manager.deleteFlag ? '비활성' : '활성'}">활성</td>
+                        <td>
+                            <div class="manager-actions">
+                                <button class="btn btn-edit"
+                                        onclick="if(!this.disabled) handleEditClick(this)"
+                                        th:attr="data-id=${manager.id}, data-name=${manager.name}"
+                                        th:classappend="${manager.deleteFlag} ? ' btn-disabled' : ''"
+                                        th:disabled="${manager.deleteFlag}"
+                                        th:if="${!manager.deleteFlag}">
+                                    수정
+                                </button>
+                                <button class="btn btn-delete"
+                                        onclick="if(!this.disabled) handleDeleteClick(this)"
+                                        th:attr="data-id=${manager.id}, data-name=${manager.name}"
+                                        th:classappend="${manager.deleteFlag} ? ' btn-disabled' : ''"
+                                        th:disabled="${manager.deleteFlag}"
+                                        th:if="${!manager.deleteFlag}">
+                                    삭제
+                                </button>
+                                <button class="btn btn-restore"
+                                        onclick="handleRestoreClick(this)"
+                                        th:attr="data-id=${manager.id}, data-name=${manager.name}"
+                                        th:if="${manager.deleteFlag}">
+                                    복원
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
 
                 <!-- 페이징 섹션 -->
-                <div class="pagination" th:if="${userList.totalPages > 1}">
+                <div class="pagination" th:if="${managerList.totalPages > 1}">
                     <th:block th:with="
                         pageGroupSize=5,
-                        currentGroupIndex=${userList.number / pageGroupSize},
+                        currentGroupIndex=${managerList.number / pageGroupSize},
                         startPage=${currentGroupIndex * pageGroupSize},
-                        endPage=${(startPage + pageGroupSize - 1) < (userList.totalPages - 1) ? (startPage + pageGroupSize - 1) : (userList.totalPages - 1)},
+                        endPage=${(startPage + pageGroupSize - 1) < (managerList.totalPages - 1) ? (startPage + pageGroupSize - 1) : (managerList.totalPages - 1)},
                         hasPrevGroup=${currentGroupIndex > 0},
-                        hasNextGroup=${endPage < (userList.totalPages - 1)},
+                        hasNextGroup=${endPage < (managerList.totalPages - 1)},
                         prevGroupStartPage=${(currentGroupIndex - 1) * pageGroupSize},
                         nextGroupStartPage=${(currentGroupIndex + 1) * pageGroupSize}">
                         <a class="pagination-button"
-                           th:classappend="${userList.number == 0} ? 'disabled'"
-                           th:href="@{/console(page=0, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:classappend="${managerList.number == 0} ? 'disabled'"
+                           th:href="@{/console(page=0, size=${managerList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav"><<</span>
                         </a>
                         <a class="pagination-button"
                            th:classappend="${!hasPrevGroup} ? 'disabled'"
-                           th:href="@{/console(page=${prevGroupStartPage}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:href="@{/console(page=${prevGroupStartPage}, size=${managerList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">이전</span>
                         </a>
                         <a class="pagination-button"
-                           th:classappend="${page == userList.number} ? 'active'"
+                           th:classappend="${page == managerList.number} ? 'active'"
                            th:each="page : ${#numbers.sequence(startPage, endPage)}"
-                           th:href="@{/console(page=${page}, size=${userList.pageable.pageSize}, search=${searchKeyword})}"
+                           th:href="@{/console(page=${page}, size=${managerList.pageable.pageSize}, search=${searchKeyword})}"
                            th:text="${page + 1}">1</a>
                         <a class="pagination-button"
                            th:classappend="${!hasNextGroup} ? 'disabled'"
-                           th:href="@{/console(page=${nextGroupStartPage}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:href="@{/console(page=${nextGroupStartPage}, size=${managerList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">다음</span>
                         </a>
                         <a class="pagination-button"
-                           th:classappend="${userList.number == (userList.totalPages - 1)} ? 'disabled'"
-                           th:href="@{/console(page=${userList.totalPages - 1}, size=${userList.pageable.pageSize}, search=${searchKeyword})}">
+                           th:classappend="${managerList.number == (managerList.totalPages - 1)} ? 'disabled'"
+                           th:href="@{/console(page=${managerList.totalPages - 1}, size=${managerList.pageable.pageSize}, search=${searchKeyword})}">
                             <span class="pagination-nav">>></span>
                         </a>
                     </th:block>
@@ -834,33 +913,126 @@
     </main>
 </div>
 
+<!-- 수정 모달 -->
+<div class="modal" id="editModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">담당자 정보 수정</h3>
+            <button class="modal-close" onclick="closeEditModal()">×</button>
+        </div>
+        <form action="/manager/update" id="editForm" method="post">
+            <div class="modal-body">
+                <div class="form-row">
+                    <input id="editId" name="id" type="hidden">
+                    <label class="form-label">이름</label>
+                    <input class="form-input" id="editName" name="name" required type="text">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">전화번호</label>
+                    <input class="form-input" id="editTel" name="tel" required type="text">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">이메일</label>
+                    <input class="form-input" id="editEmail" name="email" required type="email">
+                    <div id="editEmailError" class="email-error" style="display: none; color: #e53e3e; font-size: 0.85rem; margin-top: 5px;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeEditModal()" type="button">취소</button>
+                <button class="btn btn-primary" type="submit">저장</button>
+            </div>
+        </form>
+    </div>
+</div>
 
+<!-- 삭제 확인 모달 -->
+<div class="modal" id="deleteModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">담당자 삭제</h3>
+            <button class="modal-close" onclick="closeDeleteModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <p><strong id="deleteManagerName"></strong> 담당자를 삭제하시겠습니까?</p>
+            <p style="color: #f44336; font-size: 0.9rem; margin-top: 10px;">이 작업은 복원할 수 있습니다.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeDeleteModal()" type="button">취소</button>
+            <button class="btn btn-danger" onclick="confirmDelete()" type="button">삭제</button>
+        </div>
+    </div>
+</div>
+
+<!-- 복원 안내 모달 -->
+<div class="modal" id="restoreModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">담당자 복원</h3>
+            <button class="modal-close" onclick="closeRestoreModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <p>정말로 <strong id="restoreManagerName"></strong> 담당자를 복원하시겠습니까?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeRestoreModal()" type="button">취소</button>
+            <button class="btn btn-primary" onclick="confirmRestore()" type="button">복원</button>
+        </div>
+    </div>
+</div>
+
+<!-- 담당자 추가 모달 -->
+<div class="modal" id="addManagerModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title"><i class="fas fa-plus"></i> 담당자 추가</h3>
+            <button class="modal-close" onclick="closeAddManagerModal()">×</button>
+        </div>
+        <form id="addManagerForm">
+            <div class="modal-body">
+                <div class="form-row">
+                    <label class="form-label">이름 *</label>
+                    <input class="form-input" id="newManagerName" name="name" placeholder="담당자 이름" required type="text"/>
+                </div>
+                <div class="form-row">
+                    <label class="form-label">연락처 *</label>
+                    <input class="form-input" id="newManagertel" name="tel" placeholder="연락처" required type="text"/>
+                    <div id="telMsgDiv" style="display: none; font-size: 0.9em; margin-top: 4px; color: red;"></div>
+                </div>
+                <div class="form-row">
+                    <label class="form-label">이메일 *</label>
+                    <input class="form-input" id="newManagerEmail" name="email" placeholder="이메일" required type="email"/>
+                    <div id="emailMsgDiv" style="display: none; font-size: 0.9em; margin-top: 4px; color: red;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddManagerModal()" type="button">
+                    <i class="fas fa-times"></i> 취소
+                </button>
+                <button class="btn btn-primary" id="addManagerSubmitBtn" type="submit">
+                    <i class="fas fa-plus"></i> 추가
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script th:inline="javascript">
     // JWT 토큰 확인 및 설정
     function setupJwtToken() {
-        // 1. URL 파라미터에서 토큰 확인 (파일메이커용)
         const urlParams = new URLSearchParams(window.location.search);
         const urlToken = urlParams.get('token');
-        
+
         if (urlToken) {
             console.log('URL 파라미터에서 토큰 발견 스토리지 저장');
-            
-            // URL에서 토큰 파라미터 제거 (보안상)
             const newUrl = window.location.pathname;
             window.history.replaceState({}, document.title, newUrl);
-            
-            // localStorage에도 저장
             localStorage.setItem('jwt_token', urlToken);
         }
-        
-        // 2. localStorage에서 토큰 확인
+
         let token = localStorage.getItem('jwt_token');
-        
         console.log('JWT 토큰 확인:', token ? '존재함' : '없음');
-        
+
         if (token) {
-            // 모든 fetch 요청에 JWT 토큰 추가
             const originalFetch = window.fetch;
             window.fetch = function(url, options = {}) {
                 if (!options.headers) {
@@ -870,16 +1042,12 @@
                 console.log('Fetch 요청에 JWT 토큰 추가:', url);
                 return originalFetch(url, options);
             };
-            
-            // JWT 토큰이 있을 때만 검증 수행
             validateJwtToken(token);
         } else {
-            // JWT 토큰이 없으면 일반 세션 인증으로 간주하고 검증 건너뛰기
             console.log('JWT 토큰이 없음, 일반 세션 인증으로 간주');
         }
     }
-    
-    // JWT 토큰 검증
+
     async function validateJwtToken(token) {
         try {
             const response = await fetch('/api/auth/validate', {
@@ -887,7 +1055,6 @@
                     'Authorization': 'Bearer ' + token
                 }
             });
-            
             const data = await response.json();
             if (!data.valid) {
                 console.log('JWT 토큰이 유효하지 않음, 로그인 페이지로 이동');
@@ -901,11 +1068,9 @@
         }
     }
 
-    // 페이지 이동 함수 (JWT 토큰과 함께)
     function goToPage(url) {
         const token = localStorage.getItem('jwt_token');
         if (token) {
-            // JWT 토큰이 있을 때는 /api/auth/inquiryList로 이동
             if (url === '/inquiryList') {
                 const separator = '/api/auth/inquiryList'.includes('?') ? '&' : '?';
                 window.location.href = '/api/auth/inquiryList' + separator + 'token=' + encodeURIComponent(token);
@@ -918,18 +1083,15 @@
         }
     }
 
-    // 로그아웃 함수
     function logout() {
         const token = localStorage.getItem('jwt_token');
         if (token) {
-            // 서버에 로그아웃 요청
             fetch('/logout', {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
             }).finally(() => {
-                // localStorage에서 토큰 제거
                 localStorage.removeItem('jwt_token');
                 window.location.href = '/login';
             });
@@ -938,9 +1100,536 @@
         }
     }
 
-    // 페이지 로드 시 JWT 토큰 설정
-    document.addEventListener('DOMContentLoaded', function() {
+    let currentEditId = null;
+    let currentDeleteId = null;
+    let currentRestoreId = null;
+    const currentPage = /*[[${managerList.getNumber()}]]*/ 0;
+    const searchKeyword = /*[[${searchKeyword != null ? searchKeyword : ''}]]*/ '';
+    const currentUserId = /*[[${currentUserId}]]*/ null;
+
+    // 연락처 하이픈 자동 입력 함수
+    function formatPhoneNumber(phoneNumber) {
+        const cleaned = phoneNumber.replace(/\D/g, '');
+        if (cleaned.length <= 2) {
+            return cleaned;
+        } else if (cleaned.length <= 3) {
+            return cleaned;
+        } else if (cleaned.length <= 4) {
+            return cleaned.slice(0, 2) + '-' + cleaned.slice(2);
+        } else if (cleaned.length <= 6) {
+            return cleaned.slice(0, 2) + '-' + cleaned.slice(2);
+        } else if (cleaned.length <= 7) {
+            return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 5) + '-' + cleaned.slice(5);
+        } else if (cleaned.length <= 8) {
+            if (cleaned.startsWith('02')) {
+                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 6) + '-' + cleaned.slice(6);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
+            }
+        } else if (cleaned.length <= 9) {
+            if (cleaned.startsWith('02')) {
+                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 5) + '-' + cleaned.slice(5);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
+            }
+        } else if (cleaned.length <= 10) {
+            if (cleaned.startsWith('02')) {
+                return cleaned.slice(0, 2) + '-' + cleaned.slice(2, 6) + '-' + cleaned.slice(6);
+            } else {
+                return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 6) + '-' + cleaned.slice(6);
+            }
+        } else {
+            return cleaned.slice(0, 3) + '-' + cleaned.slice(3, 7) + '-' + cleaned.slice(7, 11);
+        }
+    }
+
+    // 메시지 표시 함수
+    function showMessage(message, type) {
+        const messageContainer = document.querySelector('.manager-list');
+        if (!messageContainer) {
+            console.warn('Message container (.manager-list) not found in DOM');
+            return;
+        }
+
+        const existingMessages = messageContainer.querySelectorAll('.message-alert');
+        existingMessages.forEach(msg => msg.remove());
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message-alert message-${type}`;
+        messageDiv.innerHTML = `
+            <span class="message-icon">${type === 'success' ? '✅' : '❌'}</span>
+            <span>${message}</span>
+        `;
+        messageDiv.style.display = 'flex';
+        messageDiv.style.animation = 'slideInRight 0.3s ease';
+        messageContainer.insertBefore(messageDiv, messageContainer.firstChild);
+
+        setTimeout(() => {
+            messageDiv.style.opacity = '0';
+            messageDiv.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.parentNode.removeChild(messageDiv);
+                }
+            }, 500);
+        }, 3000);
+    }
+
+    // 담당자 추가 모달 열기
+    function openAddManagerModal() {
+        const modal = document.getElementById('addManagerModal');
+        modal.classList.add('show');
+        document.getElementById('addManagerForm').reset();
+        document.getElementById('telMsgDiv').style.display = 'none';
+        document.getElementById('emailMsgDiv').style.display = 'none';
+    }
+
+    // 담당자 추가 모달 닫기
+    function closeAddManagerModal() {
+        const modal = document.getElementById('addManagerModal');
+        modal.classList.remove('show');
+        document.getElementById('addManagerForm').reset();
+        document.getElementById('telMsgDiv').style.display = 'none';
+        document.getElementById('emailMsgDiv').style.display = 'none';
+    }
+
+    // 동적으로 테이블에 새 담당자 추가
+    function addManagerToTable(manager) {
+        const table = document.getElementById('managerTable');
+        const tbody = table.querySelector('tbody');
+        const emptyState = document.getElementById('emptyState');
+
+        // 빈 상태 메시지 숨기기
+        if (emptyState) {
+            emptyState.style.display = 'none';
+        }
+
+        // 테이블이 없으면 새로 생성
+        if (!table) {
+            const newTable = document.createElement('table');
+            newTable.id = 'managerTable';
+            newTable.className = 'manager-table';
+            newTable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>전화번호</th>
+                        <th>이메일</th>
+                        <th>등록일</th>
+                        <th>상태</th>
+                        <th>작업</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            `;
+            document.querySelector('.manager-list').insertBefore(newTable, document.querySelector('.pagination'));
+            table = newTable;
+        }
+
+        // 새 행 생성
+        const newRow = document.createElement('tr');
+        newRow.setAttribute('data-id', manager.id);
+        newRow.innerHTML = `
+            <td>${manager.name}</td>
+            <td>${manager.tel}</td>
+            <td>${manager.email}</td>
+            <td>${new Date().toISOString().split('T')[0]}</td>
+            <td>활성</td>
+            <td>
+                <div class="manager-actions">
+                    <button class="btn btn-edit" data-id="${manager.id}" data-name="${manager.name}" onclick="if(!this.disabled) handleEditClick(this)">수정</button>
+                    <button class="btn btn-delete" data-id="${manager.id}" data-name="${manager.name}" onclick="if(!this.disabled) handleDeleteClick(this)">삭제</button>
+                </div>
+            </td>
+        `;
+        tbody.insertBefore(newRow, tbody.firstChild);
+
+        // totalManager 업데이트
+        const totalManagerElement = document.getElementById('totalManager');
+        let totalManager = parseInt(totalManagerElement.textContent) || 0;
+        totalManagerElement.textContent = totalManager + 1;
+    }
+
+    // DOMContentLoaded 이벤트
+    document.addEventListener('DOMContentLoaded', function () {
+        // JWT 토큰 설정
         setupJwtToken();
+
+        // 전화번호 포맷팅
+        const telInputs = document.querySelectorAll('input[name="managerTel"], input[id="editTel"], input[id="newManagertel"]');
+        telInputs.forEach(telInput => {
+            telInput.addEventListener('input', function (e) {
+                const cursorPosition = e.target.selectionStart;
+                const oldValue = e.target.value;
+                const newValue = formatPhoneNumber(oldValue);
+                e.target.value = newValue;
+                const diff = newValue.length - oldValue.length;
+                if (diff > 0) {
+                    e.target.setSelectionRange(cursorPosition + diff, cursorPosition + diff);
+                }
+            });
+
+            telInput.addEventListener('keydown', function (e) {
+                const cursorPosition = e.target.selectionStart;
+                const value = e.target.value;
+                if (e.key === 'Backspace' && cursorPosition > 0 && value[cursorPosition - 1] === '-') {
+                    e.preventDefault();
+                    const newValue = value.substring(0, cursorPosition - 2) + value.substring(cursorPosition);
+                    e.target.value = formatPhoneNumber(newValue);
+                    e.target.setSelectionRange(cursorPosition - 2, cursorPosition - 2);
+                }
+            });
+        });
+
+        // 이메일 중복 검증 함수
+        function checkEmailDuplicate(email, excludeManagerId = null) {
+            let url = `/api/check-email-manager?email=${encodeURIComponent(email)}`;
+            if (excludeManagerId) {
+                url += `&excludeManagerId=${excludeManagerId}`;
+            }
+
+            return fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    return data.exists;
+                })
+                .catch(error => {
+                    console.error('이메일 중복 확인 중 오류:', error);
+                    return null;
+                });
+        }
+
+        // 수정 모달 이메일 입력 필드 이벤트 리스너
+        const editEmailInput = document.getElementById('editEmail');
+        if (editEmailInput) {
+            editEmailInput.addEventListener('blur', function() {
+                const email = this.value.trim();
+                if (email) {
+                    checkEmailDuplicate(email, currentEditId).then(exists => {
+                        const errorDiv = document.getElementById('editEmailError');
+                        if (exists) {
+                            errorDiv.textContent = '이미 사용중인 이메일입니다.';
+                            errorDiv.style.display = 'block';
+                        } else {
+                            errorDiv.style.display = 'none';
+                        }
+                    });
+                } else {
+                    document.getElementById('editEmailError').style.display = 'none';
+                }
+            });
+
+            editEmailInput.addEventListener('input', function() {
+                document.getElementById('editEmailError').style.display = 'none';
+            });
+        }
+
+        // 담당자 추가 모달 이메일 입력 필드 이벤트 리스너
+        let emailChecked = false;
+        const newManagerEmailInput = document.getElementById('newManagerEmail');
+        const emailMsgDiv = document.getElementById('emailMsgDiv');
+        if (newManagerEmailInput) {
+            newManagerEmailInput.addEventListener('input', function() {
+                const email = this.value.trim();
+                if (!email) {
+                    emailMsgDiv.style.display = 'none';
+                    emailChecked = false;
+                }
+            });
+
+            newManagerEmailInput.addEventListener('blur', function() {
+                const email = this.value.trim();
+                if (!email) {
+                    emailMsgDiv.style.display = 'none';
+                    emailChecked = false;
+                    return;
+                }
+
+                if (!email.includes('@')) {
+                    emailMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 올바르지 않은 이메일입니다.';
+                    emailMsgDiv.style.color = 'red';
+                    emailMsgDiv.style.display = 'block';
+                    emailChecked = false;
+                    return;
+                }
+
+                checkEmailDuplicate(email).then(exists => {
+                    if (exists) {
+                        emailMsgDiv.innerHTML = '<span style="font-size:1.1em;">❌</span> 이미 사용중인 이메일입니다. 다른 이메일을 입력해주세요';
+                        emailMsgDiv.style.color = 'red';
+                        emailMsgDiv.style.display = 'block';
+                        emailChecked = false;
+                    } else {
+                        emailMsgDiv.innerHTML = '<span style="font-size:1.1em; color:green;">✔️</span> 사용할 수 있는 이메일입니다!';
+                        emailMsgDiv.style.color = 'green';
+                        emailMsgDiv.style.display = 'block';
+                        emailChecked = true;
+                    }
+                });
+            });
+        }
+
+        // editForm 제출 처리
+        const editForm = document.getElementById('editForm');
+        if (editForm) {
+            editForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const emailError = document.getElementById('editEmailError');
+                if (emailError.style.display === 'block') {
+                    showMessage('중복된 이메일이 있습니다. 다른 이메일을 입력해주세요.', 'error');
+                    return;
+                }
+
+                const formData = new FormData(editForm);
+                const managerData = {
+                    id: formData.get('id'),
+                    name: formData.get('name'),
+                    tel: formData.get('tel'),
+                    email: formData.get('email')
+                };
+                fetch('/manager/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(managerData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { throw new Error(err.message); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const row = document.querySelector(`tr[data-id="${managerData.id}"]`);
+                    if (row) {
+                        const cells = row.querySelectorAll('td');
+                        cells[0].textContent = data.manager.name;
+                        cells[1].textContent = data.manager.tel;
+                        cells[2].textContent = data.manager.email;
+                    }
+                    const editButton = document.querySelector(`button.btn-edit[data-id="${managerData.id}"]`);
+                    if (editButton) {
+                        editButton.dataset.name = data.manager.name;
+                    }
+                    const deleteButton = document.querySelector(`button.btn-delete[data-id="${managerData.id}"]`);
+                    if (deleteButton) {
+                        deleteButton.dataset.name = data.manager.name;
+                    }
+                    showMessage('담당자 정보가 성공적으로 수정되었습니다.', 'success');
+                    closeEditModal();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showMessage(`담당자 정보 수정 중 오류가 발생했습니다: ${error.message}`, 'error');
+                });
+            });
+        }
+
+        // 담당자 추가 폼 제출 처리
+        const addManagerForm = document.getElementById('addManagerForm');
+        if (addManagerForm) {
+            addManagerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const requestData = {
+                    name: formData.get('name'),
+                    tel: formData.get('tel'),
+                    email: formData.get('email')
+                };
+
+                if (!requestData.name || !requestData.tel || !requestData.email) {
+                    showMessage('모든 필드를 입력해주세요.', 'error');
+                    return;
+                }
+
+                if (!emailChecked) {
+                    showMessage('이메일 중복확인을 해주세요.', 'error');
+                    newManagerEmailInput.focus();
+                    return;
+                }
+
+                if (!requestData.email.includes('@')) {
+                    showMessage('올바른 이메일 형식을 입력해주세요.', 'error');
+                    return;
+                }
+
+                fetch('/api/addManager', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showMessage('담당자가 성공적으로 추가되었습니다.', 'success');
+                        closeAddManagerModal();
+                        addManagerToTable({
+                            id: data.manager.id,
+                            name: data.manager.name,
+                            tel: data.manager.tel,
+                            email: data.manager.email
+                        });
+                    } else {
+                        showMessage('담당자 추가 실패: ' + data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showMessage('담당자 추가 중 오류가 발생했습니다.', 'error');
+                });
+            });
+        }
+    });
+
+    // 수정 버튼 클릭
+    function handleEditClick(button) {
+        const id = button.dataset.id;
+        const name = button.dataset.name;
+        const tel = button.closest('tr').querySelector('td:nth-child(2)').textContent;
+        const email = button.closest('tr').querySelector('td:nth-child(3)').textContent;
+        openEditModal(id, name, tel, email);
+    }
+
+    // 수정 모달 열기
+    function openEditModal(id, name, tel, email) {
+        currentEditId = id;
+        document.getElementById('editId').value = id;
+        document.getElementById('editName').value = name;
+        document.getElementById('editTel').value = tel;
+        document.getElementById('editEmail').value = email;
+        document.getElementById('editEmailError').style.display = 'none';
+        const modal = document.getElementById('editModal');
+        modal.classList.add('show');
+    }
+
+    // 수정 모달 닫기
+    function closeEditModal() {
+        const modal = document.getElementById('editModal');
+        modal.classList.remove('show');
+        currentEditId = null;
+        document.getElementById('editId').value = '';
+        document.getElementById('editName').value = '';
+        document.getElementById('editTel').value = '';
+        document.getElementById('editEmail').value = '';
+        document.getElementById('editEmailError').style.display = 'none';
+    }
+
+    // 삭제 버튼 클릭
+    function handleDeleteClick(button) {
+        const id = button.dataset.id;
+        const name = button.dataset.name;
+        openDeleteModal(id, name);
+    }
+
+    // 삭제 모달 열기
+    function openDeleteModal(id, name) {
+        currentDeleteId = id;
+        document.getElementById('deleteManagerName').textContent = name;
+        const modal = document.getElementById('deleteModal');
+        modal.classList.add('show');
+    }
+
+    // 삭제 모달 닫기
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.remove('show');
+        currentDeleteId = null;
+    }
+
+    // 삭제 확인
+    function confirmDelete() {
+        if (currentDeleteId) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/manager/delete/${currentDeleteId}?page=${currentPage}&search=${encodeURIComponent(searchKeyword)}`;
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+
+    // 복원 버튼 클릭
+    function handleRestoreClick(button) {
+        const id = button.dataset.id;
+        const name = button.dataset.name;
+        openRestoreModal(id, name);
+    }
+
+    // 복원 모달 열기
+    function openRestoreModal(id, name) {
+        currentRestoreId = id;
+        document.getElementById('restoreManagerName').textContent = name;
+        document.getElementById('restoreModal').classList.add('show');
+    }
+
+    // 복원 모달 닫기
+    function closeRestoreModal() {
+        document.getElementById('restoreModal').classList.remove('show');
+        currentRestoreId = null;
+    }
+
+    // 복원 확인
+    function confirmRestore() {
+        if (currentRestoreId) {
+            let actionUrl = `/manager/restore/${currentRestoreId}?page=${currentPage}`;
+            if (searchKeyword && searchKeyword !== 'null' && searchKeyword !== 'undefined') {
+                actionUrl += `&search=${encodeURIComponent(searchKeyword)}`;
+            }
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = actionUrl;
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+
+    // 모달 외부 클릭 시 닫기
+    window.addEventListener('click', function(event) {
+        const editModal = document.getElementById('editModal');
+        const deleteModal = document.getElementById('deleteModal');
+        const restoreModal = document.getElementById('restoreModal');
+        const addManagerModal = document.getElementById('addManagerModal');
+        if (event.target === editModal) {
+            closeEditModal();
+        }
+        if (event.target === deleteModal) {
+            closeDeleteModal();
+        }
+        if (event.target === restoreModal) {
+            closeRestoreModal();
+        }
+        if (event.target === addManagerModal) {
+            closeAddManagerModal();
+        }
+    });
+
+    // ESC 키로 모달 닫기
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeEditModal();
+            closeDeleteModal();
+            closeRestoreModal();
+            closeAddManagerModal();
+        }
+    });
+
+    // 돋보기 아이콘 클릭으로 검색
+    document.querySelector('.search-icon').addEventListener('click', function() {
+        const searchInput = document.querySelector('.search-input');
+        if (searchInput && searchInput.value.trim().length >= 2) {
+            document.getElementById('searchForm').submit();
+        }
+    });
+
+    // 검색 폼 제출 처리
+    document.querySelector('.search-input').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && this.value.trim().length >= 2) {
+            event.preventDefault();
+            document.getElementById('searchForm').submit();
+        }
     });
 </script>
 </body>

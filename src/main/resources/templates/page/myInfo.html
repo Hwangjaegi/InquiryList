@@ -59,11 +59,17 @@
         font-weight: 600;
         padding-left: 10px;
     }
-    .main-content { flex: 1; padding: 0; }
+    .main-content {
+        flex: 1;
+        padding: 0;
+        display: flex;
+        align-items: center;      /* 세로 중앙 정렬 */
+        justify-content: center;  /* 가로 중앙 정렬 */
+    }
     .header { text-align: center; padding: 30px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); margin-bottom: 30px; }
     .header h1 { font-size: 2rem; font-weight: 600; color: #1f2a44; }
     .header p { font-size: 1rem; color: #64748b; margin-top: 8px; }
-    .content-card { background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); max-width: 500px; margin: 0 auto; }
+    .content-card { background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); width: 90%; max-width: 500px; min-width: 320px; margin: 0 auto; }
     .form-section { margin-bottom: 20px; }
     .form-section h3 { color: #1f2a44; margin-bottom: 15px; font-size: 1.2rem; font-weight: 600; }
     .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }

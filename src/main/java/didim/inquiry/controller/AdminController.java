@@ -16,7 +16,6 @@ import didim.inquiry.service.UserService;
 import didim.inquiry.service.CustomerService;
 import didim.inquiry.security.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +34,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class AdminController extends BaseController {
@@ -167,7 +168,7 @@ public class AdminController extends BaseController {
                 model.addAttribute("currentUserId", user.getId());
                 model.addAttribute("totalManager", totalManager);
                 model.addAttribute("searchKeyword", search);
-                return "page/managerConsole";
+                return "page/userConsole";
             }
         } catch (UsernameNotFoundException e) {
             System.err.println(e.getMessage());
@@ -314,30 +315,60 @@ public class AdminController extends BaseController {
                                    RedirectAttributes redirectAttributes,
                                    HttpServletRequest request) {
         try {
-            User validateUser = getCurrentUserFromToken(request);
-            if (!validateUser.getRole().equals("ADMIN")) {
+            User currentUser = getCurrentUserFromToken(request);
+            if (!currentUser.getRole().equals("ADMIN")) {
                 throw new IllegalArgumentException("권한이 없는 계정입니다.");
             }
 
             Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-            Page<Project> projectList = (searchKeyword == null || searchKeyword.isEmpty())
+            Page<Project> pageProject = (searchKeyword == null || searchKeyword.isEmpty())
                     ? projectService.getAllProjects(pageable)
                     : projectService.getAllProjectsBySearch(searchKeyword, pageable);
-            model.addAttribute("projectList", projectList.getContent());
-            model.addAttribute("currentPage", projectList.getNumber());
-            model.addAttribute("totalPages", projectList.getTotalPages());
-            model.addAttribute("pageSize", projectList.getSize());
+
+            //프로젝트
+            List<Customer> activeCustomer = customerService.findAllByActive("ACTIVE");
+            long countAllProjects = projectService.countAllProjects();
+            long countNewProjects = projectService.countNewProjectsThisMonth();
+
+            //각 프로젝트 고객코드 상태 확인 (최적화: 한 번의 쿼리로 모든 고객코드 상태 조회)
+            List<Project> projectList = pageProject.getContent();
+            Map<String, Boolean> customerStatusMap = new HashMap<>();
+            
+            // 고유한 고객코드들만 추출
+            Set<String> uniqueCustomerCodes = projectList.stream()
+                    .map(project -> project.getCustomer().getCode())
+                    .filter(code -> code != null && !code.isEmpty())
+                    .collect(Collectors.toSet());
+            
+            // 한 번의 쿼리로 모든 고객코드의 상태 조회
+            if (!uniqueCustomerCodes.isEmpty()) {
+                List<Customer> activeCustomers = customerService.findAllByCodeInAndStatus(uniqueCustomerCodes, "ACTIVE");
+                Set<String> activeCustomerCodes = activeCustomers.stream()
+                        .map(Customer::getCode)
+                        .collect(Collectors.toSet());
+                
+                for (String customerCode : uniqueCustomerCodes) {
+                    customerStatusMap.put(customerCode, activeCustomerCodes.contains(customerCode));
+                }
+            }
+
+            model.addAttribute("projectList", pageProject.getContent());
+            model.addAttribute("customerStatusMap", customerStatusMap);
+            model.addAttribute("currentPage", pageProject.getNumber());
+            model.addAttribute("totalPages", pageProject.getTotalPages());
+            model.addAttribute("pageSize", pageProject.getSize());
             model.addAttribute("searchKeyword", searchKeyword);
-            // 전체 customerCode 리스트
-            model.addAttribute("customerList", customerService.findAll());
+            // 전체 active customerCode 리스트
+            model.addAttribute("customerList", activeCustomer);
             // 프로젝트 통계 추가
-            model.addAttribute("totalProjects", projectService.countAllProjects());
-            model.addAttribute("newProjects", projectService.countNewProjectsThisMonth());
+            model.addAttribute("totalProjects", countAllProjects);
+            model.addAttribute("newProjects", countNewProjects);
             return "page/adminProjectList";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/login";
         } catch (Exception e) {
+            System.err.println("오류 발생 : " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "프로젝트 목록 조회 중 오류가 발생했습니다: " + e.getMessage());
             return "redirect:/console";
         }
@@ -439,34 +470,49 @@ public class AdminController extends BaseController {
             User validateUser = getCurrentUserFromToken(request);
             if (!validateUser.getRole().equals("ADMIN")) {
                 throw new IllegalArgumentException("권한이 없는 계정입니다.");
-            }
+            }            
 
             Pageable pageable = PageRequest.of(page, size);
             Page<User> userPage;
             if (searchKeyword == null || searchKeyword.isEmpty()) {
-                // ADMIN을 제외한 모든 사용자
-                List<String> roles = Arrays.asList("USER", "MANAGER");
-                userPage = userService.getUsersByRole(roles, pageable);
+                // 현재 사용자를 제외한 모든 사용자 (USER, MANAGER, ADMIN 포함)
+                userPage = userService.getAllUsersExceptCurrent(validateUser.getId(), pageable);
             } else {
-                // ADMIN을 제외하고 모든 필드로 검색
-                userPage = userService.searchAllFieldsExcludeAdmin(searchKeyword, pageable);
+                // 현재 사용자를 제외하고 모든 필드로 검색
+                userPage = userService.searchAllUsersExceptCurrent(validateUser.getId(), searchKeyword, pageable);
             }
 
-            long totalUsers = userService.getUsersCountByRoles(Arrays.asList("USER", "MANAGER"));
+            // 전체 사용자 수 (현재 사용자 제외)
+            long totalUsers = userService.getUsersCount() - 1;
             long newUsers = userPage.getContent().stream()
                     .filter(user -> user.getCreatedAt() != null &&
                             user.getCreatedAt().isAfter(LocalDateTime.now().minusMonths(1)))
                     .count();
 
-            // 각 사용자의 고객코드 상태 확인
+            // 각 사용자의 고객코드 상태 확인 (최적화: 한 번의 쿼리로 모든 고객코드 상태 조회)
             List<User> userList = userPage.getContent();
             Map<String, Boolean> customerStatusMap = new HashMap<>();
-            for (User user : userList) {
-                if (!customerStatusMap.containsKey(user.getCustomerCode())) {
-                    customerStatusMap.put(user.getCustomerCode(), userService.isCustomerCodeActive(user.getCustomerCode()));
+            
+            // 고유한 고객코드들만 추출
+            Set<String> uniqueCustomerCodes = userList.stream()
+                    .map(User::getCustomerCode)
+                    .filter(code -> code != null && !code.isEmpty())
+                    .collect(Collectors.toSet());
+            
+            // 한 번의 쿼리로 모든 고객코드의 상태 조회
+            if (!uniqueCustomerCodes.isEmpty()) {
+                List<Customer> activeCustomers = customerService.findAllByCodeInAndStatus(uniqueCustomerCodes, "ACTIVE");
+                Set<String> activeCustomerCodes = activeCustomers.stream()
+                        .map(Customer::getCode)
+                        .collect(Collectors.toSet());
+                
+                for (String customerCode : uniqueCustomerCodes) {
+                    customerStatusMap.put(customerCode, activeCustomerCodes.contains(customerCode));
                 }
             }
 
+            // 현재 로그인한 사용자 정보를 모델에 추가
+            model.addAttribute("currentUser", validateUser);
             model.addAttribute("userList", userList);
             model.addAttribute("customerStatusMap", customerStatusMap);
             model.addAttribute("totalUsers", totalUsers);

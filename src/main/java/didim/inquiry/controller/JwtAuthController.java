@@ -54,6 +54,7 @@ public class JwtAuthController {
                                @RequestParam(required = false) String name,
                                @RequestParam(required = false) String email,
                                @RequestParam(required = false) String tel,
+                               @RequestParam(required = false, defaultValue = "USER") String role,
                                Model model,
                                RedirectAttributes redirectAttributes) {
         User user = new User();
@@ -63,14 +64,19 @@ public class JwtAuthController {
         user.setName(name == null ? "" : name);
         user.setEmail(email == null ? "" : email);
         user.setTel(tel == null ? "" : tel);
-        // 기본 권한 USER로 설정 (필요시 로직 조정)
-        user.setRole("USER");
+        // role 파라미터를 사용하여 권한 설정
+        user.setRole(role);
         boolean success = userService.signUpUserAllowBlank(user);
         if (!success) {
             model.addAttribute("errorMessage", "가입에 실패했습니다. (중복/고객코드/비밀번호 등 확인)");
             return "login";
         }
-        redirectAttributes.addFlashAttribute("successMessage", "계정이 생성되었습니다. 사용자에게 계정정보를 전달하세요.");
+        
+        String successMessage = "USER".equals(role) ? 
+            "계정이 생성되었습니다. 사용자에게 계정정보를 전달하세요." : 
+            "어드민 계정이 생성되었습니다.";
+        
+        redirectAttributes.addFlashAttribute("successMessage", successMessage);
         return "redirect:/admin/customerList";
     }
 
