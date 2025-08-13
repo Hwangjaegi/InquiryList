@@ -25,6 +25,7 @@ public class DataInitializerConfig {
         };
     }
 
+    //서버 실행 시 고객코드에 DIDIM이 존재하지 않을경우 생성 , User에 DIDIM 고객코드로 생성된 유저가 없을경우 생성
     @Transactional
     public void initData(CustomerService customerService, UserService userService, PasswordEncoder passwordEncoder) {
         // Customer 초기화
@@ -44,7 +45,7 @@ public class DataInitializerConfig {
             user.setCustomerCode("DIDIM");
             user.setUsername("admin");
             user.setPassword(passwordEncoder.encode("didim!7977")); // 비밀번호 암호화
-            user.setEmail("jghwnag@didimsolution.com");
+            user.setEmail("system@didimsolution.com");
             user.setName("디딤솔루션");
             user.setRole("ADMIN");
             user.setTel("010-1234-1234");

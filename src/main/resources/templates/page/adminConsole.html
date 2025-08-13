@@ -646,7 +646,7 @@
             }
         }
         .nav-section { margin-bottom: 20px; }
-        .nav-section-title { color: #1f2a44; font-size: 1rem; font-weight: 600; }
+        .nav-section-title { color: #1f2a44; font-size: 1rem; font-weight: 600; margin-bottom: 3px; }
 
         /* 새로운 디자인 특징 */
         .nav-section-header {
@@ -904,7 +904,7 @@
                     <input id="editPage" name="page" type="hidden">
                     <input id="editSearch" name="search" type="hidden">
                     <label class="form-label">고객 코드</label>
-                    <input class="form-input" id="editCode" name="code" required type="text">
+                    <input class="form-input" id="editCode" name="code" required type="text" style="text-transform: uppercase;">
                 </div>
                 <div class="form-row">
                     <label class="form-label">회사명</label>
@@ -937,7 +937,7 @@
             <div class="modal-body">
                 <div class="form-row">
                     <label class="form-label">고객 코드 *</label>
-                    <input class="form-input" id="addCode" name="code" placeholder="고객 코드 입력 (예: CU001)" required type="text">
+                    <input class="form-input" id="addCode" name="code" placeholder="고객 코드 입력 (예: CU001)" required type="text" style="text-transform: uppercase;">
                 </div>
                 <div class="form-row">
                     <label class="form-label">회사명</label>
@@ -1122,17 +1122,17 @@
         console.log('Delete modal closed');
     }
 
-<!--    function confirmDelete() {-->
-<!--        if (!currentDeleteId) {-->
-<!--            console.error('No delete ID set');-->
-<!--            return;-->
-<!--        }-->
-<!--        const form = document.createElement('form');-->
-<!--        form.method = 'POST';-->
-<!--        form.action = `/admin/deleteCode/${currentDeleteId}?page=${currentPage}&search=${encodeURIComponent(searchKeyword)}`;-->
-<!--        document.body.appendChild(form);-->
-<!--        form.submit();-->
-<!--    }-->
+    // function confirmDelete() {
+    //     if (!currentDeleteId) {
+    //         console.error('No delete ID set');
+    //         return;
+    //     }
+    //     const form = document.createElement('form');
+    //     form.method = 'POST';
+    //     form.action = `/admin/deleteCode/${currentDeleteId}?page=${currentPage}&search=${encodeURIComponent(searchKeyword)}`;
+    //     document.body.appendChild(form);
+    //     form.submit();
+    // }
 
     // 고객코드 추가 모달 관련 함수들
     function openAddCustomerModal() {
@@ -1151,10 +1151,22 @@
         document.getElementById('addCustomerForm').reset();
     }
 
+    // 고객코드 입력 시 대문자 변환
+    function setupCustomerCodeInputs() {
+        const customerCodeInputs = document.querySelectorAll('input[name="code"], input[name="customerCode"]');
+        customerCodeInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+        });
+    }
+
     // 이벤트 리스너 설정
     document.addEventListener('DOMContentLoaded', () => {
         // JWT 토큰 설정
         setupJwtToken();
+        // 고객코드 입력 필드 설정
+        setupCustomerCodeInputs();
         // 수정 및 삭제 버튼
         document.querySelectorAll('.btn-edit').forEach(button => {
             button.addEventListener('click', handleButtonClick);
@@ -1193,7 +1205,7 @@
         });
 
         // 삭제 확인 버튼
-<!--        document.querySelector('.btn-danger').addEventListener('click', confirmDelete);-->
+        // document.querySelector('.btn-danger').addEventListener('click', confirmDelete);
 
         // 모달 외부 클릭으로 닫기
         document.querySelectorAll('.modal').forEach(modal => {

@@ -29,6 +29,12 @@ public interface ProjectRepository extends JpaRepository<Project , Long> {
     @Query("SELECT p FROM Project p LEFT JOIN p.customer c WHERE LOWER(p.subject) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(c.code) LIKE LOWER(CONCAT('%', :keyword, '%')) ORDER BY p.createdAt DESC")
     Page<Project> findBySubjectOrCustomerCodeContainingIgnoreCase(@org.springframework.data.repository.query.Param("keyword") String keyword, Pageable pageable);
 
+    @Query("SELECT p FROM Project p LEFT JOIN p.customer c WHERE c.status = 'ACTIVE' ORDER BY p.createdAt DESC")
+    Page<Project> findAllByCustomerStatusActiveOrderByCreatedAtDesc(Pageable pageable);
+
+    @Query("SELECT p FROM Project p LEFT JOIN p.customer c WHERE c.status = 'ACTIVE' AND (LOWER(p.subject) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(c.code) LIKE LOWER(CONCAT('%', :keyword, '%'))) ORDER BY p.createdAt DESC")
+    Page<Project> findBySubjectOrCustomerCodeContainingIgnoreCaseAndCustomerStatusActive(@org.springframework.data.repository.query.Param("keyword") String keyword, Pageable pageable);
+
     @Query("SELECT COUNT(p) FROM Project p")
     long countAllProjects();
 

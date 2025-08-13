@@ -41,11 +41,21 @@ public class ProjectService {
     }
 
     public Page<Project> getAllProjects(Pageable pageable) {
+        return projectRepository.findAllByCustomerStatusActiveOrderByCreatedAtDesc(pageable);
+    }
+    
+    public Page<Project> getAllProjectsIncludeInactive(Pageable pageable) {
         return projectRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
+    
     public Page<Project> getAllProjectsBySearch(String search, Pageable pageable) {
+        return projectRepository.findBySubjectOrCustomerCodeContainingIgnoreCaseAndCustomerStatusActive(search, pageable);
+    }
+    
+    public Page<Project> getAllProjectsBySearchIncludeInactive(String search, Pageable pageable) {
         return projectRepository.findBySubjectOrCustomerCodeContainingIgnoreCase(search, pageable);
     }
+
     public Project saveProjectWithCustomer(ProjectDto projectDto, Customer customer) {
         Project project = Project.from(projectDto, customer);
         return projectRepository.save(project);

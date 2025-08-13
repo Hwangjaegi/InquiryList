@@ -371,7 +371,6 @@
 
         .search-container {
             position: relative;
-            margin-bottom: 20px;
         }
 
         .search-input {
@@ -404,6 +403,38 @@
             color: #2a9d8f;
             font-size: 1rem;
             cursor: pointer;
+        }
+
+        .filter-container {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 14px;
+            min-width: 200px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+            align-self: center;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .filter-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #2a9d8f;
+            cursor: pointer;
+        }
+
+        .filter-label {
+            font-size: 0.9rem;
+            color: #1f2a44;
+            font-weight: 500;
         }
 
         .pagination {
@@ -617,6 +648,17 @@
                 padding: 8px 12px;
                 font-size: 0.8rem;
             }
+
+            /* 검색 및 필터 모바일 반응형 */
+            .search-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .filter-container {
+                min-width: auto;
+                width: 100%;
+            }
         }
 
         @media (max-width: 1024px) {
@@ -655,7 +697,7 @@
                     <div class="nav-section-title">관리항목</div>
                 </div>
                 <a class="menu-item" onclick="goToPage('/myInfo')">🙍‍♂️ 내정보</a>
-                <a class="menu-item" onclick="goToPage('/console')">👥 고객코드</a>
+                <a class="menu-item" onclick="goToPage('/console')">🪪 고객코드</a>
                 <a class="menu-item" onclick="goToPage('/admin/customerList')">👤 사용자</a>
                 <a class="menu-item active" onclick="goToPage('/admin/projectListAdmin')">📋 프로젝트</a>
             </div>
@@ -663,9 +705,6 @@
     </aside>
     <main class="main-content">
         <div class="content-card">
-            <!-- 메시지 영역 -->
-            <div class="message-container"></div>
-
             <!-- 통계 섹션 (블록형) -->
             <div class="stats">
                 <div class="stat-card">
@@ -685,13 +724,28 @@
                 </button>
             </div>
 
-            <!-- 검색 필터 -->
-            <div class="search-container">
-                <div class="search-icon" id="searchProjectIcon">🔍</div>
-                <form id="searchProjectForm" method="get" th:action="@{/admin/projectListAdmin}">
-                    <input class="search-input" name="search" placeholder="프로젝트명, 고객코드로 검색..." th:value="${searchKeyword}" type="text">
-                </form>
+            <!-- 검색 및 필터 -->
+            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
+                <div class="search-container" style="flex: 1;">
+                    <div class="search-icon" id="searchProjectIcon">🔍</div>
+                    <form id="searchProjectForm" method="get" th:action="@{/admin/projectListAdmin}">
+                        <input class="search-input" name="search" placeholder="프로젝트명, 고객코드로 검색..." th:value="${searchKeyword}" type="text">
+                        <input type="hidden" name="includeInactive" th:value="${includeInactive}">
+                    </form>
+                </div>
+                
+                <div class="filter-container">
+                    <label class="filter-checkbox">
+                        <input type="checkbox" id="includeInactiveCheckbox" 
+                               th:checked="${includeInactive}" 
+                               onchange="updateFilter()">
+                        <span class="filter-label">비활성화된 프로젝트 포함</span>
+                    </label>
+                </div>
             </div>
+
+            <!-- 메시지 영역 -->
+            <div class="message-container"></div>
 
             <div class="project-list">
                 <table class="project-table">
@@ -705,16 +759,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="project : ${projectList}" th:classappend="${!customerStatusMap.get(project.customer != null ? project.customer.code : '')} ? 'customer-inactive' : ''">
+                    <tr th:each="project : ${projectList}" th:classappend="${includeInactive && !customerStatusMap.get(project.customer != null ? project.customer.code : '')} ? 'customer-inactive' : ''">
                         <td th:text="${project.id}">1</td>
                         <td th:text="${project.subject}">프로젝트 제목</td>
                         <td th:text="${project.customer != null ? project.customer.code : ''}">CUST001</td>
                         <td th:text="${#temporals.format(project.createdAt, 'yyyy-MM-dd HH:mm')}">2024-07-01 12:00</td>
                         <td class="project-actions">
                             <!-- 고객코드가 비활성화된 경우 -->
-                            <span class="status-badge status-inactive" th:if="${!customerStatusMap.get(project.customer != null ? project.customer.code : '')}">고객코드비활성</span>
-                            <!-- 고객코드가 활성화된 경우에만 관리 버튼 표시 -->
-                            <div th:if="${customerStatusMap.get(project.customer != null ? project.customer.code : '')}">
+                            <span class="status-badge status-inactive" th:if="${includeInactive && customerStatusMap.get(project.customer != null ? project.customer.code : '') != null && !customerStatusMap.get(project.customer != null ? project.customer.code : '')}">고객코드비활성</span>
+                            <!-- 고객코드가 활성화된 경우 또는 고객코드 상태가 확인되지 않은 경우 관리 버튼 표시 -->
+                            <div th:if="${customerStatusMap.get(project.customer != null ? project.customer.code : '') == null || customerStatusMap.get(project.customer != null ? project.customer.code : '')}">
                                 <button class="btn btn-edit" th:attr="data-id=${project.id}, data-subject=${project.subject}, data-customer-code=${project.customer != null ? project.customer.code : ''}" type="button">수정</button>
                                 <button class="btn btn-delete" th:attr="data-id=${project.id}, data-subject=${project.subject}, data-customer-code=${project.customer != null ? project.customer.code : ''}" type="button">삭제</button>
                             </div>
@@ -735,27 +789,27 @@
                         nextGroupStartPage=${(currentGroupIndex + 1) * pageGroupSize}">
                         <a class="pagination-button"
                            th:classappend="${currentPage == 0} ? 'disabled'"
-                           th:href="@{/admin/projectListAdmin(page=0, size=${pageSize}, search=${searchKeyword})}">
+                           th:href="@{/admin/projectListAdmin(page=0, size=${pageSize}, search=${searchKeyword}, includeInactive=${includeInactive})}">
                             <span class="pagination-nav"><<</span>
                         </a>
                         <a class="pagination-button"
                            th:classappend="${!hasPrevGroup} ? 'disabled'"
-                           th:href="@{/admin/projectListAdmin(page=${prevGroupStartPage}, size=${pageSize}, search=${searchKeyword})}">
+                           th:href="@{/admin/projectListAdmin(page=${prevGroupStartPage}, size=${pageSize}, search=${searchKeyword}, includeInactive=${includeInactive})}">
                             <span class="pagination-nav">이전</span>
                         </a>
                         <a class="pagination-button"
                            th:classappend="${page == currentPage} ? 'active'"
                            th:each="page : ${#numbers.sequence(startPage, endPage)}"
-                           th:href="@{/admin/projectListAdmin(page=${page}, size=${pageSize}, search=${searchKeyword})}"
+                           th:href="@{/admin/projectListAdmin(page=${page}, size=${pageSize}, search=${searchKeyword}, includeInactive=${includeInactive})}"
                            th:text="${page + 1}">1</a>
                         <a class="pagination-button"
                            th:classappend="${!hasNextGroup} ? 'disabled'"
-                           th:href="@{/admin/projectListAdmin(page=${nextGroupStartPage}, size=${pageSize}, search=${searchKeyword})}">
+                           th:href="@{/admin/projectListAdmin(page=${nextGroupStartPage}, size=${pageSize}, search=${searchKeyword}, includeInactive=${includeInactive})}">
                             <span class="pagination-nav">다음</span>
                         </a>
                         <a class="pagination-button"
                            th:classappend="${currentPage == (totalPages - 1)} ? 'disabled'"
-                           th:href="@{/admin/projectListAdmin(page=${totalPages - 1}, size=${pageSize}, search=${searchKeyword})}">
+                           th:href="@{/admin/projectListAdmin(page=${totalPages - 1}, size=${pageSize}, search=${searchKeyword}, includeInactive=${includeInactive})}">
                             <span class="pagination-nav">>></span>
                         </a>
                     </th:block>
@@ -973,6 +1027,20 @@
     const currentPage = getQueryParam('page') || '0';
     const currentSearch = getQueryParam('search') || '';
     const currentSize = getQueryParam('size') || '10';
+    const currentIncludeInactive = getQueryParam('includeInactive') || 'false';
+
+    // 필터 업데이트 함수
+    function updateFilter() {
+        const includeInactive = document.getElementById('includeInactiveCheckbox').checked;
+        const searchKeyword = document.querySelector('.search-input').value;
+        
+        let url = '/admin/projectListAdmin?includeInactive=' + includeInactive;
+        if (searchKeyword) {
+            url += '&search=' + encodeURIComponent(searchKeyword);
+        }
+        
+        window.location.href = url;
+    }
 
     let currentEditProjectId = null;
     document.addEventListener('click', function(e) {

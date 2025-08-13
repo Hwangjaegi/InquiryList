@@ -16,7 +16,7 @@ END_DATE_NO_GMT=$(echo "$END_DATE_RAW" | sed 's/ GMT//')
 DAYS_LEFT_UNIX=$(date -j -f "%b %d %T %Y" "$END_DATE_NO_GMT" "+%s" 2>/dev/null)
 
 #날짜변환 실패 (터미널에서 직접 sh 실행 시 변환 안됨)
-#crontab에서 자동화 sh 실행 시 날짜 변환 되어 스크립트가 실행됨
+#crontab에서 자동화 sh 실행 시 날짜 변환 되어 스크립트가 실행되므로 테스트시 crontab에서 시간조절하여 테스트
 if [ -z "$DAYS_LEFT_UNIX" ]; then
     echo "날짜 변환 실패로 인해 갱신을 진행하지 않습니다."
     exit 1
@@ -25,13 +25,13 @@ else
     DAYS_LEFT=$(( (DAYS_LEFT_UNIX - NOW_UNIX) / 86400 ))
 fi
 
-echo "현재 인증서 남은 일 수: $DAYS_LEFT 일"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] 현재 인증서 남은 일 수: $DAYS_LEFT 일"
 
 if [ "$DAYS_LEFT" -le 30 ]; then
     echo "=== 1. 인증서 갱신 시작 ==="
     sudo /usr/local/bin/certbot renew --non-interactive
     if [ $? -ne 0 ]; then
-        echo "ERROR: 인증서 갱신 실패"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: 인증서 갱신 실패"
         exit 1
     fi
 
@@ -44,7 +44,7 @@ if [ "$DAYS_LEFT" -le 30 ]; then
       -out "$KEYSTORE_PATH" \
       -password pass:"$KEYSTORE_PASS"
     if [ $? -ne 0 ]; then
-        echo "ERROR: keystore 생성 실패"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: keystore 생성 실패"
         exit 1
     fi
 
@@ -52,11 +52,12 @@ if [ "$DAYS_LEFT" -le 30 ]; then
     sudo launchctl unload /Library/LaunchDaemons/com.inquiry.ssl.springBoot.plist
     sudo launchctl load /Library/LaunchDaemons/com.inquiry.ssl.springBoot.plist
     if [ $? -ne 0 ]; then
-        echo "ERROR: Spring Boot 서비스 재시작 실패"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: Spring Boot 서비스 재시작 실패"
         exit 1
     fi
 
     echo "=== 완료 ==="
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] 인증서 갱신 완료"
 else
-    echo "인증서가 아직 $DAYS_LEFT 일 남아 갱신하지 않습니다."
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] 인증서가 아직 $DAYS_LEFT 일 남아 갱신하지 않습니다."
 fi

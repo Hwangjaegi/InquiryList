@@ -1,7 +1,6 @@
 package didim.inquiry.repository;
 
 import didim.inquiry.domain.User;
-import didim.inquiry.dto.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -76,7 +75,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     void updateByRole(@Param("id") Long id, @Param("role") String role);
 
     // 고객코드 존재 여부 확인 (삭제되지 않은 사용자만)
-    boolean existsByCustomerCodeAndDeleteFlagFalse(String customerCode);
+    boolean existsByCustomerCode(String customerCode);
 
     // 이메일 중복확인
     boolean existsByEmail(String email);
@@ -99,4 +98,21 @@ public interface UserRepository extends JpaRepository<User,Long> {
             "LOWER(u.role) LIKE LOWER(CONCAT('%', :search , '%'))" +
             ") ORDER BY u.createdAt DESC")
     Page<User> searchAllFieldsExceptUser(@Param("userId") Long userId, @Param("search") String search, Pageable pageable);
+
+    @Query("SELECT u FROM User u WHERE u.id != :currentUserId AND u.customerCode IN " +
+           "(SELECT c.code FROM Customer c WHERE c.status = 'ACTIVE') " +
+           "ORDER BY u.id DESC")
+    Page<User> findAllByIdNotAndCustomerCodeActiveOrderByIdDesc(@Param("currentUserId") Long currentUserId, Pageable pageable);
+
+    @Query("SELECT u FROM User u WHERE u.id != :currentUserId AND u.customerCode IN " +
+           "(SELECT c.code FROM Customer c WHERE c.status = 'ACTIVE') AND " +
+           "(" +
+           "LOWER(u.customerCode) LIKE LOWER(CONCAT('%', :search , '%')) OR " +
+           "LOWER(u.name) LIKE LOWER(CONCAT('%', :search , '%')) OR " +
+           "LOWER(u.username) LIKE LOWER(CONCAT('%', :search , '%')) OR " +
+           "u.tel LIKE CONCAT('%', :search , '%') OR " +
+           "LOWER(u.email) LIKE LOWER(CONCAT('%', :search , '%')) OR " +
+           "LOWER(u.role) LIKE LOWER(CONCAT('%', :search , '%'))" +
+           ") ORDER BY u.createdAt DESC")
+    Page<User> searchAllFieldsExceptUserAndCustomerCodeActive(@Param("currentUserId") Long currentUserId, @Param("search") String search, Pageable pageable);
 }

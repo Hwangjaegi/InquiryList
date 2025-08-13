@@ -126,13 +126,23 @@ public class UserService {
         return userRepository.findAllByRoleInAndUsernameContainingOrEmailContainingOrderByIdDesc(roles, keyword, keyword, pageable);
     }
 
-    // 현재 사용자를 제외한 모든 사용자 조회
+    // 현재 사용자를 제외한 모든 사용자 조회 (고객코드가 활성화된 사용자만)
     public Page<User> getAllUsersExceptCurrent(Long currentUserId, Pageable pageable) {
+        return userRepository.findAllByIdNotAndCustomerCodeActiveOrderByIdDesc(currentUserId, pageable);
+    }
+
+    // 현재 사용자를 제외한 모든 사용자 조회 (고객코드 상태 무관)
+    public Page<User> getAllUsersExceptCurrentIncludeInactive(Long currentUserId, Pageable pageable) {
         return userRepository.findAllByIdNotOrderByIdDesc(currentUserId, pageable);
     }
 
-    // 현재 사용자를 제외하고 검색
+    // 현재 사용자를 제외하고 검색 (고객코드가 활성화된 사용자만)
     public Page<User> searchAllUsersExceptCurrent(Long currentUserId, String keyword, Pageable pageable) {
+        return userRepository.searchAllFieldsExceptUserAndCustomerCodeActive(currentUserId, keyword, pageable);
+    }
+
+    // 현재 사용자를 제외하고 검색 (고객코드 상태 무관)
+    public Page<User> searchAllUsersExceptCurrentIncludeInactive(Long currentUserId, String keyword, Pageable pageable) {
         return userRepository.searchAllFieldsExceptUser(currentUserId, keyword, pageable);
     }
 
@@ -268,7 +278,7 @@ public class UserService {
 
     // 고객코드 존재 여부 확인 (삭제되지 않은 사용자만)
     public boolean existsByCustomerCode(String customerCode) {
-        return userRepository.existsByCustomerCodeAndDeleteFlagFalse(customerCode);
+        return userRepository.existsByCustomerCode(customerCode);
     }
 
     public boolean existsByEmail(String email) {

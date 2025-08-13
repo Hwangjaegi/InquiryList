@@ -73,7 +73,7 @@
                 <form class="form sign-up" id="signupForm" method="post" action="/signup">
                     <div class="input-group">
                         <i class='bx bxs-customerCode'></i>
-                        <input id="signupCustomerCode" name="customerCode" placeholder="고객코드" required type="text">
+                        <input id="signupCustomerCode" name="customerCode" placeholder="고객코드" required type="text" style="text-transform: uppercase;">
                     </div>
                     <div class="input-group" style="position:relative;">
                         <i class='bx bxs-user'></i>
@@ -118,7 +118,7 @@
                 <form class="form sign-in" id="sign-in-form" method="post" action="/signin">
                     <div class="input-group">
                         <i class='bx bxs-user'></i>
-                        <input id="customerCodeInput" placeholder="고객코드" required type="text">
+                        <input id="customerCodeInput" placeholder="고객코드" required type="text" style="text-transform: uppercase;">
                     </div>
                     <div class="input-group">
                         <i class='bx bxs-user'></i>
@@ -237,8 +237,21 @@
         }
     }
 
+    // 고객코드 입력 시 대문자 변환
+    function setupCustomerCodeInputs() {
+        const customerCodeInputs = document.querySelectorAll('input[name="customerCode"]');
+        customerCodeInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+        });
+    }
+
     // 페이지 로드 시 이벤트 리스너 추가
     document.addEventListener('DOMContentLoaded', function() {
+        // 고객코드 입력 필드 설정
+        setupCustomerCodeInputs();
+        
         const phoneInput = document.getElementById('phoneInput');
 
         if (phoneInput) {

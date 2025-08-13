@@ -97,7 +97,7 @@ public class AdminController extends BaseController {
         return null;
     }
 
-    //콘솔 화면 표시
+    //콘솔 화면 표시 ( 어드민 , 유저 공통 url사용 )
     @GetMapping("/console")
     public String adminConsole(
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -240,36 +240,6 @@ public class AdminController extends BaseController {
         return "redirect:/console?page=" + page + (search != null ? "&search=" + URLEncoder.encode(search, StandardCharsets.UTF_8) : "");
     }
 
-//    //코드삭제
-//    @PostMapping("/admin/deleteCode/{id}")
-//    public String deleteCustomerCode(
-//            @PathVariable Long id,
-//            RedirectAttributes redirectAttributes,
-//            @RequestParam(value = "page", defaultValue = "0") int page,
-//            @RequestParam(value = "size", defaultValue = "10") int size,
-//            @RequestParam(value = "search", required = false) String search,
-//            HttpServletRequest request) {
-//
-//        //해당 고객코드가 없을 경우 예외처리 후 삭제
-//        try {
-//            User validateUser = getCurrentUserFromToken(request);
-//            if (!validateUser.getRole().equals("ADMIN")) {
-//                throw new IllegalArgumentException("권한이 없는 계정입니다.");
-//            }
-//
-//            adminService.deleteCustomerCode(id);
-//            redirectAttributes.addFlashAttribute("successMessage", "고객코드가 성공적으로 삭제되었습니다");
-//        } catch (IllegalArgumentException e) {
-//            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-//        } catch (DataIntegrityViolationException e) {
-//            redirectAttributes.addFlashAttribute("errorMessage", "프로젝트가 등록된 고객코드는 삭제 할 수 없습니다");
-//        } catch (Exception e) {
-//            redirectAttributes.addFlashAttribute("errorMessage", "알 수 없는 오류가 발생했습니다.");
-//        }
-//
-//        return "redirect:/console?page=" + page + "&size=" + size + (search != null ? "&search=" + URLEncoder.encode(search, StandardCharsets.UTF_8) : "");
-//    }
-
     //프로젝트 리스트
     @GetMapping("/projectList")
     public String projectList(
@@ -311,6 +281,7 @@ public class AdminController extends BaseController {
     public String adminProjectList(@RequestParam(value = "page", defaultValue = "0") int page,
                                    @RequestParam(value = "size", defaultValue = "10") int size,
                                    @RequestParam(value = "search", required = false) String searchKeyword,
+                                   @RequestParam(value = "includeInactive", defaultValue = "false") boolean includeInactive,
                                    Model model,
                                    RedirectAttributes redirectAttributes,
                                    HttpServletRequest request) {
@@ -321,9 +292,25 @@ public class AdminController extends BaseController {
             }
 
             Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-            Page<Project> pageProject = (searchKeyword == null || searchKeyword.isEmpty())
-                    ? projectService.getAllProjects(pageable)
-                    : projectService.getAllProjectsBySearch(searchKeyword, pageable);
+            Page<Project> pageProject;
+            
+            if (searchKeyword == null || searchKeyword.isEmpty()) {
+                if (includeInactive) {
+                    // 비활성화된 프로젝트 포함하여 조회
+                    pageProject = projectService.getAllProjectsIncludeInactive(pageable);
+                } else {
+                    // 고객코드가 활성화된 프로젝트만 조회
+                    pageProject = projectService.getAllProjects(pageable);
+                }
+            } else {
+                if (includeInactive) {
+                    // 비활성화된 프로젝트 포함하여 검색
+                    pageProject = projectService.getAllProjectsBySearchIncludeInactive(searchKeyword, pageable);
+                } else {
+                    // 고객코드가 활성화된 프로젝트만 검색
+                    pageProject = projectService.getAllProjectsBySearch(searchKeyword, pageable);
+                }
+            }
 
             //프로젝트
             List<Customer> activeCustomer = customerService.findAllByActive("ACTIVE");
@@ -352,12 +339,13 @@ public class AdminController extends BaseController {
                 }
             }
 
-            model.addAttribute("projectList", pageProject.getContent());
+            model.addAttribute("projectList", projectList);
             model.addAttribute("customerStatusMap", customerStatusMap);
             model.addAttribute("currentPage", pageProject.getNumber());
             model.addAttribute("totalPages", pageProject.getTotalPages());
             model.addAttribute("pageSize", pageProject.getSize());
             model.addAttribute("searchKeyword", searchKeyword);
+            model.addAttribute("includeInactive", includeInactive);
             // 전체 active customerCode 리스트
             model.addAttribute("customerList", activeCustomer);
             // 프로젝트 통계 추가
@@ -461,6 +449,7 @@ public class AdminController extends BaseController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "search", required = false) String searchKeyword,
+            @RequestParam(value = "includeInactive", defaultValue = "false") boolean includeInactive,
             Model model,
             RedirectAttributes redirectAttributes,
             HttpServletRequest request) {
@@ -474,12 +463,23 @@ public class AdminController extends BaseController {
 
             Pageable pageable = PageRequest.of(page, size);
             Page<User> userPage;
+            
             if (searchKeyword == null || searchKeyword.isEmpty()) {
-                // 현재 사용자를 제외한 모든 사용자 (USER, MANAGER, ADMIN 포함)
-                userPage = userService.getAllUsersExceptCurrent(validateUser.getId(), pageable);
+                if (includeInactive) {
+                    // 비활성화된 사용자 포함하여 조회
+                    userPage = userService.getAllUsersExceptCurrentIncludeInactive(validateUser.getId(), pageable);
+                } else {
+                    // 고객코드가 활성화된 사용자만 조회
+                    userPage = userService.getAllUsersExceptCurrent(validateUser.getId(), pageable);
+                }
             } else {
-                // 현재 사용자를 제외하고 모든 필드로 검색
-                userPage = userService.searchAllUsersExceptCurrent(validateUser.getId(), searchKeyword, pageable);
+                if (includeInactive) {
+                    // 비활성화된 사용자 포함하여 검색
+                    userPage = userService.searchAllUsersExceptCurrentIncludeInactive(validateUser.getId(), searchKeyword, pageable);
+                } else {
+                    // 고객코드가 활성화된 사용자만 검색
+                    userPage = userService.searchAllUsersExceptCurrent(validateUser.getId(), searchKeyword, pageable);
+                }
             }
 
             // 전체 사용자 수 (현재 사용자 제외)
@@ -521,6 +521,7 @@ public class AdminController extends BaseController {
             model.addAttribute("totalPages", userPage.getTotalPages());
             model.addAttribute("pageSize", size);
             model.addAttribute("searchKeyword", searchKeyword);
+            model.addAttribute("includeInactive", includeInactive);
 
             return "page/adminCustomerList";
         } catch (IllegalArgumentException e) {
@@ -649,15 +650,32 @@ public class AdminController extends BaseController {
     @ResponseBody
     public Map<String, Object> checkCustomerCode(@RequestParam String customerCode) {
         Map<String, Object> response = new HashMap<>();
-        System.out.println("user : " + userService.existsByCustomerCode(customerCode) + " / customer : " + customerService.existsByCustomerCodeAndStatusActive(customerCode));
+        
+        // 1. 이미 해당 고객코드로 가입한 사용자가 있는지 확인
         if (userService.existsByCustomerCode(customerCode)) {
             response.put("exists", true);
-        } else if (!customerService.existsByCustomerCodeAndStatusActive(customerCode)) {
-            response.put("exists", true);
-        } else {
-            response.put("exists", false);
+            response.put("message", "이미 해당 고객코드로 가입한 사용자가 있습니다.");
+            return response;
         }
-
+        
+        // 2. 고객코드가 존재하는지 확인
+        Customer customer = customerService.getCustomerByCode(customerCode);
+        if (customer == null) {
+            response.put("exists", true);
+            response.put("message", "존재하지 않는 고객코드입니다.");
+            return response;
+        }
+        
+        // 3. 고객코드가 활성 상태인지 확인
+        if (!"ACTIVE".equals(customer.getStatus())) {
+            response.put("exists", true);
+            response.put("message", "비활성화된 고객코드입니다. 활성화 후 사용자 추가가 가능합니다.");
+            return response;
+        }
+        
+        // 모든 조건을 만족하면 사용 가능
+        response.put("exists", false);
+        response.put("message", "사용할 수 있는 고객코드입니다.");
         return response;
     }
 }

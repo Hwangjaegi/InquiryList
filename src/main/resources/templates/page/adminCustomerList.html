@@ -357,7 +357,6 @@
 
         .search-container {
             position: relative;
-            margin-bottom: 20px;
         }
 
         .user-list-subtitle {
@@ -397,6 +396,38 @@
             color: #2a9d8f;
             font-size: 1rem;
             cursor: pointer;
+        }
+
+        .filter-container {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 14px;
+            min-width: 200px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+            align-self: center;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .filter-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #2a9d8f;
+            cursor: pointer;
+        }
+
+        .filter-label {
+            font-size: 0.9rem;
+            color: #1f2a44;
+            font-weight: 500;
         }
 
         .stats {
@@ -710,6 +741,17 @@
                 padding: 8px 12px;
                 font-size: 0.8rem;
             }
+
+            /* 검색 및 필터 모바일 반응형 */
+            .search-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .filter-container {
+                min-width: auto;
+                width: 100%;
+            }
         }
 
         @media (max-width: 1024px) {
@@ -872,7 +914,7 @@
                     <div class="nav-section-title">관리항목</div>
                 </div>
                 <a class="menu-item" onclick="goToPage('/myInfo')">🙍‍♂️ 내정보</a>
-                <a class="menu-item" onclick="goToPage('/console')">👥 고객코드</a>
+                <a class="menu-item" onclick="goToPage('/console')">🪪 고객코드</a>
                 <a class="menu-item active" onclick="goToPage('/admin/customerList')">👤 사용자</a>
                 <a class="menu-item" onclick="goToPage('/admin/projectListAdmin')">📋 프로젝트</a>
             </div>
@@ -919,15 +961,27 @@
                 </button>
             </div>
 
-            <!-- 검색 -->
-            <div class="search-container">
-                <div class="search-icon">🔍</div>
-                <form id="searchForm" method="get" th:action="@{/admin/customerList}">
-                    <input class="search-input" name="search"
-                           placeholder="고객코드 , 이름 , 아이디 ,이메일 , 전화번호 , 권한으로 검색..."
-                           th:value="${searchKeyword}"
-                           type="text">
-                </form>
+            <!-- 검색 및 필터 -->
+            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
+                <div class="search-container" style="flex: 1;">
+                    <div class="search-icon">🔍</div>
+                    <form id="searchForm" method="get" th:action="@{/admin/customerList}">
+                        <input class="search-input" name="search"
+                               placeholder="고객코드 , 이름 , 아이디 ,이메일 , 전화번호 , 권한으로 검색..."
+                               th:value="${searchKeyword}"
+                               type="text">
+                        <input type="hidden" name="includeInactive" th:value="${includeInactive}">
+                    </form>
+                </div>
+                
+                <div class="filter-container">
+                    <label class="filter-checkbox">
+                        <input type="checkbox" id="includeInactiveCheckbox" 
+                               th:checked="${includeInactive}" 
+                               onchange="updateFilter()">
+                        <span class="filter-label">비활성화된 사용자 포함</span>
+                    </label>
+                </div>
             </div>
 
             <!-- 메시지 영역 -->
@@ -956,7 +1010,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:classappend="${user.deleteFlag} ? 'deactivated' : (${!customerStatusMap.get(user.customerCode)} ? 'customer-inactive' : '')" th:each="user : ${userList}">
+                        <tr th:classappend="${user.deleteFlag} ? 'deactivated' : (${includeInactive && !customerStatusMap.get(user.customerCode)} ? 'customer-inactive' : '')" th:each="user : ${userList}">
                             <td class="user-customer-code" th:text="${user.customerCode}">CUST001</td>
                             <td class="user-name" th:text="${user.name}">홍길동</td>
                             <td class="user-id" th:text="${user.username}">USER001</td>
@@ -964,16 +1018,14 @@
                             <td class="user-tel" th:text="${user.tel}">010-1234-1234</td>
                             <td class="user-role">
                                 <span class="status-badge" 
-                                      th:classappend="${user.role == 'ADMIN'} ? 'status-admin' : 
-                                                     (${user.role == 'MANAGER'} ? 'status-manager' : 'status-user')" 
-                                      th:text="${user.role}">USER</span>
+                                      th:classappend="${user.role == 'ADMIN'} ? 'status-admin' : 'status-user'" th:text="${user.role}">USER</span>
                             </td>
                             <td class="user-actions">
                                 <!-- 고객코드가 비활성화된 경우 -->
-                                <span class="status-badge status-inactive" th:if="${!customerStatusMap.get(user.customerCode)}">고객코드비활성</span>
+                                <span class="status-badge status-inactive" th:if="${includeInactive && customerStatusMap.get(user.customerCode) != null && !customerStatusMap.get(user.customerCode)}">고객코드비활성</span>
                                 
-                                <!-- 고객코드가 활성화된 경우에만 관리 버튼 표시 -->
-                                <div th:if="${customerStatusMap.get(user.customerCode)}">
+                                <!-- 고객코드가 활성화된 경우 또는 고객코드 상태가 확인되지 않은 경우 관리 버튼 표시 -->
+                                <div th:if="${customerStatusMap.get(user.customerCode) == null || customerStatusMap.get(user.customerCode)}">
                                     <button class="btn btn-edit" onclick="handleEditClick(this)"
                                             th:attr="data-id=${user.id}, data-username=${user.username}, data-name=${user.name}, data-email=${user.email}, data-tel=${user.tel}, data-role=${user.role}"
                                             th:if="${!user.deleteFlag}">
@@ -1011,14 +1063,14 @@
                         <!-- 첫 페이지 버튼 -->
                         <a class="pagination-button"
                            th:classappend="${currentPage == 0} ? 'disabled'"
-                           th:href="@{/admin/customerList(page=0, size=${pageSize}, search=${searchKeyword})}">
+                           th:href="@{/admin/customerList(page=0, size=${pageSize}, search=${searchKeyword}, includeInactive=${includeInactive})}">
                             <span class="pagination-nav"><<</span>
                         </a>
 
                         <!-- 이전 그룹 버튼 -->
                         <a class="pagination-button"
                            th:classappend="${!hasPrevGroup} ? 'disabled'"
-                           th:href="@{/admin/customerList(page=${prevGroupStartPage}, size=${pageSize}, search=${searchKeyword})}">
+                           th:href="@{/admin/customerList(page=${prevGroupStartPage}, size=${pageSize}, search=${searchKeyword}, includeInactive=${includeInactive})}">
                             <span class="pagination-nav">이전</span>
                         </a>
 
@@ -1026,20 +1078,20 @@
                         <a class="pagination-button"
                            th:classappend="${page == currentPage} ? 'active'"
                            th:each="page : ${#numbers.sequence(startPage, endPage)}"
-                           th:href="@{/admin/customerList(page=${page}, size=${pageSize}, search=${searchKeyword})}"
+                           th:href="@{/admin/customerList(page=${page}, size=${pageSize}, search=${searchKeyword}, includeInactive=${includeInactive})}"
                            th:text="${page + 1}">1</a>
 
                         <!-- 다음 그룹 버튼 -->
                         <a class="pagination-button"
                            th:classappend="${!hasNextGroup} ? 'disabled'"
-                           th:href="@{/admin/customerList(page=${nextGroupStartPage}, size=${pageSize}, search=${searchKeyword})}">
+                           th:href="@{/admin/customerList(page=${nextGroupStartPage}, size=${pageSize}, search=${searchKeyword}, includeInactive=${includeInactive})}">
                             <span class="pagination-nav">다음</span>
                         </a>
 
                         <!-- 마지막 페이지 버튼 -->
                         <a class="pagination-button"
                            th:classappend="${currentPage == (totalPages - 1)} ? 'disabled'"
-                           th:href="@{/admin/customerList(page=${totalPages - 1}, size=${pageSize}, search=${searchKeyword})}">
+                           th:href="@{/admin/customerList(page=${totalPages - 1}, size=${pageSize}, search=${searchKeyword}, includeInactive=${includeInactive})}">
                             <span class="pagination-nav">>></span>
                         </a>
                     </th:block>
@@ -1140,7 +1192,7 @@
             <div class="modal-body">
                 <div class="form-row">
                     <label class="form-label">고객코드 *</label>
-                    <input class="form-input" id="addCustomerCode" name="customerCode" placeholder="고객코드를 입력하세요" required type="text">
+                    <input class="form-input" id="addCustomerCode" name="customerCode" placeholder="고객코드를 입력하세요" required type="text" style="text-transform: uppercase;">
                 </div>
                 <div class="form-row">
                     <label class="form-label">아이디 *</label>
@@ -1190,7 +1242,7 @@
                 <div class="form-row">
                     <label class="form-label">고객코드 *</label>
                     <input class="form-input" id="addAdminCustomerCode" name="customerCode" 
-                           th:value="${currentUser.customerCode}" readonly type="text">
+                           th:value="${currentUser.customerCode}" readonly type="text" style="text-transform: uppercase;">
                 </div>
                 <div class="form-row">
                     <label class="form-label">아이디 *</label>
@@ -1571,6 +1623,19 @@
         document.getElementById('searchForm').submit();
     });
 
+    // 필터 업데이트 함수
+    function updateFilter() {
+        const includeInactive = document.getElementById('includeInactiveCheckbox').checked;
+        const searchKeyword = document.querySelector('.search-input').value;
+        
+        let url = '/admin/customerList?includeInactive=' + includeInactive;
+        if (searchKeyword) {
+            url += '&search=' + encodeURIComponent(searchKeyword);
+        }
+        
+        window.location.href = url;
+    }
+
     setTimeout(() => {
         const messageAlerts = document.querySelectorAll('.message-alert');
         messageAlerts.forEach(alert => {
@@ -1651,10 +1716,12 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.exists) {
-                        showValidationMessage('customerCode', '❌ 등록되지 않았거나 사용중인 고객코드입니다.', 'error');
+                        const message = data.message || '❌ 등록되지 않았거나 사용중인 고객코드입니다.';
+                        showValidationMessage('customerCode', message, 'error');
                         customerCodeChecked = false;
                     } else {
-                        showValidationMessage('customerCode', '✔️ 사용할 수 있는 고객코드입니다!', 'success');
+                        const message = data.message || '✔️ 사용할 수 있는 고객코드입니다!';
+                        showValidationMessage('customerCode', message, 'success');
                         customerCodeChecked = true;
                     }
                     updateAddUserBtnState();
@@ -2176,8 +2243,20 @@
         }, 4000);
     }
 
+    // 고객코드 입력 시 대문자 변환
+    function setupCustomerCodeInputs() {
+        const customerCodeInputs = document.querySelectorAll('input[name="customerCode"]');
+        customerCodeInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+        });
+    }
+
     // JWT 토큰 설정
     setupJwtToken();
+    // 고객코드 입력 필드 설정
+    setupCustomerCodeInputs();
 
     // 모달 외부 클릭 시 닫기
     window.onclick = function(event) {

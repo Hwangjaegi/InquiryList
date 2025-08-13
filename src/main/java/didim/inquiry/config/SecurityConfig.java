@@ -54,12 +54,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                .csrf(csrf -> csrf
-//                        .ignoringRequestMatchers("/api/auth/**", "/api/check-*")  // API 엔드포인트는 CSRF 제외
-//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                )
                 .csrf(csrf -> csrf.disable())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                // CSP 헤더 추가 (외부 리소스 허용)
+                .headers(headers -> headers
+                    .contentSecurityPolicy(csp -> csp
+                        .policyDirectives(
+                            "default-src 'self'; " +
+                            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.quilljs.com; " +
+                            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.quilljs.com; " +
+                            "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; " +
+                            "img-src 'self' data: https:; " +
+                            "connect-src 'self'; " +
+                            "frame-ancestors 'none'; " +
+                            "base-uri 'self'; " +
+                            "form-action 'self'"
+                        )
+                    )
+                    // Spring Boot 3.x 호환 보안 헤더
+                    .frameOptions(frame -> frame.deny())
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/","/api/auth/**", "/api/check-*", "/signup", "/login", "/css/**", "/js/**",
                                        "/image/**", "/temp/**", "/posts/**", "/uploads/**").permitAll()
@@ -73,7 +87,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)  // 원래 설정으로 복원
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         .maximumSessions(10)
                         .maxSessionsPreventsLogin(false)
                 )

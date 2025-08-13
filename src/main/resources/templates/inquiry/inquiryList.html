@@ -44,19 +44,52 @@
 
         .logout-button {
             padding: 10px 20px;
-            background: #e53e3e;
-            color: white;
+            background: transparent;
+            color: #e53e3e;
             font-weight: 500;
-            border: none;
+            border: 2px solid #e53e3e;
             border-radius: 8px;
             cursor: pointer;
             font-size: 0.9rem;
-            transition: background 0.2s ease, transform 0.2s ease;
+            transition: all 0.5s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .logout-button::before,
+        .logout-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: #e53e3e;
+            transition: transform 0.5s ease-in-out;
+            z-index: -1;
+        }
+
+        .logout-button::before {
+            left: 0;
+            transform: translateX(-100%);
+        }
+
+        .logout-button::after {
+            right: 0;
+            transform: translateX(100%);
         }
 
         .logout-button:hover {
-            background: #c53030;
+            color: white;
             transform: translateY(-1px);
+        }
+
+        .logout-button:hover::before {
+            transform: translateX(0);
+        }
+
+        .logout-button:hover::after {
+            transform: translateX(0);
         }
 
         .header {
@@ -87,6 +120,61 @@
 
         .create-button {
             padding: 10px 20px;
+            background: transparent;
+            color: #2a9d8f;
+            font-weight: 500;
+            border: 2px solid #2a9d8f;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.5s ease-in-out;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .create-button::before,
+        .create-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: #2a9d8f;
+            transition: transform 0.5s ease-in-out;
+            z-index: -1;
+        }
+
+        .create-button::before {
+            left: 0;
+            transform: translateX(-100%);
+        }
+
+        .create-button::after {
+            right: 0;
+            transform: translateX(100%);
+        }
+
+        .create-button:hover {
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .create-button:hover::before {
+            transform: translateX(0);
+        }
+
+        .create-button:hover::after {
+            transform: translateX(0);
+        }
+
+        /* 새 문의 작성 버튼 전용 스타일 */
+        .new-inquiry-button {
+            padding: 10px 20px;
             background: #2a9d8f;
             color: white;
             font-weight: 500;
@@ -101,7 +189,7 @@
             gap: 6px;
         }
 
-        .create-button:hover {
+        .new-inquiry-button:hover {
             background: #237c70;
             transform: translateY(-1px);
         }
@@ -116,7 +204,7 @@
 
         .search-form {
             display: flex;
-            gap: 12px;
+            gap: 16px;
             align-items: center;
             flex-wrap: wrap;
         }
@@ -303,6 +391,7 @@
         .inquiry-content {
             display: none;
             background: #fafafa;
+            border-radius: 12px;
         }
 
         .inquiry-content.active {
@@ -1114,7 +1203,7 @@
         <p>고객님의 소중한 문의사항을 확인하실 수 있습니다</p>
     </div>
     <div class="action-buttons">
-        <button class="create-button" onclick="goToPage('/inquiryWriteForm')" th:if="${role != 'ADMIN'}">
+        <button class="new-inquiry-button" onclick="goToPage('/inquiryWriteForm')" th:if="${role != 'ADMIN'}">
             <i class="fas fa-plus"></i> 새 문의 작성
         </button>
     </div>
