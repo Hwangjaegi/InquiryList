@@ -78,7 +78,7 @@ public class UserController extends BaseController{
     @GetMapping("/api/check-username")
     @ResponseBody
     public Map<String, Boolean> checkUsername(@RequestParam String username) {
-        boolean exists = userService.findByUsername(username) != null;
+        boolean exists = userService.getUserByUsername(username) != null;
         return Collections.singletonMap("exists", exists);
     }
 

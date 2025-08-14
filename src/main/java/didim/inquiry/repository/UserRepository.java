@@ -18,25 +18,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
 
-    Page<User> findAllByRoleOrderByIdDesc(String role , Pageable pageable);
-
-    Page<User> findAllByRoleAndUsernameContainingOrEmailContainingOrderByIdDesc(String role, String keyword, String keyword2, Pageable pageable);
     // 다중 role 지원
     Page<User> findAllByRoleInOrderByIdDesc(List<String> roles, Pageable pageable);
     Page<User> findAllByRoleInAndUsernameContainingOrEmailContainingOrderByIdDesc(List<String> roles, String keyword, String keyword2, Pageable pageable);
-
-    @Modifying
-    @Query("UPDATE User u SET u.deleteFlag = true WHERE u.id = :id")
-    void UserDeleteFlagTrueById(@Param("id") long id);
-
-    @Modifying
-    @Query("UPDATE User u SET u.deleteFlag = false WHERE u.id = :id")
-    void UserDeleteFlagFalseById(@Param("id") Long id);
-
-
-
-    //회원가입 시 고객코드로 가입한 유저가 있는지 확인
-    List<User> findByCustomerCode(String customerCode);
 
     @Query("SELECT u FROM User u WHERE u.customerCode = :customerCode AND " +
             "(" +

@@ -51,15 +51,6 @@ public class UserService {
             return false;
         }
 
-//        // 고객코드로 처음 가입한 사람은 관리자 권한 부여
-//        if (userRepository.findByCustomerCode(user.getCustomerCode()).isEmpty()) {
-//            if (user.getUsername().equals("admin") && user.getCustomerCode().equals("D000001")) {
-//                user.setRole("ADMIN");
-//            } else {
-//                user.setRole("MANAGER");
-//            }
-//        }
-
         //가입된 정보가 없을 경우 패스워드 암호화 처리 후 가입처리
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -67,7 +58,7 @@ public class UserService {
     }
 
     // 관리자 최소정보 회원가입 (이름, 이메일, 전화번호 공란 허용)
-    public boolean signUpUserAllowBlank(User user) {
+    public boolean signUpUserByAdmin(User user) {
         // 고객코드가 생성되어있고 활성화 되어있는지 확인
         boolean exists = adminRepository.existsByCodeAndStatus(user.getCustomerCode(), "ACTIVE");
         if (!exists) {
@@ -146,17 +137,17 @@ public class UserService {
         return userRepository.searchAllFieldsExceptUser(currentUserId, keyword, pageable);
     }
 
-    //실제론 삭제하지 않고 DeleteFlag를 true로 바꾼다.
-    @Transactional
-    public void deleteUserById(long id) {
-        userRepository.UserDeleteFlagTrueById(id);
-    }
+//    //실제론 삭제하지 않고 DeleteFlag를 true로 바꾼다.
+//    @Transactional
+//    public void deleteUserById(long id) {
+//        userRepository.UserDeleteFlagTrueById(id);
+//    }
 
-
-    @Transactional
-    public void restoreUserById(Long id) {
-        userRepository.UserDeleteFlagFalseById(id);
-    }
+//
+//    @Transactional
+//    public void restoreUserById(Long id) {
+//        userRepository.UserDeleteFlagFalseById(id);
+//    }
 
     public long getUsersCount() {
         return userRepository.count();
@@ -222,11 +213,6 @@ public class UserService {
 
     }
 
-    public void deleteUser(Long id) {
-        // userRepository에서 user 삭제
-        userRepository.deleteById(id);
-    }
-
     public void softDeleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
@@ -242,9 +228,9 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
-    }
+    // public User findByUsername(String username) {
+    //     return userRepository.findByUsername(username).orElse(null);
+    // }
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);

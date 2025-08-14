@@ -9,7 +9,6 @@ import didim.inquiry.security.JwtTokenProvider;
 import didim.inquiry.service.InquiryService;
 import didim.inquiry.service.ProjectService;
 import didim.inquiry.service.UserService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -66,7 +65,7 @@ public class JwtAuthController {
         user.setTel(tel == null ? "" : tel);
         // role 파라미터를 사용하여 권한 설정
         user.setRole(role);
-        boolean success = userService.signUpUserAllowBlank(user);
+        boolean success = userService.signUpUserByAdmin(user);
         if (!success) {
             model.addAttribute("errorMessage", "가입에 실패했습니다. (중복/고객코드/비밀번호 등 확인)");
             return "login";

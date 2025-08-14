@@ -59,15 +59,6 @@ public class AdminService {
         customer.setStatus(customerDto.getStatus());
     }
 
-//    //고객코드 삭제
-//    @Transactional
-//    public void deleteCustomerCode(Long id) {
-//        adminRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 고객이 존재하지 않습니다."));
-//
-//        adminRepository.deleteById(id);
-//    }
-
     public long getActiveCustomerCount() {
         return adminRepository.countByStatusIgnoreCase("ACTIVE");
     }

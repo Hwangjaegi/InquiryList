@@ -98,19 +98,4 @@ public class ProjectService {
     public Boolean isCustomerCodeActive(String code) {
         return adminRepository.existsByCodeAndStatus(code,"ACTIVE");
     }
-
-//    // 서버구동 시 subject='기타문의' 프로젝트가 없으면 자동 생성
-//    @PostConstruct
-//    public void ensureEtcProjectExists() {
-//        if (projectRepository.findBySubject("기타문의").isEmpty()) {
-//            Project etc = new Project();
-//            etc.setSubject("기타문의");
-//            etc.setCreatedAt(LocalDateTime.now());
-//            projectRepository.save(etc);
-//        }
-//    }
-
-//    public Project getEtcProject() {
-//        return projectRepository.findBySubject("기타문의").orElseThrow(() -> new IllegalStateException("기타문의 프로젝트가 없습니다."));
-//    }
 }

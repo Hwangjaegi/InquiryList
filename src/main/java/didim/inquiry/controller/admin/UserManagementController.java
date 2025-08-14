@@ -188,7 +188,7 @@ public class UserManagementController{
                 return "redirect:/login";
             }
 
-            userService.deleteUserById(id);
+            userService.softDeleteUser(id);
 
             redirectAttributes.addFlashAttribute("successMessage", "정상적으로 삭제 되었습니다.");
             return "redirect:/admin/customerList";
@@ -221,7 +221,7 @@ public class UserManagementController{
                 return "redirect:/login";
             }
 
-            userService.restoreUserById(id);
+            userService.restoreUser(id);
             redirectAttributes.addFlashAttribute("successMessage", "정상적으로 복원 되었습니다.");
             return "redirect:/admin/customerList";
 
