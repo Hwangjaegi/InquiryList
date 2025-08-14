@@ -1,20 +1,15 @@
 package didim.inquiry.controller;
 
-import didim.inquiry.controller.absClass.BaseController;
+import didim.inquiry.security.AuthenticationHelper;
 import didim.inquiry.domain.Answer;
 import didim.inquiry.domain.Inquiry;
 import didim.inquiry.domain.User;
-import didim.inquiry.security.SecurityUtil;
 import didim.inquiry.service.AnswerService;
 import didim.inquiry.service.InquiryService;
-import didim.inquiry.service.UserService;
 import didim.inquiry.service.EmailService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.beans.factory.annotation.Value;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -24,10 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +32,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import didim.inquiry.security.JwtTokenProvider;
 
 @Controller
-public class AnswerController extends BaseController {
+public class AnswerController {
 
-    private final UserService userService;
     private final InquiryService inquiryService;
     private final AnswerService answerService;
     private final EmailService emailService;
+    private final AuthenticationHelper authenticationHelper;
     @Autowired
     private TemplateEngine templateEngine;
     @Autowired
@@ -54,45 +46,45 @@ public class AnswerController extends BaseController {
     @Value("${file.upload}")
     private String uploadDir;
 
-    public AnswerController(UserService userService, InquiryService inquiryService, AnswerService answerService, EmailService emailService) {
-        this.userService = userService;
+    public AnswerController(InquiryService inquiryService, AnswerService answerService, EmailService emailService, AuthenticationHelper authenticationHelper) {
         this.inquiryService = inquiryService;
         this.answerService = answerService;
         this.emailService = emailService;
+        this.authenticationHelper = authenticationHelper;
     }
-
-
-    @PostMapping("/answerWrite")
-    public String answerWrite(Answer answer, Model model , RedirectAttributes redirectAttributes){
-        System.out.println("문의번호 : " + answer.getInquiry().getId());
-
-        try {
-            User findUser = getCurrentUser();
-            //댓글 작성자 id 답글 객체에 저장
-            answer.setUser(findUser);
-
-            answerService.saveAnswer(answer);
-
-            //대상 문의에 상태 변경
-            Long inquiryId = answer.getInquiry().getId();
-            Inquiry inquiry =  inquiryService.getInquiryById(inquiryId).orElseThrow(() -> new IllegalArgumentException("해당 문의 없음"));
-            inquiry.setStatus("답변완료");
-            inquiryService.saveInquiry(inquiry);
-
-            redirectAttributes.addFlashAttribute("successMessage" , "답변이 성공적으로 등록되었습니다.");
-        }catch (Exception e){
-            System.err.println("문의 저장 중 오류 발생 : " + e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage","문의 저장 중 오류가 발생했습니다. 다시 시도해주세요!");
-        }
-        return "redirect:/inquiryList";
-    }
+//
+//
+//    @PostMapping("/answerWrite")
+//    public String answerWrite(Answer answer, Model model , RedirectAttributes redirectAttributes){
+//        System.out.println("문의번호 : " + answer.getInquiry().getId());
+//
+//        try {
+//            User findUser = getCurrentUser();
+//            //댓글 작성자 id 답글 객체에 저장
+//            answer.setUser(findUser);
+//
+//            answerService.saveAnswer(answer);
+//
+//            //대상 문의에 상태 변경
+//            Long inquiryId = answer.getInquiry().getId();
+//            Inquiry inquiry =  inquiryService.getInquiryById(inquiryId).orElseThrow(() -> new IllegalArgumentException("해당 문의 없음"));
+//            inquiry.setStatus("답변완료");
+//            inquiryService.saveInquiry(inquiry);
+//
+//            redirectAttributes.addFlashAttribute("successMessage" , "답변이 성공적으로 등록되었습니다.");
+//        }catch (Exception e){
+//            System.err.println("문의 저장 중 오류 발생 : " + e.getMessage());
+//            redirectAttributes.addFlashAttribute("errorMessage","문의 저장 중 오류가 발생했습니다. 다시 시도해주세요!");
+//        }
+//        return "redirect:/inquiryList";
+//    }
 
     // 답글용 임시 이미지 업로드
     @PostMapping("/uploadAnswerTempImage")
     @ResponseBody
     public Map<String, String> uploadAnswerTempImage(@RequestParam("image") MultipartFile file, HttpServletRequest request) throws IOException {
         // JWT 토큰으로 사용자 인증 확인
-        User currentUser = getCurrentUserFromToken(request);
+        User currentUser = authenticationHelper.getCurrentUserFromToken(request);
         if (currentUser == null) {
             throw new RuntimeException("인증이 필요합니다.");
         }
@@ -129,7 +121,7 @@ public class AnswerController extends BaseController {
     public Map<String, Object> answerWriteAjax(Answer answer, @RequestParam(value = "imageUrls", required = false) String imageUrlsJson, HttpServletRequest request) {
         java.util.Map<String, Object> result = new java.util.HashMap<>();
         try {
-            User findUser = getCurrentUserFromToken(request);
+            User findUser = authenticationHelper.getCurrentUserFromToken(request);
             answer.setUser(findUser);
             
             // 디버깅: 콘텐츠 확인
@@ -282,46 +274,5 @@ public class AnswerController extends BaseController {
         }
 
         return updatedContent.toString();
-    }
-
-    // JWT 토큰에서 사용자 정보 가져오기
-    private User getCurrentUserFromToken(HttpServletRequest request) {
-        String token = extractTokenFromRequest(request);
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            String usernameWithCustomerCode = jwtTokenProvider.getUsernameFromToken(token);
-            
-            System.out.println("JWT 토큰에서 추출한 사용자명: " + usernameWithCustomerCode);
-            
-            // username|customerCode 형태인 경우
-            if (usernameWithCustomerCode != null && usernameWithCustomerCode.contains("|")) {
-                String[] parts = usernameWithCustomerCode.split("\\|");
-                if (parts.length == 2) {
-                    String username = parts[0];
-                    String customerCode = parts[1];
-                    return userService.getUserByUsernameAndCustomerCode(username, customerCode);
-                }
-            }
-            
-            // username만 있는 경우 (기존 방식)
-            return userService.getUserByUsername(usernameWithCustomerCode);
-        }
-        return getCurrentUser(); // JWT 토큰이 없으면 세션 기반 인증 사용
-    }
-
-    // 요청에서 JWT 토큰 추출
-    private String extractTokenFromRequest(HttpServletRequest request) {
-        // 1. Authorization 헤더에서 Bearer 토큰 확인
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-
-        // 2. URL 파라미터에서 토큰 확인
-        String tokenParam = request.getParameter("token");
-        if (tokenParam != null && !tokenParam.trim().isEmpty()) {
-            return tokenParam;
-        }
-
-        return null;
     }
 }

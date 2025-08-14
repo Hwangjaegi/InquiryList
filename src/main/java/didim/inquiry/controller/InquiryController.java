@@ -1,10 +1,10 @@
 package didim.inquiry.controller;
 
-import didim.inquiry.controller.absClass.BaseController;
+import didim.inquiry.common.BaseController;
 import didim.inquiry.domain.*;
-import didim.inquiry.dto.ManagerDto;
 import didim.inquiry.dto.ProjectDto;
 import didim.inquiry.dto.SearchInquiryDto;
+import didim.inquiry.security.AuthenticationHelper;
 import didim.inquiry.security.SecurityUtil;
 import didim.inquiry.service.*;
 import didim.inquiry.security.JwtTokenProvider;  // 추가
@@ -42,19 +42,19 @@ public class InquiryController extends BaseController {
     private final ProjectService projectService;
     private final ManagerService managerService;
     private final CustomerService customerService;
-    private final JwtTokenProvider jwtTokenProvider;
     private final EmailService emailService;
+    private final AuthenticationHelper authenticationHelper;
     @Value("${file.upload}")
     private String uploadDir;
 
-    public InquiryController(InquiryService inquiryService, UserService userService, ProjectService projectService, ManagerService managerService, CustomerService customerService, JwtTokenProvider jwtTokenProvider, EmailService emailService) {
+    public InquiryController(InquiryService inquiryService, UserService userService, ProjectService projectService, ManagerService managerService, CustomerService customerService, EmailService emailService, AuthenticationHelper authenticationHelper) {
         this.inquiryService = inquiryService;
         this.userService = userService;
         this.projectService = projectService;
         this.managerService = managerService;
         this.customerService = customerService;
-        this.jwtTokenProvider = jwtTokenProvider;
         this.emailService = emailService;
+        this.authenticationHelper = authenticationHelper;
     }
 
     @GetMapping("/inquiryList")
@@ -138,7 +138,7 @@ public class InquiryController extends BaseController {
         Long projectId = (Long) session.getAttribute("projectId");
         System.out.println("projectid : " + projectId);
 
-        User user = getCurrentUser();
+        User user = authenticationHelper.getCurrentUserFromToken(request);
         model.addAttribute("user", user);
 
 //        // 1. 기타문의 프로젝트는 항상 포함

@@ -1,17 +1,18 @@
 package didim.inquiry.controller;
 
-import didim.inquiry.controller.absClass.BaseController;
+import didim.inquiry.common.BaseController;
 import didim.inquiry.domain.Manager;
 import didim.inquiry.domain.User;
+import didim.inquiry.security.AuthenticationHelper;
 import didim.inquiry.service.ManagerService;
 import didim.inquiry.service.UserService;
-import didim.inquiry.security.SecurityUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,15 +21,18 @@ public class ManagerController extends BaseController {
 
     private final ManagerService managerService;
     private final UserService userService;
+    private final AuthenticationHelper authenticationHelper;
 
-    public ManagerController(ManagerService managerService, UserService userService) {
+    public ManagerController(ManagerService managerService, UserService userService, AuthenticationHelper authenticationHelper) {
         this.managerService = managerService;
         this.userService = userService;
+        this.authenticationHelper = authenticationHelper;
     }
 
     // 담당자 추가 API
     @PostMapping("/api/addManager")
-    public ResponseEntity<?> addManager(@RequestBody Manager manager) {
+    public ResponseEntity<?> addManager(@RequestBody Manager manager,
+                                        HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
         
         try {
@@ -54,7 +58,8 @@ public class ManagerController extends BaseController {
             }
             
             // 현재 로그인한 사용자의 ID 가져오기
-            User currentUser = getCurrentUser();
+            User currentUser = authenticationHelper.getCurrentUserFromToken(request);
+            System.out.println("currentuser 이름 : " + currentUser.getName());
             
             // 새 매니저 생성
             Manager newManager = managerService.createManager(name, tel, email, currentUser);
@@ -72,6 +77,7 @@ public class ManagerController extends BaseController {
             return ResponseEntity.ok(response);
             
         } catch (Exception e) {
+            System.err.println("담당자 추가중 에러 : " + e.getMessage());
             response.put("success", false);
             response.put("message", "담당자 추가 중 오류가 발생했습니다: " + e.getMessage());
             return ResponseEntity.internalServerError().body(response);
@@ -107,7 +113,8 @@ public class ManagerController extends BaseController {
     // 담당자 수정 API
     @PostMapping("/manager/update")
     @ResponseBody
-    public ResponseEntity<?> updateManager(@RequestBody Manager manager) {
+    public ResponseEntity<?> updateManager(@RequestBody Manager manager,
+                                           HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
         
         try {
@@ -121,7 +128,7 @@ public class ManagerController extends BaseController {
             }
             
             // 현재 로그인한 사용자 확인
-            User currentUser = getCurrentUser();
+            User currentUser = authenticationHelper.getCurrentUserFromToken(request);
             if (currentUser == null) {
                 response.put("success", false);
                 response.put("message", "로그인이 필요합니다.");

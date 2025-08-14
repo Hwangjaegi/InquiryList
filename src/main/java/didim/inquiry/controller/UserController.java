@@ -1,6 +1,6 @@
 package didim.inquiry.controller;
 
-import didim.inquiry.controller.absClass.BaseController;
+import didim.inquiry.common.BaseController;
 import didim.inquiry.domain.User;
 import didim.inquiry.service.ManagerService;
 import didim.inquiry.service.UserService;

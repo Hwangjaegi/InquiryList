@@ -1,5 +1,6 @@
-package didim.inquiry.security;
+package didim.inquiry.filter;
 
+import didim.inquiry.security.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
