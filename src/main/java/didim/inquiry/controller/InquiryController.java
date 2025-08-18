@@ -61,14 +61,7 @@ public class InquiryController extends BaseController {
     public String inquiryList(Model model, HttpServletRequest request,
                               @RequestParam(defaultValue = "0") int page) {
 
-        System.out.println("=== 디버깅 정보 ===");
-        System.out.println("요청 시간: " + new Date());
-        System.out.println("세션 ID: " + request.getSession().getId());
-        System.out.println("요청 URL: " + request.getRequestURL());
-        System.out.println("Authentication: " + SecurityContextHolder.getContext().getAuthentication());
-
         String username = SecurityUtil.getCurrentUsername();
-        System.out.println("SecurityUtil username: " + username);
 
         // 1. 아이디가 없을 경우 로그인 화면으로 이동
         if (username == null) {
@@ -108,10 +101,6 @@ public class InquiryController extends BaseController {
             }
         });
 
-        System.out.println("인쿼리콘텐츠 : " + inquiries.getContent());
-        System.out.println("인쿼리개수 : " + inquiries.getTotalElements());
-        System.out.println("인쿼리비었나 : " + inquiries.getContent().isEmpty());
-
 
         // 6. 모델에 데이터 추가
         model.addAttribute("answerCount", 1);
@@ -136,7 +125,6 @@ public class InquiryController extends BaseController {
                                    HttpServletRequest request) {
         HttpSession session = request.getSession();
         Long projectId = (Long) session.getAttribute("projectId");
-        System.out.println("projectid : " + projectId);
 
         User user = authenticationHelper.getCurrentUserFromToken(request);
         model.addAttribute("user", user);
@@ -169,7 +157,7 @@ public class InquiryController extends BaseController {
         if (file.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "파일이 없습니다.");
         }
-        System.out.println("이미지 Temp 업로드 시작");
+
         // 저장할 파일명 생성 (예: timestamp + 랜덤값)
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
@@ -198,9 +186,6 @@ public class InquiryController extends BaseController {
                                ProjectDto projectDto,
                                @RequestParam(value = "managerId", required = false) Long managerId,
                                RedirectAttributes redirectAttributes) {
-        System.out.println("이쪽들어옴!");
-        System.out.println(inquiry.getContent());
-        System.out.println("ManagerId : " + managerId);
 
         String username = SecurityUtil.getCurrentUsername();
         try {
@@ -297,7 +282,6 @@ public class InquiryController extends BaseController {
     @ResponseBody
     public ResponseEntity<?> inquiryComplete(@RequestParam("id") Long inquiryId) {
         try {
-            System.out.println("아이디 : " + inquiryId);
             inquiryService.updateInquiryStatus(inquiryId);
 
             return ResponseEntity.ok().body(Map.of("success", true, "message", "문의가 처리완료 되었습니다."));

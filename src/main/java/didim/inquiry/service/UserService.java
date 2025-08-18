@@ -193,8 +193,6 @@ public class UserService {
 
         // 비밀번호가 8자리 미만이면 가입 방지
         if (newPassword == null || newPassword.length() < 8) {
-            System.out.println("userdto : " + userDto.getPassword());
-            System.out.println("leng : " + userDto.getPassword().length());
             throw new IllegalArgumentException("비밀번호가 8자리 미만입니다.");
         }
 
@@ -216,7 +214,6 @@ public class UserService {
     public void softDeleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
-        System.out.println("user name : " + user.getName());
         user.setDeleteFlag(true);
         userRepository.save(user);
     }

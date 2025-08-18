@@ -36,8 +36,6 @@ public class ManagerService {
         manager.setEmail(email);
         manager.setUser(currentUser);
         manager.setDeleteFlag(false);
-        System.out.println("manager Repository : " + manager.getName());
-
         return managerRepository.save(manager);
     }
 

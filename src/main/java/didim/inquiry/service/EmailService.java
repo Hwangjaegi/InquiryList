@@ -53,8 +53,6 @@ public class EmailService {
             // URL에 토큰 파라미터 추가
             String fullUrl = synologyUrl + "&token=" + cleanToken;
             
-            System.out.println("Synology Chat URL: " + fullUrl);
-            
             // 헤더 설정 - UTF-8 인코딩 명시
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -64,8 +62,6 @@ public class EmailService {
             String jsonPayload = createJsonPayload(message);
             String encodedPayload = URLEncoder.encode(jsonPayload, StandardCharsets.UTF_8);
             String payload = "payload=" + encodedPayload;
-            
-            System.out.println("Synology Chat Payload: " + payload);
             
             // HTTP 요청 생성
             HttpEntity<String> request = new HttpEntity<>(payload, headers);
@@ -96,10 +92,6 @@ public class EmailService {
             // Synology Chat 호환 형식으로 페이로드 생성
             String jsonPayload = "{\"text\":\"" + formattedMessage + "\",\"mrkdwn\":true}";
             
-            // UTF-8로 인코딩 확인
-            System.out.println("원본 메시지: " + message);
-            System.out.println("JSON 페이로드: " + jsonPayload);
-            
             return jsonPayload;
         } catch (Exception e) {
             System.err.println("JSON 페이로드 생성 실패: " + e.getMessage());
@@ -117,7 +109,7 @@ public class EmailService {
             List<User> adminUsers = adminUsersPage.getContent();
 
             if (adminUsers.isEmpty()) {
-                System.out.println("ADMIN 권한을 가진 사용자가 없습니다.");
+                System.err.println("ADMIN 권한을 가진 사용자가 없습니다.");
                 return;
             }
 
@@ -300,7 +292,7 @@ public class EmailService {
             List<User> adminUsers = adminUsersPage.getContent();
 
             if (adminUsers.isEmpty()) {
-                System.out.println("ADMIN 권한을 가진 사용자가 없습니다.");
+                System.err.println("ADMIN 권한을 가진 사용자가 없습니다.");
                 return;
             }
 
@@ -366,7 +358,6 @@ public class EmailService {
             
             // ADMIN이 답변한 경우에는 Synology Chat 알림을 보내지 않음
             if ("ADMIN".equals(answerWriterRole)) {
-                System.out.println("ADMIN이 답변한 경우 Synology Chat 알림을 보내지 않습니다.");
                 return;
             }
             

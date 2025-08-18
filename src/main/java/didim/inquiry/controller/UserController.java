@@ -115,8 +115,8 @@ public class UserController extends BaseController{
             exceptionObj = request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
             if (exceptionObj != null && exceptionObj instanceof Throwable) {
                 Throwable exception = (Throwable) exceptionObj;
-                System.out.println("Spring Security 예외 클래스: " + exception.getClass().getName());
-                System.out.println("Spring Security 예외 메시지: " + exception.getMessage());
+                System.err.println("Spring Security 예외 클래스: " + exception.getClass().getName());
+                System.err.println("Spring Security 예외 메시지: " + exception.getMessage());
                 exception.printStackTrace();
 
                 model.addAttribute("errorMessage", exception.getMessage());
@@ -127,8 +127,8 @@ public class UserController extends BaseController{
             }
         } else if (exceptionObj instanceof Throwable) {
             Throwable exception = (Throwable) exceptionObj;
-            System.out.println("에러 클래스: " + exception.getClass().getName());
-            System.out.println("에러 메시지: " + exception.getMessage());
+            System.err.println("에러 클래스: " + exception.getClass().getName());
+            System.err.println("에러 메시지: " + exception.getMessage());
             exception.printStackTrace();
             model.addAttribute("errorMessage", exception.getMessage());
         }
@@ -141,7 +141,6 @@ public class UserController extends BaseController{
                             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                             @RequestParam(value = "search", required = false) String search,
                             RedirectAttributes redirectAttributes) {
-        System.out.println("id : " + id + " page : " + page + " search : " + search);
         try {
             userService.softDeleteUser(id); // deleteFlag true로 변경
             redirectAttributes.addFlashAttribute("successMessage", "담당자가 성공적으로 삭제되었습니다.");

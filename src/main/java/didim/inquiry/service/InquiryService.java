@@ -27,7 +27,6 @@ public class InquiryService {
     public void saveInquiry(Inquiry inquiry){
         String year = String.valueOf(LocalDate.now().getYear()).substring(2);
         String lastTick = inquiryRepository.findLastTickNumber(year);
-        System.out.println("티켓번호 : " + lastTick);
 
         int nextSeq = 1;
         if(lastTick != null && lastTick.length() >= 7){
@@ -113,11 +112,9 @@ public class InquiryService {
         LocalDateTime start = null;
         LocalDateTime end = null;
         if (yearMonth != null && !yearMonth.isBlank()) {
-            System.out.println("yearmonth : "  + yearMonth);
             YearMonth ym = YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
             start = ym.atDay(1).atStartOfDay();
             end = ym.atEndOfMonth().atTime(23, 59, 59);
-            System.out.println("start : " + start + "end : " + end);
         }
         if ("ADMIN".equals(role)) {
             return inquiryRepository.findInquiriesByKeywordForAdmin(keyword, statuses, start, end, projectId, pageable);

@@ -43,7 +43,6 @@ class InquiryApplicationTests {
 		// when
 		boolean response = userService.signUpUser(user);
 
-		System.out.println("결과 : " + response);
 	}
 
 }

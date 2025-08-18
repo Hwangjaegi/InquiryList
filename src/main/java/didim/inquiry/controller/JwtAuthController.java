@@ -85,8 +85,6 @@ public class JwtAuthController {
                                    @RequestParam(value = "customerId" , required = false) String customerId  ) {
         try {
             System.out.println("=== JwtAuthController JWT 로그인 시도 ===");
-            System.out.println("사용자명: " + loginRequest.getUsername());
-            System.out.println("비밀번호: " + (loginRequest.getPassword() != null ? "***" : "null"));
             
             // 인증 처리
             System.out.println("1. 로그인 정보 인증처리 -> CustomUserDetailsService");
@@ -99,13 +97,6 @@ public class JwtAuthController {
                     )
             );
 
-            System.out.println("인증성공 시 username,password만 가지고 인증객체 생성");
-            System.out.println("인증 성공: " + authentication.getName());
-            System.out.println("인증 권한: " + authentication.getAuthorities());
-
-//            System.out.println("인증객체를 시큐리티 컨텍스트에 저장");
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-
             // JWT 토큰 생성
             System.out.println("인증객체를 JWT토큰으로 생성 (header.payload,signature)");
             String jwt = jwtTokenProvider.generateToken(authentication);
@@ -113,10 +104,8 @@ public class JwtAuthController {
 
             // 토큰이 실제로 발행되었는지 확인
             boolean tokenExists = jwtTokenProvider.validateToken(jwt);
-            System.out.println("토큰 발행 검증 확인 결과: " + tokenExists);
 
             // 토큰 발행 후 응답 결과 리턴
-            System.out.println("요청한 클라이언트에게 토큰,url응답");
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("token", jwt);
@@ -126,9 +115,9 @@ public class JwtAuthController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            System.out.println("=== JWT 로그인 실패 ===");
-            System.out.println("예외 타입: " + e.getClass().getSimpleName());
-            System.out.println("예외 메시지: " + e.getMessage());
+            System.err.println("=== JWT 로그인 실패 ===");
+            System.err.println("예외 타입: " + e.getClass().getSimpleName());
+            System.err.println("예외 메시지: " + e.getMessage());
             System.err.println("존재하지 않는 계정.");
             
             Map<String, Object> response = new HashMap<>();
@@ -168,25 +157,21 @@ public class JwtAuthController {
             
             // 1. 세션 무효화
             request.getSession().invalidate();
-            System.out.println("세션 무효화 완료");
             
             // 2. SecurityContext 클리어
             SecurityContextHolder.clearContext();
-            System.out.println("SecurityContext 클리어 완료");
             
             // 3. JWT 토큰 쿠키 삭제
             jakarta.servlet.http.Cookie jwtCookie = new jakarta.servlet.http.Cookie("jwt_token", "");
             jwtCookie.setMaxAge(0);
             jwtCookie.setPath("/");
             response.addCookie(jwtCookie);
-            System.out.println("JWT 토큰 쿠키 삭제 완료");
             
             // 4. JSESSIONID 쿠키 삭제
             jakarta.servlet.http.Cookie sessionCookie = new jakarta.servlet.http.Cookie("JSESSIONID", "");
             sessionCookie.setMaxAge(0);
             sessionCookie.setPath("/");
             response.addCookie(sessionCookie);
-            System.out.println("JSESSIONID 쿠키 삭제 완료");
             
             Map<String, Object> responseMap = new HashMap<>();
             responseMap.put("success", true);
@@ -196,7 +181,7 @@ public class JwtAuthController {
             return ResponseEntity.ok(responseMap);
             
         } catch (Exception e) {
-            System.out.println("로그아웃 처리 중 오류: " + e.getMessage());
+            System.err.println("로그아웃 처리 중 오류: " + e.getMessage());
             e.printStackTrace();
             
             Map<String, Object> responseMap = new HashMap<>();
@@ -240,29 +225,21 @@ public class JwtAuthController {
                           @RequestParam(value = "token", required = false) String token,
                           @RequestParam(value = "projectId" , required = false) Long projectId  ){
 
-        System.out.println("=== 컨트롤러에서 직접 토큰 처리 ===");
-        System.out.println("요청 시간: " + new Date());
-        System.out.println("요청 URL: " + request.getRequestURL());
-        System.out.println("URL 파라미터 토큰: " + (token != null ? token.substring(0, Math.min(50, token.length())) + "..." : "null"));
+//        System.out.println("=== 컨트롤러에서 직접 토큰 처리 ===");
+//        System.out.println("요청 시간: " + new Date());
+//        System.out.println("요청 URL: " + request.getRequestURL());
+//        System.out.println("URL 파라미터 토큰: " + (token != null ? token.substring(0, Math.min(50, token.length())) + "..." : "null"));
 
-
-        System.out.println("프로젝트 아이디 : " + projectId);
+        // 세션에 프로젝트아이디 저장
         if (projectId != null){
             HttpSession session = request.getSession();
             session.setAttribute("projectId",projectId);
-
-            System.out.println("세션 프로젝트 아이디 : " + session.getAttribute("projectId"));
         }
-
-
-
 
         try {
             // 1. URL 파라미터에서 토큰 확인 , api 로그인 후 새로고침 시 토큰이 사라지는 문제가있어 쿠키에서 조회하는 방식으로 설정
             if (token == null) {
                 System.out.println("URL 파라미터에 토큰이 없음 , 세션확인");
-
-
                     // 세션 인증 상태 확인
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                     if (authentication != null && authentication.isAuthenticated() &&
@@ -279,12 +256,11 @@ public class JwtAuthController {
                         }
 
                         String role = findUser.getRole();
-                        System.out.println("세션 사용자 역할: " + role);
 
                         // 세션 인증으로 inquiryList 처리
                         return processInquiryList(model, role, username, page, request);
                     } else {
-                        System.out.println("세션 인증도 유효하지 않음");
+                        System.err.println("세션 인증도 유효하지 않음");
                         return "redirect:/login?error=no_token";
                     }
                 }
@@ -298,10 +274,9 @@ public class JwtAuthController {
 
             // 3. 토큰에서 사용자명 추출
             String usernameWithCustomerCode = jwtTokenProvider.getUsernameFromToken(token);
-            System.out.println("토큰에서 추출한 사용자명: " + usernameWithCustomerCode);
 
             if (usernameWithCustomerCode == null) {
-                System.out.println("토큰에서 사용자명을 추출할 수 없음");
+                System.err.println("토큰에서 사용자명을 추출할 수 없음");
                 return "redirect:/login?error=token_parse_failed";
             }
 
@@ -312,25 +287,23 @@ public class JwtAuthController {
             } else {
                 username = usernameWithCustomerCode;
             }
-            System.out.println("파싱된 사용자명: " + username);
 
             // 5. 사용자 정보 조회
             User findUser = userService.getUserByUsername(username);
             if (findUser == null) {
-                System.out.println("사용자를 찾을 수 없음: " + username);
+                System.err.println("사용자를 찾을 수 없음: " + username);
                 return "redirect:/login?error=user_not_found";
             }
 
             String role = findUser.getRole();
-            System.out.println("사용자 역할: " + role);
 
             // 6. JWT 토큰으로 inquiryList 처리
             return processInquiryList(model, role, username, page, request);
 
         } catch (Exception e) {
-            System.out.println("=== 컨트롤러 토큰 처리 중 오류 발생 ===");
-            System.out.println("예외 타입: " + e.getClass().getSimpleName());
-            System.out.println("예외 메시지: " + e.getMessage());
+            System.err.println("=== 컨트롤러 토큰 처리 중 오류 발생 ===");
+            System.err.println("예외 타입: " + e.getClass().getSimpleName());
+            System.err.println("예외 메시지: " + e.getMessage());
             e.printStackTrace();
             
             return "redirect:/login?error=token_processing_failed";
@@ -349,7 +322,6 @@ public class JwtAuthController {
             // 세션에서 projectId 가져오기
             HttpSession session = request.getSession();
             Long projectId = (Long) session.getAttribute("projectId");
-            System.out.println("JWT 세션에서 가져온 projectId: " + projectId);
             
             // projectId가 있으면 검색 조건에 추가
             if (projectId != null) {
@@ -380,9 +352,6 @@ public class JwtAuthController {
                 }
             });
 
-            System.out.println("조회된 문의 개수: " + inquiries.getTotalElements());
-            System.out.println("현재 페이지 문의 개수: " + inquiries.getContent().size());
-
             // 모델에 데이터 추가
             model.addAttribute("answerCount", 1);
             model.addAttribute("inquiries", inquiries);
@@ -399,15 +368,13 @@ public class JwtAuthController {
                     List.of();
             model.addAttribute("projectList", userProjects);
 
-            //FM api 로그인 시 프로젝트
-
-            System.out.println("세션 인증으로 inquiryList 페이지 렌더링 완료");
+            // 세션 인증으로 inquiryList 페이지 렌더링 완료
             return "inquiry/inquiryList";
             
         } catch (Exception e) {
-            System.out.println("=== 세션 인증 inquiryList 처리 중 오류 발생 ===");
-            System.out.println("예외 타입: " + e.getClass().getSimpleName());
-            System.out.println("예외 메시지: " + e.getMessage());
+            System.err.println("=== 세션 인증 inquiryList 처리 중 오류 발생 ===");
+            System.err.println("예외 타입: " + e.getClass().getSimpleName());
+            System.err.println("예외 메시지: " + e.getMessage());
             e.printStackTrace();
             
             return "redirect:/login?error=processing_failed";

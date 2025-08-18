@@ -59,7 +59,6 @@ public class ManagerController extends BaseController {
             
             // 현재 로그인한 사용자의 ID 가져오기
             User currentUser = authenticationHelper.getCurrentUserFromToken(request);
-            System.out.println("currentuser 이름 : " + currentUser.getName());
             
             // 새 매니저 생성
             Manager newManager = managerService.createManager(name, tel, email, currentUser);

@@ -97,12 +97,7 @@ public class AnswerController {
         try {
             User findUser = authenticationHelper.getCurrentUserFromToken(request);
             answer.setUser(findUser);
-            
-            // 디버깅: 콘텐츠 확인
-            System.out.println("=== 답글 작성 디버깅 ===");
-            System.out.println("원본 콘텐츠: " + answer.getContent());
-            System.out.println("이미지 URL JSON: " + imageUrlsJson);
-            
+
             // 이미지 URL들을 콘텐츠에 추가
             String content = answer.getContent();
             if (imageUrlsJson != null && !imageUrlsJson.isEmpty()) {
@@ -120,8 +115,6 @@ public class AnswerController {
                         // 텍스트 콘텐츠와 이미지 HTML 결합
                         String newContent = content + (content != null && !content.trim().isEmpty() ? "\n\n" : "") + imageHtml.toString();
                         answer.setContent(newContent);
-                        
-                        System.out.println("이미지 추가 후 콘텐츠: " + answer.getContent());
                     }
                 } catch (Exception e) {
                     System.err.println("이미지 URL 파싱 오류: " + e.getMessage());
@@ -131,15 +124,9 @@ public class AnswerController {
             // 답글에 temp 이미지가 있다면 posts로 이동
             content = answer.getContent();
             if (content != null && content.contains("/temp/")) {
-                System.out.println("temp 이미지 발견! 이동 처리 시작...");
+                // temp 이미지 발견! 이동 처리 시작
                 String updatedContent = moveImageFromTempToPosts(content);
                 answer.setContent(updatedContent);
-                System.out.println("이동 후 콘텐츠: " + answer.getContent());
-            } else {
-                System.out.println("temp 이미지가 없습니다.");
-                if (content != null) {
-                    System.out.println("콘텐츠 내용: [" + content + "]");
-                }
             }
             
             answerService.saveAnswer(answer);
@@ -163,13 +150,10 @@ public class AnswerController {
             context.setVariable("answer", saveAnswer);
             boolean isWriter = false;
             if (saveAnswer.getInquiry() != null && saveAnswer.getInquiry().getWriter() != null) {
-                System.out.println("saved.getUser().getId(): " + saveAnswer.getUser().getId());
-                System.out.println("saved.getInquiry().getWriter().getId(): " + saveAnswer.getInquiry().getWriter().getId());
                 isWriter = saveAnswer.getUser().getId().equals(saveAnswer.getInquiry().getWriter().getId());
-                System.out.println("여기들어오니? isWriter: " + isWriter);
             }
+
             boolean isManager = saveAnswer.getUser().getRole() != null && saveAnswer.getUser().getRole().equals("ADMIN");
-            System.out.println("isWriter : " + isWriter + " / isManager : " + isManager);
             context.setVariable("isWriter", isWriter);
             context.setVariable("isManager", isManager);
             // inquiry 객체도 context에 추가하여 매니저 정보에 접근할 수 있도록 함
@@ -200,10 +184,6 @@ public class AnswerController {
         String uploadPath = uploadDir;
         String tempPath = uploadPath + "/temp/";
         String postsPath = uploadPath + "/posts/";
-        
-        System.out.println("업로드 경로: " + uploadPath);
-        System.out.println("temp 경로: " + tempPath);
-        System.out.println("posts 경로: " + postsPath);
 
         // posts 폴더가 없으면 생성
         File postsDir = new File(postsPath);
@@ -222,16 +202,11 @@ public class AnswerController {
                 String fileName = imgSrc.substring(imgSrc.lastIndexOf("/") + 1);
                 String oldFilePath = tempPath + fileName;
                 String newFilePath = postsPath + fileName;
-                
-                System.out.println("파일명: " + fileName);
-                System.out.println("이전 경로: " + oldFilePath);
-                System.out.println("새 경로: " + newFilePath);
 
                 // 파일 이동
                 File oldFile = new File(oldFilePath);
                 File newFile = new File(newFilePath);
                 if (oldFile.exists()) {
-                    System.out.println("파일 존재 확인됨. 이동 시작...");
                     Files.move(oldFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     System.out.println("파일 이동 완료!");
 
@@ -240,10 +215,10 @@ public class AnswerController {
                     updatedContent = new StringBuilder(updatedContent.toString().replace(imgSrc, newSrc));
                     System.out.println("경로 업데이트: " + imgSrc + " -> " + newSrc);
                 } else {
-                    System.out.println("파일이 존재하지 않습니다: " + oldFilePath);
+                    System.err.println("파일이 존재하지 않습니다: " + oldFilePath);
                 }
             } else {
-                System.out.println("temp 이미지가 아닙니다: " + imgSrc);
+                System.err.println("temp 이미지가 아닙니다: " + imgSrc);
             }
         }
 

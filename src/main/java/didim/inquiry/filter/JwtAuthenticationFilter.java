@@ -48,31 +48,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         
         // shouldNotFilter에서 처리되므로 여기서는 정적 리소스 체크 불필요
         String requestURI = request.getRequestURI();
-        
-        System.out.println("=== JWT 필터 진입 ===");
-        System.out.println("요청 URL: " + requestURI);
-        
+
         // 공개 경로는 JWT 필터를 거치지 않음
         if (requestURI.equals("/login") ||
             requestURI.equals("/signup") ||
             requestURI.startsWith("/api/check-")) {
-            
-            System.out.println("공개 경로 - JWT 검증 건너뛰기: " + requestURI);
+
             // 공개 경로는 JWT 검증 없이 통과
             filterChain.doFilter(request, response);
             return;
         }
-        
-        // 인증이 필요한 경로만 JWT 검증 수행
-        System.out.println("인증 필요 경로 - JWT 검증 수행: " + requestURI);
-        
+
         try {
             // 이미 인증된 사용자가 있으면 JWT 검증 건너뛰기
             if (SecurityContextHolder.getContext().getAuthentication() != null && 
                 SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-                System.out.println("SecurityContextHolder.getContext().getAuthentication() : " + SecurityContextHolder.getContext().getAuthentication());
-                System.out.println("SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : " + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
-                System.out.println("인증된 사용자 JWT 검증건너뛰기");
+
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -81,18 +72,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //JWT → 유저 이름 추출 → DB에서 유저 정보 조회 → 인증 객체 생성 → SecurityContext에 저장
             // 로그인시 토큰이 없기에 NULL로 다음 필터
             String jwt = getJwtFromRequest(request);
-            System.out.println("헤더 쿠키 파라미터 -> Filter JWT : " + jwt);
 
             if (StringUtils.hasText(jwt)) {
-                System.out.println("jwt 가져오기 후 검증 시작");
                 boolean isValid = jwtTokenProvider.validateToken(jwt);
                 
                 if (isValid) {
-                    System.out.println("검증 성공 후 유저네임을 추출해 userDetailService 메서드호출");
                     String usernameWithCustomerCode = jwtTokenProvider.getUsernameFromToken(jwt);
-                    
-                    System.out.println("JWT 토큰에서 추출한 사용자명: " + usernameWithCustomerCode);
-                    System.out.println("유저네임을 통해 DB에서 유저조회후 계정정보 및 권한 추출");
+
+                    // JWT 토큰에서 추출한 사용자명: usernameWithCustomerCode
                     UserDetails userDetails = userDetailsService.loadUserByUsername(usernameWithCustomerCode);
                     
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

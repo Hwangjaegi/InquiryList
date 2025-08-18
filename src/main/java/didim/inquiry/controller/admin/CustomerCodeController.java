@@ -43,9 +43,6 @@ public class CustomerCodeController {
     @PostMapping("createCode")
     public String createCustomerCode(@ModelAttribute CustomerDto customerDto, RedirectAttributes redirectAttributes, Model model, HttpServletRequest request) {
         //1. Dto에 요청 파라미터 값 담기
-        System.out.println("code : " + customerDto.getCode());
-        System.out.println("설명 : " + customerDto.getCompany());
-
         //2. DB에 저장, 존재하는 코드일시 예외발생시켜 Try-Catch로 예외처리
         try {
             User user = authenticationHelper.getCurrentUserFromToken(request);
@@ -54,13 +51,12 @@ public class CustomerCodeController {
                 return "redirect:/console";
             }
 
-            System.out.println("메시지전달 --");
             adminService.createCustomerCode(customerDto);
             redirectAttributes.addFlashAttribute("successMessage", "고객코드가 성공적으로 등록되었습니다.");
             return "redirect:/console";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            System.out.println("고객코드 중복에러 발생 : " + e.getMessage());
+            System.err.println("고객코드 중복에러 발생 : " + e.getMessage());
             return "redirect:/console";
         }
     }
@@ -75,10 +71,6 @@ public class CustomerCodeController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "search", required = false) String search,
             HttpServletRequest request) {
-
-        System.out.println("수정코드 : " + customerDto.getCode());
-        System.out.println("수정설명 : " + customerDto.getCompany());
-        System.out.println("수정상태 : " + customerDto.getStatus());
 
         //1. 수정 파라미터 받아서 업데이트
         try {

@@ -51,7 +51,6 @@ public class ConsoleController {
 
         try {
             User user = authenticationHelper.getCurrentUserFromToken(request);
-            System.out.println("된거지? : " + user.getName());
 
             // 어드민인 경우
             if ("ADMIN".equals(user.getRole())) {

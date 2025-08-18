@@ -35,9 +35,8 @@ public class JwtTokenProvider {
             CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
             usernameWithCustomerCode = customUserDetails.getUsername() + "|" + customUserDetails.getCustomerCode();
         }
-        System.out.println("instanceof : " + usernameWithCustomerCode);
 
-        System.out.println("username|customerCode형태의 username으로 토큰 생성");
+        // username|customerCode형태의 username으로 토큰 생성
         return generateTokenFromUsername(usernameWithCustomerCode);
     }
 
@@ -76,7 +75,7 @@ public class JwtTokenProvider {
             }
             return null;
         } catch (Exception e) {
-            System.out.println("토큰에서 사용자명 추출 실패: " + e.getMessage());
+            System.err.println("토큰에서 사용자명 추출 실패: " + e.getMessage());
             return null;
         }
     }
@@ -89,34 +88,32 @@ public class JwtTokenProvider {
             
             String[] parts = token.split("\\.");
             if (parts.length != 3) {
-                System.out.println("토큰 형식 오류");
+                System.err.println("토큰 형식 오류");
                 return false;
             }
             
             // HMAC-SHA256 서명 검증
             String expectedSignature = createHmacSignature(parts[0] + "." + parts[1]);
             if (!parts[2].equals(expectedSignature)) {
-                System.out.println("서명 검증 실패");
+                System.err.println("서명 검증 실패");
                 return false;
             }
             
             // 만료 시간 검증
             String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
-            System.out.println("페이로드: " + payload);
             if (payload.contains("\"exp\":")) {
                 String expStr = payload.split("\"exp\":")[1].split(",")[0].replaceAll("[^0-9]", "");
                 long exp = Long.parseLong(expStr);
                 if (System.currentTimeMillis() > exp) {
-                    System.out.println("토큰 만료");
+                    System.err.println("토큰 만료");
                     return false;
                 }
             }
-            
-            System.out.println("JWT 토큰 검증 성공");
+
             return true;
             
         } catch (Exception e) {
-            System.out.println("JWT 토큰 검증 실패: " + e.getMessage());
+            System.err.println("JWT 토큰 검증 실패: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -127,7 +124,7 @@ public class JwtTokenProvider {
         try {
             //java  HMAC 알고리즘 사용 (JWT 표준사용 알고리즘)
             Mac mac = Mac.getInstance("HmacSHA256");
-            System.out.println("시크릿키 : " + jwtSecret);
+
             // jwtSecret문자열 바이트로변환해 HMAC키로 설정
             SecretKeySpec secretKeySpec = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
             mac.init(secretKeySpec);
