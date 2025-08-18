@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+/*
+    서버 실행 시 데이터베이스에 관리자용 고객코드 , 계정이 없을경우 자동 생성
+ */
 @Configuration
 public class DataInitializerConfig {
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import didim.inquiry.domain.User;
 import jakarta.servlet.http.HttpServletRequest;
 
+// jwt 토큰추출 및 사용자 검증 , 없으면 세션 검증
 @Component
 public class AuthenticationHelper extends BaseController {
 

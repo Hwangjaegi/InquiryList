@@ -53,10 +53,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Page<User> searchAllFieldsExcludeAdmin(@Param("search") String search, Pageable pageable);
 
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE User u SET u.role = :role WHERE u.id = :id")
-    void updateByRole(@Param("id") Long id, @Param("role") String role);
+
 
     // 고객코드 존재 여부 확인 (삭제되지 않은 사용자만)
     boolean existsByCustomerCode(String customerCode);

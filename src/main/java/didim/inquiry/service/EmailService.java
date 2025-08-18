@@ -159,7 +159,7 @@ public class EmailService {
                             "- 제목: %s\n" +
                             "- 내용: %s\n" +
                             "- 등록일시: %s\n\n" +
-                            "문의리스트에서 확인하실 수 있습니다.\n" +
+                            "문의내역에서 확인하실 수 있습니다.\n" +
                             "감사합니다.",
                     adminUser.getName(),
                     inquiry.getTickNumber(),
@@ -382,7 +382,7 @@ public class EmailService {
                     "- 답변 작성자: %s\n" +
                     "- 답변 내용: %s\n" +
                     "- 답변 일시: %s\n\n" +
-                    "문의리스트에서 확인하실 수 있습니다.",
+                    "문의내역에서 확인하실 수 있습니다.",
                     answer.getInquiry().getTickNumber(),
                     answer.getInquiry().getTitle(),
                     answer.getUser().getName(),

@@ -12,6 +12,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+/*
+    이미지를 저장하는 temp,post 폴더 경로 설정
+ */
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {

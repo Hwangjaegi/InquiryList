@@ -18,9 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
-
-//    @Autowired
-//    private RefererFilter refererFilter;
     
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -48,7 +45,9 @@ public class SecurityConfig {
         return authenticationManagerBuilder.build();
     }
 
-
+/*
+    필터 적용
+ */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http

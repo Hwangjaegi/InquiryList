@@ -8,24 +8,24 @@
 
  :: Spring Boot ::                (v3.5.3)
 
-2025-08-14T15:45:39.459+09:00  INFO 60717 --- [inquiry] [           main] didim.inquiry.InquiryApplication         : Starting InquiryApplication v0.0.1-SNAPSHOT using Java 24.0.2 with PID 60717 (/Users/admin/InquiryList/build/libs/inquiry-0.0.1-SNAPSHOT.jar started by root in /Users/admin/InquiryList/build/libs)
-2025-08-14T15:45:39.466+09:00  INFO 60717 --- [inquiry] [           main] didim.inquiry.InquiryApplication         : No active profile set, falling back to 1 default profile: "default"
-2025-08-14T15:45:41.997+09:00  INFO 60717 --- [inquiry] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-08-14T15:45:42.140+09:00  INFO 60717 --- [inquiry] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 122 ms. Found 7 JPA repository interfaces.
-2025-08-14T15:45:43.857+09:00  INFO 60717 --- [inquiry] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 443 (https)
-2025-08-14T15:45:43.888+09:00  INFO 60717 --- [inquiry] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-08-14T15:45:43.890+09:00  INFO 60717 --- [inquiry] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
-2025-08-14T15:45:43.947+09:00  INFO 60717 --- [inquiry] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-08-14T15:45:43.948+09:00  INFO 60717 --- [inquiry] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4308 ms
-2025-08-14T15:45:44.873+09:00  INFO 60717 --- [inquiry] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-08-14T15:45:45.020+09:00  INFO 60717 --- [inquiry] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
-2025-08-14T15:45:45.121+09:00  INFO 60717 --- [inquiry] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2025-08-14T15:45:45.867+09:00  INFO 60717 --- [inquiry] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-08-14T15:45:45.917+09:00  INFO 60717 --- [inquiry] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-08-14T15:45:46.332+09:00  INFO 60717 --- [inquiry] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@105dc04d
-2025-08-14T15:45:46.335+09:00  INFO 60717 --- [inquiry] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-08-14T15:45:46.454+09:00  WARN 60717 --- [inquiry] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-08-14T15:45:46.477+09:00  INFO 60717 --- [inquiry] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2025-08-14T15:57:09.613+09:00  INFO 61191 --- [inquiry] [           main] didim.inquiry.InquiryApplication         : Starting InquiryApplication v0.0.1-SNAPSHOT using Java 24.0.2 with PID 61191 (/Users/admin/InquiryList/build/libs/inquiry-0.0.1-SNAPSHOT.jar started by root in /Users/admin/InquiryList/build/libs)
+2025-08-14T15:57:09.617+09:00  INFO 61191 --- [inquiry] [           main] didim.inquiry.InquiryApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-08-14T15:57:11.016+09:00  INFO 61191 --- [inquiry] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-14T15:57:11.144+09:00  INFO 61191 --- [inquiry] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 113 ms. Found 7 JPA repository interfaces.
+2025-08-14T15:57:12.594+09:00  INFO 61191 --- [inquiry] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 443 (https)
+2025-08-14T15:57:12.629+09:00  INFO 61191 --- [inquiry] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-14T15:57:12.630+09:00  INFO 61191 --- [inquiry] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-14T15:57:12.682+09:00  INFO 61191 --- [inquiry] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-14T15:57:12.683+09:00  INFO 61191 --- [inquiry] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2982 ms
+2025-08-14T15:57:12.920+09:00  INFO 61191 --- [inquiry] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-14T15:57:13.145+09:00  INFO 61191 --- [inquiry] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-08-14T15:57:13.206+09:00  INFO 61191 --- [inquiry] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-08-14T15:57:14.428+09:00  INFO 61191 --- [inquiry] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-14T15:57:14.496+09:00  INFO 61191 --- [inquiry] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-08-14T15:57:14.856+09:00  INFO 61191 --- [inquiry] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4c030fe1
+2025-08-14T15:57:14.860+09:00  INFO 61191 --- [inquiry] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-08-14T15:57:14.955+09:00  WARN 61191 --- [inquiry] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-14T15:57:14.994+09:00  INFO 61191 --- [inquiry] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 8.0.43
@@ -33,29 +33,24 @@
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2025-08-14T15:45:48.656+09:00  INFO 60717 --- [inquiry] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-08-14T15:45:48.838+09:00  INFO 60717 --- [inquiry] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-08-14T15:45:49.785+09:00  INFO 60717 --- [inquiry] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
-2025-08-14T15:45:54.673+09:00  WARN 60717 --- [inquiry] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-08-14T15:45:54.733+09:00  INFO 60717 --- [inquiry] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
-2025-08-14T15:45:55.833+09:00  INFO 60717 --- [inquiry] [           main] o.a.t.util.net.NioEndpoint.certificate   : Connector [https-jsse-nio-443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [/var/root/.keystore] using alias [tomcat] with trust store [null]
-2025-08-14T15:45:55.856+09:00  INFO 60717 --- [inquiry] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 443 (https) with context path '/'
-2025-08-14T15:45:55.877+09:00  INFO 60717 --- [inquiry] [           main] didim.inquiry.InquiryApplication         : Started InquiryApplication in 17.321 seconds (process running for 18.707)
+2025-08-14T15:57:16.503+09:00  INFO 61191 --- [inquiry] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-14T15:57:16.634+09:00  INFO 61191 --- [inquiry] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-14T15:57:16.971+09:00  INFO 61191 --- [inquiry] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-08-14T15:57:20.117+09:00  WARN 61191 --- [inquiry] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-14T15:57:20.162+09:00  INFO 61191 --- [inquiry] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-08-14T15:57:21.094+09:00  INFO 61191 --- [inquiry] [           main] o.a.t.util.net.NioEndpoint.certificate   : Connector [https-jsse-nio-443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [/var/root/.keystore] using alias [tomcat] with trust store [null]
+2025-08-14T15:57:21.109+09:00  INFO 61191 --- [inquiry] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 443 (https) with context path '/'
+2025-08-14T15:57:21.136+09:00  INFO 61191 --- [inquiry] [           main] didim.inquiry.InquiryApplication         : Started InquiryApplication in 12.25 seconds (process running for 13.152)
 Hibernate: select c1_0.id from customer c1_0 where c1_0.code=? and c1_0.status=? limit ?
-2025-08-14T15:45:56.050+09:00  INFO 60717 --- [inquiry] [           main] d.inquiry.config.DataInitializerConfig   : Customer with code DIDIM already exists, skipping initialization
+2025-08-14T15:57:21.334+09:00  INFO 61191 --- [inquiry] [           main] d.inquiry.config.DataInitializerConfig   : Customer with code DIDIM already exists, skipping initialization
 Hibernate: select u1_0.id from user u1_0 where u1_0.customer_code=? limit ?
-2025-08-14T15:45:56.054+09:00  INFO 60717 --- [inquiry] [           main] d.inquiry.config.DataInitializerConfig   : User with customerCode DIDIM and username admin already exists, skipping initialization
-2025-08-14T15:50:41.535+09:00  INFO 60717 --- [inquiry] [nio-443-exec-10] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-08-14T15:50:41.536+09:00  INFO 60717 --- [inquiry] [nio-443-exec-10] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2025-08-14T15:50:41.540+09:00  INFO 60717 --- [inquiry] [nio-443-exec-10] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-08-14T15:57:21.338+09:00  INFO 61191 --- [inquiry] [           main] d.inquiry.config.DataInitializerConfig   : User with customerCode DIDIM and username admin already exists, skipping initialization
+2025-08-14T15:57:21.508+09:00  INFO 61191 --- [inquiry] [-nio-443-exec-9] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-14T15:57:21.508+09:00  INFO 61191 --- [inquiry] [-nio-443-exec-9] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-08-14T15:57:21.509+09:00  INFO 61191 --- [inquiry] [-nio-443-exec-9] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
 === JWT 필터 진입 ===
-요청 URL: /
-인증 필요 경로 - JWT 검증 수행: /
-/login 요청 시 토큰 정보 확인 불가능
-헤더 쿠키 파라미터 -> Filter JWT : null
-=== JWT 필터 진입 ===
-요청 URL: /console
-인증 필요 경로 - JWT 검증 수행: /console
+요청 URL: /inquiryList
+인증 필요 경로 - JWT 검증 수행: /inquiryList
 /login 요청 시 토큰 정보 확인 불가능
 헤더 쿠키 파라미터 -> Filter JWT : null
 === JWT 필터 진입 ===
@@ -82,21 +77,2956 @@ DB에서 조회된 사용자: admin
 === JWT 필터 진입 ===
 요청 URL: /inquiryList
 인증 필요 경로 - JWT 검증 수행: /inquiryList
-SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@2a647692, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=E013CC2BF6587B818FF3E5345850709C], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@748ebd5, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=4365A145F3235655B2CC7288CC5E48E9], Granted Authorities=[ADMIN]]
 SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
 인증된 사용자 JWT 검증건너뛰기
 === 디버깅 정보 ===
-요청 시간: Thu Aug 14 15:51:43 KST 2025
-세션 ID: DA4947E6F3019F8958E90601AC8BD2B1
+요청 시간: Thu Aug 14 15:57:29 KST 2025
+세션 ID: 4B8E5A6FC4277ED1F1A127B1313EFCA6
 요청 URL: https://didim.fmapp.kr/inquiryList
-Authentication: UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@2a647692, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=E013CC2BF6587B818FF3E5345850709C], Granted Authorities=[ADMIN]]
+Authentication: UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@748ebd5, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=4365A145F3235655B2CC7288CC5E48E9], Granted Authorities=[ADMIN]]
 === CustomUserDetails.getUsername 호출 ===
 반환할 사용자명: admin
 SecurityUtil username: admin
 Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
-2025-08-14T15:51:43.640+09:00  WARN 60717 --- [inquiry] [nio-443-exec-10] org.hibernate.orm.query                  : HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
+2025-08-14T15:57:29.258+09:00  WARN 61191 --- [inquiry] [-nio-443-exec-5] org.hibernate.orm.query                  : HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
 Hibernate: select i1_0.id,a1_0.inquiry_id,a1_0.id,a1_0.content,a1_0.replied_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username,i1_0.content,i1_0.created_at,i1_0.manager_id,i1_0.project_id,i1_0.status,i1_0.tick_number,i1_0.title,i1_0.writer_id from inquiry i1_0 join user w1_0 on w1_0.id=i1_0.writer_id left join answer a1_0 on i1_0.id=a1_0.inquiry_id left join user u1_0 on u1_0.id=a1_0.user_id where (? is null or lower(i1_0.title) like lower(concat('%',?,'%')) escape '') and (? is null or lower(w1_0.name) like lower(concat('%',?,'%')) escape '') and (? is null or i1_0.created_at>=?) and (? is null or i1_0.created_at<=?) and (? is null or i1_0.status in (?,?)) and (? is null or i1_0.project_id=?) order by i1_0.created_at desc
-인쿼리콘텐츠 : [didim.inquiry.domain.Inquiry@1cb29f97, didim.inquiry.domain.Inquiry@1a503fa2]
+인쿼리콘텐츠 : [didim.inquiry.domain.Inquiry@74016699, didim.inquiry.domain.Inquiry@1fdad494]
+인쿼리개수 : 2
+인쿼리비었나 : false
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.id=? order by p1_0.created_at desc
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 where p1_0.id=?
+Hibernate: select m1_0.id,m1_0.created_at,m1_0.delete_flag,m1_0.email,m1_0.name,m1_0.tel,m1_0.updated_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from manager m1_0 left join user u1_0 on u1_0.id=m1_0.user_id where m1_0.id=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 where p1_0.id=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /console
+인증 필요 경로 - JWT 검증 수행: /console
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@748ebd5, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=4365A145F3235655B2CC7288CC5E48E9], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+된거지? : 디딤솔루션코리아
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 order by c1_0.created_at desc limit ?
+Hibernate: select count(*) from customer c1_0
+Hibernate: select count(c1_0.id) from customer c1_0 where upper(c1_0.status)=upper(?)
+Hibernate: select count(c1_0.id) from customer c1_0 where c1_0.created_at between ? and ?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /admin/login.asp
+인증 필요 경로 - JWT 검증 수행: /admin/login.asp
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /inquiryList
+인증 필요 경로 - JWT 검증 수행: /inquiryList
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /signin
+인증 필요 경로 - JWT 검증 수행: /signin
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== CustomUserDetailsService.loadUserByUsername 호출 ===
+2. 입력된 usernameWithCustomerCode: user|user
+파싱된 username: user
+파싱된 customerCode: user
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code=?
+=== CustomUserDetailsService.loadUserByUsername 호출 ===
+2. 입력된 usernameWithCustomerCode: user|user
+파싱된 username: user
+파싱된 customerCode: user
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code=?
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /signin
+인증 필요 경로 - JWT 검증 수행: /signin
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== CustomUserDetailsService.loadUserByUsername 호출 ===
+2. 입력된 usernameWithCustomerCode: test1|test1
+파싱된 username: test1
+파싱된 customerCode: test1
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code=?
+파싱된 username , customerCode로 DB조회
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=? and u1_0.customer_code=?
+DB에서 조회된 사용자: test1
+사용자 고객코드: TEST1
+사용자 삭제플래그: false
+인증 성공 - CustomUserDetails 생성(User객체) 후 반환 -> JwtAuthController
+=== CustomUserDetails.getPassword 호출 ===
+반환할 비밀번호: ***
+=== JWT 필터 진입 ===
+요청 URL: /inquiryList
+인증 필요 경로 - JWT 검증 수행: /inquiryList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@3ab80447, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=B58BD625D5437D893195D76C6B391109], Granted Authorities=[USER]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== 디버깅 정보 ===
+요청 시간: Thu Aug 14 17:54:56 KST 2025
+세션 ID: 95AFA4227E39D19A79911981F06EA98C
+요청 URL: https://didim.fmapp.kr/inquiryList
+Authentication: UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@3ab80447, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=B58BD625D5437D893195D76C6B391109], Granted Authorities=[USER]]
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+SecurityUtil username: test1
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+2025-08-14T17:54:56.929+09:00  WARN 61191 --- [inquiry] [nio-443-exec-10] org.hibernate.orm.query                  : HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
+Hibernate: select i1_0.id,a1_0.inquiry_id,a1_0.id,a1_0.content,a1_0.replied_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username,i1_0.content,i1_0.created_at,i1_0.manager_id,i1_0.project_id,i1_0.status,i1_0.tick_number,i1_0.title,i1_0.writer_id from inquiry i1_0 join user w1_0 on w1_0.id=i1_0.writer_id left join answer a1_0 on i1_0.id=a1_0.inquiry_id left join user u1_0 on u1_0.id=a1_0.user_id where (? is null or lower(i1_0.title) like lower(concat('%',?,'%')) escape '') and (? is null or lower(w1_0.name) like lower(concat('%',?,'%')) escape '') and (? is null or i1_0.created_at>=?) and (? is null or i1_0.created_at<=?) and (? is null or i1_0.status in (?)) and (? is null or i1_0.project_id=?) and w1_0.username=? order by i1_0.created_at desc
+인쿼리콘텐츠 : [didim.inquiry.domain.Inquiry@52a8e234, didim.inquiry.domain.Inquiry@9df880]
+인쿼리개수 : 2
+인쿼리비었나 : false
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.id=? order by p1_0.created_at desc
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== JWT 필터 진입 ===
+요청 URL: /console
+인증 필요 경로 - JWT 검증 수행: /console
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@3ab80447, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=B58BD625D5437D893195D76C6B391109], Granted Authorities=[USER]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+된거지? : 테스트1
+Hibernate: select m1_0.id,m1_0.created_at,m1_0.delete_flag,m1_0.email,m1_0.name,m1_0.tel,m1_0.updated_at,m1_0.user_id from manager m1_0 left join user u1_0 on u1_0.id=m1_0.user_id where u1_0.id=? order by m1_0.created_at desc limit ?
+Hibernate: select count(m1_0.id) from manager m1_0 left join user u1_0 on u1_0.id=m1_0.user_id where u1_0.id=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== JWT 필터 진입 ===
+요청 URL: /inquiryList
+인증 필요 경로 - JWT 검증 수행: /inquiryList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@3ab80447, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=B58BD625D5437D893195D76C6B391109], Granted Authorities=[USER]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== 디버깅 정보 ===
+요청 시간: Thu Aug 14 18:13:36 KST 2025
+세션 ID: 95AFA4227E39D19A79911981F06EA98C
+요청 URL: https://didim.fmapp.kr/inquiryList
+Authentication: UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@3ab80447, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=B58BD625D5437D893195D76C6B391109], Granted Authorities=[USER]]
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+SecurityUtil username: test1
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+2025-08-14T18:13:36.091+09:00  WARN 61191 --- [inquiry] [-nio-443-exec-4] org.hibernate.orm.query                  : HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
+Hibernate: select i1_0.id,a1_0.inquiry_id,a1_0.id,a1_0.content,a1_0.replied_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username,i1_0.content,i1_0.created_at,i1_0.manager_id,i1_0.project_id,i1_0.status,i1_0.tick_number,i1_0.title,i1_0.writer_id from inquiry i1_0 join user w1_0 on w1_0.id=i1_0.writer_id left join answer a1_0 on i1_0.id=a1_0.inquiry_id left join user u1_0 on u1_0.id=a1_0.user_id where (? is null or lower(i1_0.title) like lower(concat('%',?,'%')) escape '') and (? is null or lower(w1_0.name) like lower(concat('%',?,'%')) escape '') and (? is null or i1_0.created_at>=?) and (? is null or i1_0.created_at<=?) and (? is null or i1_0.status in (?)) and (? is null or i1_0.project_id=?) and w1_0.username=? order by i1_0.created_at desc
+인쿼리콘텐츠 : [didim.inquiry.domain.Inquiry@7b7978c6, didim.inquiry.domain.Inquiry@93785b0]
+인쿼리개수 : 2
+인쿼리비었나 : false
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.id=? order by p1_0.created_at desc
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /signin
+인증 필요 경로 - JWT 검증 수행: /signin
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== CustomUserDetailsService.loadUserByUsername 호출 ===
+2. 입력된 usernameWithCustomerCode: admin|didim
+파싱된 username: admin
+파싱된 customerCode: didim
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code=?
+파싱된 username , customerCode로 DB조회
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=? and u1_0.customer_code=?
+DB에서 조회된 사용자: admin
+사용자 고객코드: DIDIM
+사용자 삭제플래그: false
+인증 성공 - CustomUserDetails 생성(User객체) 후 반환 -> JwtAuthController
+=== CustomUserDetails.getPassword 호출 ===
+반환할 비밀번호: ***
+=== JWT 필터 진입 ===
+요청 URL: /inquiryList
+인증 필요 경로 - JWT 검증 수행: /inquiryList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e9b7e75, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== 디버깅 정보 ===
+요청 시간: Thu Aug 14 18:13:43 KST 2025
+세션 ID: E3111F1FCD5196317FA0F347F4FE0F54
+요청 URL: https://didim.fmapp.kr/inquiryList
+Authentication: UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e9b7e75, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+SecurityUtil username: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+2025-08-14T18:13:43.814+09:00  WARN 61191 --- [inquiry] [nio-443-exec-10] org.hibernate.orm.query                  : HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
+Hibernate: select i1_0.id,a1_0.inquiry_id,a1_0.id,a1_0.content,a1_0.replied_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username,i1_0.content,i1_0.created_at,i1_0.manager_id,i1_0.project_id,i1_0.status,i1_0.tick_number,i1_0.title,i1_0.writer_id from inquiry i1_0 join user w1_0 on w1_0.id=i1_0.writer_id left join answer a1_0 on i1_0.id=a1_0.inquiry_id left join user u1_0 on u1_0.id=a1_0.user_id where (? is null or lower(i1_0.title) like lower(concat('%',?,'%')) escape '') and (? is null or lower(w1_0.name) like lower(concat('%',?,'%')) escape '') and (? is null or i1_0.created_at>=?) and (? is null or i1_0.created_at<=?) and (? is null or i1_0.status in (?,?)) and (? is null or i1_0.project_id=?) order by i1_0.created_at desc
+인쿼리콘텐츠 : [didim.inquiry.domain.Inquiry@792ff720, didim.inquiry.domain.Inquiry@78f152b0]
+인쿼리개수 : 2
+인쿼리비었나 : false
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.id=? order by p1_0.created_at desc
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 where p1_0.id=?
+Hibernate: select m1_0.id,m1_0.created_at,m1_0.delete_flag,m1_0.email,m1_0.name,m1_0.tel,m1_0.updated_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from manager m1_0 left join user u1_0 on u1_0.id=m1_0.user_id where m1_0.id=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 where p1_0.id=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /console
+인증 필요 경로 - JWT 검증 수행: /console
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e9b7e75, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+된거지? : 디딤솔루션코리아
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 order by c1_0.created_at desc limit ?
+Hibernate: select count(*) from customer c1_0
+Hibernate: select count(c1_0.id) from customer c1_0 where upper(c1_0.status)=upper(?)
+Hibernate: select count(c1_0.id) from customer c1_0 where c1_0.created_at between ? and ?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/customerList
+인증 필요 경로 - JWT 검증 수행: /admin/customerList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e9b7e75, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id<>? and u1_0.customer_code in (select c1_0.code from customer c1_0 where c1_0.status='ACTIVE') order by u1_0.id desc limit ?
+Hibernate: select count(*) from user u1_0
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?,?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /console
+인증 필요 경로 - JWT 검증 수행: /console
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e9b7e75, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+된거지? : 디딤솔루션코리아
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 order by c1_0.created_at desc limit ?
+Hibernate: select count(*) from customer c1_0
+Hibernate: select count(c1_0.id) from customer c1_0 where upper(c1_0.status)=upper(?)
+Hibernate: select count(c1_0.id) from customer c1_0 where c1_0.created_at between ? and ?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /inquiryList
+인증 필요 경로 - JWT 검증 수행: /inquiryList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e9b7e75, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== 디버깅 정보 ===
+요청 시간: Thu Aug 14 18:14:10 KST 2025
+세션 ID: E3111F1FCD5196317FA0F347F4FE0F54
+요청 URL: https://didim.fmapp.kr/inquiryList
+Authentication: UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e9b7e75, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+SecurityUtil username: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+2025-08-14T18:14:10.105+09:00  WARN 61191 --- [inquiry] [-nio-443-exec-5] org.hibernate.orm.query                  : HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
+Hibernate: select i1_0.id,a1_0.inquiry_id,a1_0.id,a1_0.content,a1_0.replied_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username,i1_0.content,i1_0.created_at,i1_0.manager_id,i1_0.project_id,i1_0.status,i1_0.tick_number,i1_0.title,i1_0.writer_id from inquiry i1_0 join user w1_0 on w1_0.id=i1_0.writer_id left join answer a1_0 on i1_0.id=a1_0.inquiry_id left join user u1_0 on u1_0.id=a1_0.user_id where (? is null or lower(i1_0.title) like lower(concat('%',?,'%')) escape '') and (? is null or lower(w1_0.name) like lower(concat('%',?,'%')) escape '') and (? is null or i1_0.created_at>=?) and (? is null or i1_0.created_at<=?) and (? is null or i1_0.status in (?,?)) and (? is null or i1_0.project_id=?) order by i1_0.created_at desc
+인쿼리콘텐츠 : [didim.inquiry.domain.Inquiry@743fbe8d, didim.inquiry.domain.Inquiry@5ec08343]
+인쿼리개수 : 2
+인쿼리비었나 : false
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.id=? order by p1_0.created_at desc
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 where p1_0.id=?
+Hibernate: select m1_0.id,m1_0.created_at,m1_0.delete_flag,m1_0.email,m1_0.name,m1_0.tel,m1_0.updated_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from manager m1_0 left join user u1_0 on u1_0.id=m1_0.user_id where m1_0.id=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 where p1_0.id=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /console
+인증 필요 경로 - JWT 검증 수행: /console
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e9b7e75, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+된거지? : 디딤솔루션코리아
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 order by c1_0.created_at desc limit ?
+Hibernate: select count(*) from customer c1_0
+Hibernate: select count(c1_0.id) from customer c1_0 where upper(c1_0.status)=upper(?)
+Hibernate: select count(c1_0.id) from customer c1_0 where c1_0.created_at between ? and ?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /inquiryList
+인증 필요 경로 - JWT 검증 수행: /inquiryList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e9b7e75, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== 디버깅 정보 ===
+요청 시간: Thu Aug 14 18:14:18 KST 2025
+세션 ID: E3111F1FCD5196317FA0F347F4FE0F54
+요청 URL: https://didim.fmapp.kr/inquiryList
+Authentication: UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e9b7e75, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+SecurityUtil username: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+2025-08-14T18:14:18.408+09:00  WARN 61191 --- [inquiry] [-nio-443-exec-6] org.hibernate.orm.query                  : HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
+Hibernate: select i1_0.id,a1_0.inquiry_id,a1_0.id,a1_0.content,a1_0.replied_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username,i1_0.content,i1_0.created_at,i1_0.manager_id,i1_0.project_id,i1_0.status,i1_0.tick_number,i1_0.title,i1_0.writer_id from inquiry i1_0 join user w1_0 on w1_0.id=i1_0.writer_id left join answer a1_0 on i1_0.id=a1_0.inquiry_id left join user u1_0 on u1_0.id=a1_0.user_id where (? is null or lower(i1_0.title) like lower(concat('%',?,'%')) escape '') and (? is null or lower(w1_0.name) like lower(concat('%',?,'%')) escape '') and (? is null or i1_0.created_at>=?) and (? is null or i1_0.created_at<=?) and (? is null or i1_0.status in (?,?)) and (? is null or i1_0.project_id=?) order by i1_0.created_at desc
+인쿼리콘텐츠 : [didim.inquiry.domain.Inquiry@4bb01249, didim.inquiry.domain.Inquiry@4d9c6f48]
+인쿼리개수 : 2
+인쿼리비었나 : false
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.id=? order by p1_0.created_at desc
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 where p1_0.id=?
+Hibernate: select m1_0.id,m1_0.created_at,m1_0.delete_flag,m1_0.email,m1_0.name,m1_0.tel,m1_0.updated_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from manager m1_0 left join user u1_0 on u1_0.id=m1_0.user_id where m1_0.id=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 where p1_0.id=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /signin
+인증 필요 경로 - JWT 검증 수행: /signin
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== CustomUserDetailsService.loadUserByUsername 호출 ===
+2. 입력된 usernameWithCustomerCode: test1|test1
+파싱된 username: test1
+파싱된 customerCode: test1
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code=?
+파싱된 username , customerCode로 DB조회
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=? and u1_0.customer_code=?
+DB에서 조회된 사용자: test1
+사용자 고객코드: TEST1
+사용자 삭제플래그: false
+인증 성공 - CustomUserDetails 생성(User객체) 후 반환 -> JwtAuthController
+=== CustomUserDetails.getPassword 호출 ===
+반환할 비밀번호: ***
+=== JWT 필터 진입 ===
+요청 URL: /inquiryList
+인증 필요 경로 - JWT 검증 수행: /inquiryList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e88d318, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[USER]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== 디버깅 정보 ===
+요청 시간: Thu Aug 14 18:14:26 KST 2025
+세션 ID: 573E4B963067AC8683EEAD0215C73FA0
+요청 URL: https://didim.fmapp.kr/inquiryList
+Authentication: UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e88d318, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[USER]]
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+SecurityUtil username: test1
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+2025-08-14T18:14:26.304+09:00  WARN 61191 --- [inquiry] [-nio-443-exec-8] org.hibernate.orm.query                  : HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
+Hibernate: select i1_0.id,a1_0.inquiry_id,a1_0.id,a1_0.content,a1_0.replied_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username,i1_0.content,i1_0.created_at,i1_0.manager_id,i1_0.project_id,i1_0.status,i1_0.tick_number,i1_0.title,i1_0.writer_id from inquiry i1_0 join user w1_0 on w1_0.id=i1_0.writer_id left join answer a1_0 on i1_0.id=a1_0.inquiry_id left join user u1_0 on u1_0.id=a1_0.user_id where (? is null or lower(i1_0.title) like lower(concat('%',?,'%')) escape '') and (? is null or lower(w1_0.name) like lower(concat('%',?,'%')) escape '') and (? is null or i1_0.created_at>=?) and (? is null or i1_0.created_at<=?) and (? is null or i1_0.status in (?)) and (? is null or i1_0.project_id=?) and w1_0.username=? order by i1_0.created_at desc
+인쿼리콘텐츠 : [didim.inquiry.domain.Inquiry@2f8f06fb, didim.inquiry.domain.Inquiry@6b06994b]
+인쿼리개수 : 2
+인쿼리비었나 : false
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.id=? order by p1_0.created_at desc
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== JWT 필터 진입 ===
+요청 URL: /console
+인증 필요 경로 - JWT 검증 수행: /console
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@7e88d318, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[USER]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+된거지? : 테스트1
+Hibernate: select m1_0.id,m1_0.created_at,m1_0.delete_flag,m1_0.email,m1_0.name,m1_0.tel,m1_0.updated_at,m1_0.user_id from manager m1_0 left join user u1_0 on u1_0.id=m1_0.user_id where u1_0.id=? order by m1_0.created_at desc limit ?
+Hibernate: select count(m1_0.id) from manager m1_0 left join user u1_0 on u1_0.id=m1_0.user_id where u1_0.id=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: test1
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /actuator/health
+인증 필요 경로 - JWT 검증 수행: /actuator/health
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /developmentserver/metadatauploader
+인증 필요 경로 - JWT 검증 수행: /developmentserver/metadatauploader
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-14T22:35:26.875+09:00  INFO 61191 --- [inquiry] [-nio-443-exec-6] o.apache.coyote.http11.Http11Processor   : Error parsing HTTP request header
+ Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
+
+java.lang.IllegalArgumentException: Invalid character found in the request target [//wp-json/wc/store/products/collection-data?calculate_attribute_counts[][taxonomy]=%252522%252529%252520union%252520all%252520select%2525201%25252Ctable%25255fname%252520from%252520information%25255fschema%25252etables%25253B%252500 ]. The valid characters are defined in RFC 7230 and RFC 3986
+	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:478) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:271) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:1447) ~[na:na]
+
+=== JWT 필터 진입 ===
+요청 URL: /owa/auth/logon.aspx
+인증 필요 경로 - JWT 검증 수행: /owa/auth/logon.aspx
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.git/config
+인증 필요 경로 - JWT 검증 수행: /.git/config
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /_profiler/phpinfo
+인증 필요 경로 - JWT 검증 수행: /_profiler/phpinfo
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /favicon.ico
+인증 필요 경로 - JWT 검증 수행: /favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /api/v2/static/not.found
+인증 필요 경로 - JWT 검증 수행: /api/v2/static/not.found
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /api/v2/static/not.found
+인증 필요 경로 - JWT 검증 수행: /api/v2/static/not.found
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /remote/logincheck
+인증 필요 경로 - JWT 검증 수행: /remote/logincheck
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /remote/logincheck
+인증 필요 경로 - JWT 검증 수행: /remote/logincheck
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /fonts/ftnt-icons.woff
+인증 필요 경로 - JWT 검증 수행: /fonts/ftnt-icons.woff
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /fonts/ftnt-icons.woff
+인증 필요 경로 - JWT 검증 수행: /fonts/ftnt-icons.woff
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /lang/custom/sbin/init
+인증 필요 경로 - JWT 검증 수행: /lang/custom/sbin/init
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lang/custom/sbin/init
+인증 필요 경로 - JWT 검증 수행: /lang/custom/sbin/init
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /static/lang/custom/sbin/init
+인증 필요 경로 - JWT 검증 수행: /static/lang/custom/sbin/init
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lang/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /lang/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lang/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /lang/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /migadmin/lang/legacy/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /migadmin/lang/legacy/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /migadmin/lang/legacy/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /migadmin/lang/legacy/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /geoserver/web/
+인증 필요 경로 - JWT 검증 수행: /geoserver/web/
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /remote/login
+인증 필요 경로 - JWT 검증 수행: /remote/login
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+2025-08-15T00:47:58.207+09:00  WARN 61191 --- [inquiry] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=29s871ms), soft-evicting connections from pool.
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.htpasswd
+인증 필요 경로 - JWT 검증 수행: /.htpasswd
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /autodiscover/autodiscover.json
+인증 필요 경로 - JWT 검증 수행: /autodiscover/autodiscover.json
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /favicon.ico
+인증 필요 경로 - JWT 검증 수행: /favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /hello.world
+인증 필요 경로 - JWT 검증 수행: /hello.world
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /hello.world
+인증 필요 경로 - JWT 검증 수행: /hello.world
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-15T07:01:06.867+09:00  WARN 61191 --- [inquiry] [-nio-443-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+=== JWT 필터 진입 ===
+요청 URL: /vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /vendor/phpunit/phpunit/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /vendor/phpunit/phpunit/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /vendor/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /vendor/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /vendor/phpunit/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /vendor/phpunit/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /vendor/phpunit/phpunit/LICENSE/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /vendor/phpunit/phpunit/LICENSE/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /vendor/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /vendor/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /phpunit/phpunit/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /phpunit/phpunit/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /phpunit/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /phpunit/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lib/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /lib/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lib/phpunit/phpunit/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /lib/phpunit/phpunit/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lib/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /lib/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lib/phpunit/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /lib/phpunit/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lib/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /lib/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /laravel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /laravel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /www/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /www/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /ws/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /ws/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /yii/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /yii/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /zend/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /zend/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /ws/ec/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /ws/ec/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /V2/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /V2/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /tests/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /tests/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /test/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /test/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /testing/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /testing/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /api/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /api/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /demo/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /demo/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /cms/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /cms/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /crm/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /crm/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /admin/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /admin/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /backup/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /backup/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /blog/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /blog/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /workspace/drupal/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /workspace/drupal/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /panel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /panel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /public/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /public/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /apps/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /apps/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /app/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+인증 필요 경로 - JWT 검증 수행: /app/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.git/config
+인증 필요 경로 - JWT 검증 수행: /.git/config
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /api/.env
+인증 필요 경로 - JWT 검증 수행: /api/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /config/.env
+인증 필요 경로 - JWT 검증 수행: /config/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /_profiler/phpinfo
+인증 필요 경로 - JWT 검증 수행: /_profiler/phpinfo
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /tool/view/phpinfo.view.php
+인증 필요 경로 - JWT 검증 수행: /tool/view/phpinfo.view.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /phpinfo.php
+인증 필요 경로 - JWT 검증 수행: /phpinfo.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /phpinfo
+인증 필요 경로 - JWT 검증 수행: /phpinfo
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /info.php
+인증 필요 경로 - JWT 검증 수행: /info.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.git/config
+인증 필요 경로 - JWT 검증 수행: /.git/config
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /ab2g
+인증 필요 경로 - JWT 검증 수행: /ab2g
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /ab2h
+인증 필요 경로 - JWT 검증 수행: /ab2h
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /alive.php
+인증 필요 경로 - JWT 검증 수행: /alive.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /teorema505
+인증 필요 경로 - JWT 검증 수행: /teorema505
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-15T13:54:46.428+09:00  WARN 61191 --- [inquiry] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=27s948ms), soft-evicting connections from pool.
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /core/.env.save
+인증 필요 경로 - JWT 검증 수행: /core/.env.save
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /docs/.env.conf
+인증 필요 경로 - JWT 검증 수행: /docs/.env.conf
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-15T17:10:06.281+09:00  WARN 61191 --- [inquiry] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=27s984ms), soft-evicting connections from pool.
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /version
+인증 필요 경로 - JWT 검증 수행: /version
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /favicon.ico
+인증 필요 경로 - JWT 검증 수행: /favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /api/v2/static/not.found
+인증 필요 경로 - JWT 검증 수행: /api/v2/static/not.found
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /api/v2/static/not.found
+인증 필요 경로 - JWT 검증 수행: /api/v2/static/not.found
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /remote/logincheck
+인증 필요 경로 - JWT 검증 수행: /remote/logincheck
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /remote/logincheck
+인증 필요 경로 - JWT 검증 수행: /remote/logincheck
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /fonts/ftnt-icons.woff
+인증 필요 경로 - JWT 검증 수행: /fonts/ftnt-icons.woff
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /fonts/ftnt-icons.woff
+인증 필요 경로 - JWT 검증 수행: /fonts/ftnt-icons.woff
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /lang/custom/sbin/init
+인증 필요 경로 - JWT 검증 수행: /lang/custom/sbin/init
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lang/custom/sbin/init
+인증 필요 경로 - JWT 검증 수행: /lang/custom/sbin/init
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lang/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /lang/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lang/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /lang/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /migadmin/lang/legacy/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /migadmin/lang/legacy/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /migadmin/lang/legacy/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /migadmin/lang/legacy/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /geoserver/web/
+인증 필요 경로 - JWT 검증 수행: /geoserver/web/
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /owa/auth/x.js
+인증 필요 경로 - JWT 검증 수행: /owa/auth/x.js
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-15T23:16:39.469+09:00  WARN 61191 --- [inquiry] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=27s988ms), soft-evicting connections from pool.
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /favicon.ico
+인증 필요 경로 - JWT 검증 수행: /favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /ab2g
+인증 필요 경로 - JWT 검증 수행: /ab2g
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /ab2h
+인증 필요 경로 - JWT 검증 수행: /ab2h
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /alive.php
+인증 필요 경로 - JWT 검증 수행: /alive.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /teorema505
+인증 필요 경로 - JWT 검증 수행: /teorema505
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /WebInterface/
+인증 필요 경로 - JWT 검증 수행: /WebInterface/
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.git/config
+인증 필요 경로 - JWT 검증 수행: /.git/config
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-16T05:43:19.465+09:00  WARN 61191 --- [inquiry] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=29s777ms), soft-evicting connections from pool.
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /api/.env
+인증 필요 경로 - JWT 검증 수행: /api/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /backend/.env
+인증 필요 경로 - JWT 검증 수행: /backend/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /admin/.env
+인증 필요 경로 - JWT 검증 수행: /admin/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /.env.example
+인증 필요 경로 - JWT 검증 수행: /.env.example
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /app_dev.php/_profiler/phpinfo
+인증 필요 경로 - JWT 검증 수행: /app_dev.php/_profiler/phpinfo
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /staging/.env
+인증 필요 경로 - JWT 검증 수행: /staging/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /app_dev.php/_profiler/open
+인증 필요 경로 - JWT 검증 수행: /app_dev.php/_profiler/open
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /phpinfo.php
+인증 필요 경로 - JWT 검증 수행: /phpinfo.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /info/
+인증 필요 경로 - JWT 검증 수행: /info/
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /app/.env
+인증 필요 경로 - JWT 검증 수행: /app/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /phpinfo/
+인증 필요 경로 - JWT 검증 수행: /phpinfo/
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /dev/.env
+인증 필요 경로 - JWT 검증 수행: /dev/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /.env.production
+인증 필요 경로 - JWT 검증 수행: /.env.production
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /.env.save
+인증 필요 경로 - JWT 검증 수행: /.env.save
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /demo/.env
+인증 필요 경로 - JWT 검증 수행: /demo/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /img/.env
+인증 필요 경로 - JWT 검증 수행: /img/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /vendor/.env
+인증 필요 경로 - JWT 검증 수행: /vendor/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /php-info.php
+인증 필요 경로 - JWT 검증 수행: /php-info.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /inf/
+인증 필요 경로 - JWT 검증 수행: /inf/
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /upload/.env
+인증 필요 경로 - JWT 검증 수행: /upload/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /includes/.env
+인증 필요 경로 - JWT 검증 수행: /includes/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /APPS/.env
+인증 필요 경로 - JWT 검증 수행: /APPS/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /application/.env
+인증 필요 경로 - JWT 검증 수행: /application/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /.config
+인증 필요 경로 - JWT 검증 수행: /.config
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /doc/.env
+인증 필요 경로 - JWT 검증 수행: /doc/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /framework/.env
+인증 필요 경로 - JWT 검증 수행: /framework/.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /ecp/Current/exporttool/microsoft.exchange.ediscovery.exporttool.application
+인증 필요 경로 - JWT 검증 수행: /ecp/Current/exporttool/microsoft.exchange.ediscovery.exporttool.application
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /favicon.ico
+인증 필요 경로 - JWT 검증 수행: /favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /api/v2/static/not.found
+인증 필요 경로 - JWT 검증 수행: /api/v2/static/not.found
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /api/v2/static/not.found
+인증 필요 경로 - JWT 검증 수행: /api/v2/static/not.found
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /remote/logincheck
+인증 필요 경로 - JWT 검증 수행: /remote/logincheck
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /remote/logincheck
+인증 필요 경로 - JWT 검증 수행: /remote/logincheck
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /fonts/ftnt-icons.woff
+인증 필요 경로 - JWT 검증 수행: /fonts/ftnt-icons.woff
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /fonts/ftnt-icons.woff
+인증 필요 경로 - JWT 검증 수행: /fonts/ftnt-icons.woff
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /lang/custom/sbin/init
+인증 필요 경로 - JWT 검증 수행: /lang/custom/sbin/init
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lang/custom/sbin/init
+인증 필요 경로 - JWT 검증 수행: /lang/custom/sbin/init
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /static/lang/custom/sbin/init
+인증 필요 경로 - JWT 검증 수행: /static/lang/custom/sbin/init
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /static/lang/custom/sbin/init
+인증 필요 경로 - JWT 검증 수행: /static/lang/custom/sbin/init
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lang/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /lang/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lang/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /lang/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /migadmin/lang/legacy/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /migadmin/lang/legacy/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /migadmin/lang/legacy/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /migadmin/lang/legacy/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /geoserver/web/
+인증 필요 경로 - JWT 검증 수행: /geoserver/web/
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /api
+인증 필요 경로 - JWT 검증 수행: /api
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /openapi/v2
+인증 필요 경로 - JWT 검증 수행: /openapi/v2
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /stats
+인증 필요 경로 - JWT 검증 수행: /stats
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-16T15:19:50.467+09:00 ERROR 61191 --- [inquiry] [io-443-Acceptor] org.apache.tomcat.util.net.NioEndpoint   : Error setting socket options
+
+java.net.SocketException: Invalid argument
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method) ~[na:na]
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:394) ~[na:na]
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:332) ~[na:na]
+	at java.base/sun.nio.ch.SocketChannelImpl.setOption(SocketChannelImpl.java:285) ~[na:na]
+	at java.base/sun.nio.ch.SocketAdaptor.setIntOption(SocketAdaptor.java:212) ~[na:na]
+	at java.base/sun.nio.ch.SocketAdaptor.setSoLinger(SocketAdaptor.java:250) ~[na:na]
+	at org.apache.tomcat.util.net.SocketProperties.setProperties(SocketProperties.java:203) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:492) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:72) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.net.Acceptor.run(Acceptor.java:147) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:1447) ~[na:na]
+
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-16T15:20:07.126+09:00  INFO 61191 --- [inquiry] [-nio-443-exec-4] o.apache.coyote.http11.Http11Processor   : Error parsing HTTP request header
+ Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
+
+java.lang.IllegalArgumentException: Invalid character found in method name [0x000x000x070x000x080x000x030x000x040x000x050x000x06...]. HTTP method names must be tokens
+	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:403) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:271) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:1447) ~[na:na]
+
+=== JWT 필터 진입 ===
+요청 URL: /sdk
+인증 필요 경로 - JWT 검증 수행: /sdk
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /odinhttpcall1755325213
+인증 필요 경로 - JWT 검증 수행: /odinhttpcall1755325213
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /HNAP1
+인증 필요 경로 - JWT 검증 수행: /HNAP1
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /evox/about
+인증 필요 경로 - JWT 검증 수행: /evox/about
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-16T15:20:20.508+09:00  WARN 61191 --- [inquiry] [-nio-443-exec-9] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.git/config
+인증 필요 경로 - JWT 검증 수행: /.git/config
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /admin/login.asp
+인증 필요 경로 - JWT 검증 수행: /admin/login.asp
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /robots.txt
+인증 필요 경로 - JWT 검증 수행: /robots.txt
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /config.json
+인증 필요 경로 - JWT 검증 수행: /config.json
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-16T21:17:46.037+09:00  WARN 61191 --- [inquiry] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=27s954ms), soft-evicting connections from pool.
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /_layouts/images/favicon.ico
+인증 필요 경로 - JWT 검증 수행: /_layouts/images/favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /aaa9
+인증 필요 경로 - JWT 검증 수행: /aaa9
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /aab9
+인증 필요 경로 - JWT 검증 수행: /aab9
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-17T01:34:21.151+09:00  WARN 61191 --- [inquiry] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=28s55ms), soft-evicting connections from pool.
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /favicon.ico
+인증 필요 경로 - JWT 검증 수행: /favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /owa/auth/logon.aspx
+인증 필요 경로 - JWT 검증 수행: /owa/auth/logon.aspx
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /autodiscover/autodiscover.json
+인증 필요 경로 - JWT 검증 수행: /autodiscover/autodiscover.json
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.git/config
+인증 필요 경로 - JWT 검증 수행: /.git/config
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /robots.txt
+인증 필요 경로 - JWT 검증 수행: /robots.txt
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /ab2g
+인증 필요 경로 - JWT 검증 수행: /ab2g
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /ab2h
+인증 필요 경로 - JWT 검증 수행: /ab2h
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /alive.php
+인증 필요 경로 - JWT 검증 수행: /alive.php
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /teorema505
+인증 필요 경로 - JWT 검증 수행: /teorema505
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-17T06:49:42.515+09:00  WARN 61191 --- [inquiry] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=28s89ms), soft-evicting connections from pool.
+2025-08-17T08:35:39.398+09:00  WARN 61191 --- [inquiry] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=28s3ms), soft-evicting connections from pool.
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /owa/auth/logon.aspx
+인증 필요 경로 - JWT 검증 수행: /owa/auth/logon.aspx
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-17T12:06:33.520+09:00  WARN 61191 --- [inquiry] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=28s212ms), soft-evicting connections from pool.
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-17T13:36:54.262+09:00  WARN 61191 --- [inquiry] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=26s103ms), soft-evicting connections from pool.
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.git/config
+인증 필요 경로 - JWT 검증 수행: /.git/config
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.git/config
+인증 필요 경로 - JWT 검증 수행: /.git/config
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /favicon.ico
+인증 필요 경로 - JWT 검증 수행: /favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /aaa9
+인증 필요 경로 - JWT 검증 수행: /aaa9
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /aab9
+인증 필요 경로 - JWT 검증 수행: /aab9
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /favicon.ico
+인증 필요 경로 - JWT 검증 수행: /favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /api/v2/static/not.found
+인증 필요 경로 - JWT 검증 수행: /api/v2/static/not.found
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /api/v2/static/not.found
+인증 필요 경로 - JWT 검증 수행: /api/v2/static/not.found
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /remote/logincheck
+인증 필요 경로 - JWT 검증 수행: /remote/logincheck
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /remote/logincheck
+인증 필요 경로 - JWT 검증 수행: /remote/logincheck
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /fonts/ftnt-icons.woff
+인증 필요 경로 - JWT 검증 수행: /fonts/ftnt-icons.woff
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /fonts/ftnt-icons.woff
+인증 필요 경로 - JWT 검증 수행: /fonts/ftnt-icons.woff
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /lang/custom/sbin/init
+인증 필요 경로 - JWT 검증 수행: /lang/custom/sbin/init
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /static/lang/custom/sbin/init
+인증 필요 경로 - JWT 검증 수행: /static/lang/custom/sbin/init
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lang/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /lang/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /lang/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /lang/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /migadmin/lang/legacy/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /migadmin/lang/legacy/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /migadmin/lang/legacy/legacy/filechecksum
+인증 필요 경로 - JWT 검증 수행: /migadmin/lang/legacy/legacy/filechecksum
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /geoserver/web/
+인증 필요 경로 - JWT 검증 수행: /geoserver/web/
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /favicon.ico
+인증 필요 경로 - JWT 검증 수행: /favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /developmentserver/metadatauploader
+인증 필요 경로 - JWT 검증 수행: /developmentserver/metadatauploader
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /owa/auth/x.js
+인증 필요 경로 - JWT 검증 수행: /owa/auth/x.js
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.git/index
+인증 필요 경로 - JWT 검증 수행: /.git/index
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /remote/logincheck
+인증 필요 경로 - JWT 검증 수행: /remote/logincheck
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /admin/login.asp
+인증 필요 경로 - JWT 검증 수행: /admin/login.asp
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.env
+인증 필요 경로 - JWT 검증 수행: /.env
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /.git/config
+인증 필요 경로 - JWT 검증 수행: /.git/config
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /favicon.ico
+인증 필요 경로 - JWT 검증 수행: /favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /favicon.ico
+인증 필요 경로 - JWT 검증 수행: /favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /favicon.ico
+인증 필요 경로 - JWT 검증 수행: /favicon.ico
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /actuator/health
+인증 필요 경로 - JWT 검증 수행: /actuator/health
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-18T08:44:29.053+09:00  INFO 61191 --- [inquiry] [-nio-443-exec-3] o.apache.coyote.http11.Http11Processor   : Error parsing HTTP request header
+ Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
+
+java.lang.IllegalArgumentException: Invalid character found in method name [0x000x000x070x000x080x000x030x000x040x000x050x000x06...]. HTTP method names must be tokens
+	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:403) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:271) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:1447) ~[na:na]
+
+=== JWT 필터 진입 ===
+요청 URL: /sdk
+인증 필요 경로 - JWT 검증 수행: /sdk
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /odinhttpcall1755474275
+인증 필요 경로 - JWT 검증 수행: /odinhttpcall1755474275
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /HNAP1
+인증 필요 경로 - JWT 검증 수행: /HNAP1
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /evox/about
+인증 필요 경로 - JWT 검증 수행: /evox/about
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-18T08:44:42.417+09:00  WARN 61191 --- [inquiry] [-nio-443-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-18T09:21:07.579+09:00 ERROR 61191 --- [inquiry] [io-443-Acceptor] org.apache.tomcat.util.net.NioEndpoint   : Error setting socket options
+
+java.net.SocketException: Invalid argument
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method) ~[na:na]
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:394) ~[na:na]
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:332) ~[na:na]
+	at java.base/sun.nio.ch.SocketChannelImpl.setOption(SocketChannelImpl.java:285) ~[na:na]
+	at java.base/sun.nio.ch.SocketAdaptor.setIntOption(SocketAdaptor.java:212) ~[na:na]
+	at java.base/sun.nio.ch.SocketAdaptor.setSoLinger(SocketAdaptor.java:250) ~[na:na]
+	at org.apache.tomcat.util.net.SocketProperties.setProperties(SocketProperties.java:203) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:492) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:72) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at org.apache.tomcat.util.net.Acceptor.run(Acceptor.java:147) ~[tomcat-embed-core-10.1.42.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:1447) ~[na:na]
+
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /odinhttpcall1755476490
+인증 필요 경로 - JWT 검증 수행: /odinhttpcall1755476490
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /sdk
+인증 필요 경로 - JWT 검증 수행: /sdk
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /evox/about
+인증 필요 경로 - JWT 검증 수행: /evox/about
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /HNAP1
+인증 필요 경로 - JWT 검증 수행: /HNAP1
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+2025-08-18T09:21:37.496+09:00  WARN 61191 --- [inquiry] [-nio-443-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /login
+공개 경로 - JWT 검증 건너뛰기: /login
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /
+인증 필요 경로 - JWT 검증 수행: /
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== JWT 필터 진입 ===
+요청 URL: /signin
+인증 필요 경로 - JWT 검증 수행: /signin
+/login 요청 시 토큰 정보 확인 불가능
+헤더 쿠키 파라미터 -> Filter JWT : null
+=== CustomUserDetailsService.loadUserByUsername 호출 ===
+2. 입력된 usernameWithCustomerCode: admin|didim
+파싱된 username: admin
+파싱된 customerCode: didim
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code=?
+파싱된 username , customerCode로 DB조회
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=? and u1_0.customer_code=?
+DB에서 조회된 사용자: admin
+사용자 고객코드: DIDIM
+사용자 삭제플래그: false
+인증 성공 - CustomUserDetails 생성(User객체) 후 반환 -> JwtAuthController
+=== CustomUserDetails.getPassword 호출 ===
+반환할 비밀번호: ***
+=== JWT 필터 진입 ===
+요청 URL: /inquiryList
+인증 필요 경로 - JWT 검증 수행: /inquiryList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== 디버깅 정보 ===
+요청 시간: Mon Aug 18 11:32:09 KST 2025
+세션 ID: 69D75095FE7D9B3389A2639FB42302F4
+요청 URL: https://didim.fmapp.kr/inquiryList
+Authentication: UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+SecurityUtil username: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+2025-08-18T11:32:09.139+09:00  WARN 61191 --- [inquiry] [-nio-443-exec-4] org.hibernate.orm.query                  : HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
+Hibernate: select i1_0.id,a1_0.inquiry_id,a1_0.id,a1_0.content,a1_0.replied_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username,i1_0.content,i1_0.created_at,i1_0.manager_id,i1_0.project_id,i1_0.status,i1_0.tick_number,i1_0.title,i1_0.writer_id from inquiry i1_0 join user w1_0 on w1_0.id=i1_0.writer_id left join answer a1_0 on i1_0.id=a1_0.inquiry_id left join user u1_0 on u1_0.id=a1_0.user_id where (? is null or lower(i1_0.title) like lower(concat('%',?,'%')) escape '') and (? is null or lower(w1_0.name) like lower(concat('%',?,'%')) escape '') and (? is null or i1_0.created_at>=?) and (? is null or i1_0.created_at<=?) and (? is null or i1_0.status in (?,?)) and (? is null or i1_0.project_id=?) order by i1_0.created_at desc
+인쿼리콘텐츠 : [didim.inquiry.domain.Inquiry@186ec2da, didim.inquiry.domain.Inquiry@74994354]
+인쿼리개수 : 2
+인쿼리비었나 : false
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.id=? order by p1_0.created_at desc
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 where p1_0.id=?
+Hibernate: select m1_0.id,m1_0.created_at,m1_0.delete_flag,m1_0.email,m1_0.name,m1_0.tel,m1_0.updated_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from manager m1_0 left join user u1_0 on u1_0.id=m1_0.user_id where m1_0.id=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 where p1_0.id=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== CustomUserDetails.getUsername 호출 ===
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /console
+인증 필요 경로 - JWT 검증 수행: /console
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+된거지? : 디딤솔루션코리아
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 order by c1_0.created_at desc limit ?
+Hibernate: select count(*) from customer c1_0
+Hibernate: select count(c1_0.id) from customer c1_0 where upper(c1_0.status)=upper(?)
+Hibernate: select count(c1_0.id) from customer c1_0 where c1_0.created_at between ? and ?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/customerList
+인증 필요 경로 - JWT 검증 수행: /admin/customerList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id<>? and u1_0.customer_code in (select c1_0.code from customer c1_0 where c1_0.status='ACTIVE') order by u1_0.id desc limit ?
+Hibernate: select count(*) from user u1_0
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?,?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/customerList
+인증 필요 경로 - JWT 검증 수행: /admin/customerList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id<>? order by u1_0.id desc limit ?
+Hibernate: select count(*) from user u1_0
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?,?,?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/customerList
+인증 필요 경로 - JWT 검증 수행: /admin/customerList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id<>? and u1_0.customer_code in (select c1_0.code from customer c1_0 where c1_0.status='ACTIVE') order by u1_0.id desc limit ?
+Hibernate: select count(*) from user u1_0
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?,?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/customerList
+인증 필요 경로 - JWT 검증 수행: /admin/customerList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id<>? order by u1_0.id desc limit ?
+Hibernate: select count(*) from user u1_0
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?,?,?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/customerList
+인증 필요 경로 - JWT 검증 수행: /admin/customerList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id<>? and u1_0.customer_code in (select c1_0.code from customer c1_0 where c1_0.status='ACTIVE') order by u1_0.id desc limit ?
+Hibernate: select count(*) from user u1_0
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?,?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.status='ACTIVE' order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.status='ACTIVE' order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.status='ACTIVE' order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.status='ACTIVE' order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.status='ACTIVE' order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.status='ACTIVE' order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 left join customer c1_0 on c1_0.id=p1_0.customer_id where c1_0.status='ACTIVE' order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/projectListAdmin
+인증 필요 경로 - JWT 검증 수행: /admin/projectListAdmin
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.created_at,p1_0.customer_id,p1_0.subject,p1_0.updated_at from project p1_0 order by p1_0.created_at desc,p1_0.created_at desc limit ?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.status=?
+Hibernate: select count(p1_0.id) from project p1_0
+Hibernate: select count(p1_0.id) from project p1_0 where p1_0.created_at>=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/customerList
+인증 필요 경로 - JWT 검증 수행: /admin/customerList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id<>? and u1_0.customer_code in (select c1_0.code from customer c1_0 where c1_0.status='ACTIVE') order by u1_0.id desc limit ?
+Hibernate: select count(*) from user u1_0
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?,?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/customerList
+인증 필요 경로 - JWT 검증 수행: /admin/customerList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id<>? order by u1_0.id desc limit ?
+Hibernate: select count(*) from user u1_0
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?,?,?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/customerList
+인증 필요 경로 - JWT 검증 수행: /admin/customerList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id<>? and u1_0.customer_code in (select c1_0.code from customer c1_0 where c1_0.status='ACTIVE') order by u1_0.id desc limit ?
+Hibernate: select count(*) from user u1_0
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?,?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/customerList
+인증 필요 경로 - JWT 검증 수행: /admin/customerList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id<>? order by u1_0.id desc limit ?
+Hibernate: select count(*) from user u1_0
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?,?,?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /admin/customerList
+인증 필요 경로 - JWT 검증 수행: /admin/customerList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.id<>? and u1_0.customer_code in (select c1_0.code from customer c1_0 where c1_0.status='ACTIVE') order by u1_0.id desc limit ?
+Hibernate: select count(*) from user u1_0
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 where c1_0.code in (?,?,?,?,?,?) and c1_0.status=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /console
+인증 필요 경로 - JWT 검증 수행: /console
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+된거지? : 디딤솔루션코리아
+Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0 order by c1_0.created_at desc limit ?
+Hibernate: select count(*) from customer c1_0
+Hibernate: select count(c1_0.id) from customer c1_0 where upper(c1_0.status)=upper(?)
+Hibernate: select count(c1_0.id) from customer c1_0 where c1_0.created_at between ? and ?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /myInfo
+인증 필요 경로 - JWT 검증 수행: /myInfo
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+요청전달
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+=== JWT 필터 진입 ===
+요청 URL: /inquiryList
+인증 필요 경로 - JWT 검증 수행: /inquiryList
+SecurityContextHolder.getContext().getAuthentication() : UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+SecurityContextHolder.getContext().getAuthentication().isAuthenticated() : true
+인증된 사용자 JWT 검증건너뛰기
+=== 디버깅 정보 ===
+요청 시간: Mon Aug 18 11:33:00 KST 2025
+세션 ID: 69D75095FE7D9B3389A2639FB42302F4
+요청 URL: https://didim.fmapp.kr/inquiryList
+Authentication: UsernamePasswordAuthenticationToken [Principal=didim.inquiry.auth.CustomUserDetails@64a4cd9e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=211.169.38.70, SessionId=null], Granted Authorities=[ADMIN]]
+=== CustomUserDetails.getUsername 호출 ===
+반환할 사용자명: admin
+SecurityUtil username: admin
+Hibernate: select u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username from user u1_0 where u1_0.username=?
+2025-08-18T11:33:00.029+09:00  WARN 61191 --- [inquiry] [-nio-443-exec-1] org.hibernate.orm.query                  : HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
+Hibernate: select i1_0.id,a1_0.inquiry_id,a1_0.id,a1_0.content,a1_0.replied_at,u1_0.id,u1_0.created_at,u1_0.customer_code,u1_0.delete_flag,u1_0.email,u1_0.name,u1_0.password,u1_0.role,u1_0.tel,u1_0.updated_at,u1_0.username,i1_0.content,i1_0.created_at,i1_0.manager_id,i1_0.project_id,i1_0.status,i1_0.tick_number,i1_0.title,i1_0.writer_id from inquiry i1_0 join user w1_0 on w1_0.id=i1_0.writer_id left join answer a1_0 on i1_0.id=a1_0.inquiry_id left join user u1_0 on u1_0.id=a1_0.user_id where (? is null or lower(i1_0.title) like lower(concat('%',?,'%')) escape '') and (? is null or lower(w1_0.name) like lower(concat('%',?,'%')) escape '') and (? is null or i1_0.created_at>=?) and (? is null or i1_0.created_at<=?) and (? is null or i1_0.status in (?,?)) and (? is null or i1_0.project_id=?) order by i1_0.created_at desc
+인쿼리콘텐츠 : [didim.inquiry.domain.Inquiry@166668b6, didim.inquiry.domain.Inquiry@688f2044]
 인쿼리개수 : 2
 인쿼리비었나 : false
 Hibernate: select c1_0.id,c1_0.code,c1_0.company,c1_0.created_at,c1_0.status,c1_0.updated_at from customer c1_0

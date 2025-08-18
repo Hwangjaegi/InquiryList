@@ -52,32 +52,6 @@ public class AnswerController {
         this.emailService = emailService;
         this.authenticationHelper = authenticationHelper;
     }
-//
-//
-//    @PostMapping("/answerWrite")
-//    public String answerWrite(Answer answer, Model model , RedirectAttributes redirectAttributes){
-//        System.out.println("문의번호 : " + answer.getInquiry().getId());
-//
-//        try {
-//            User findUser = getCurrentUser();
-//            //댓글 작성자 id 답글 객체에 저장
-//            answer.setUser(findUser);
-//
-//            answerService.saveAnswer(answer);
-//
-//            //대상 문의에 상태 변경
-//            Long inquiryId = answer.getInquiry().getId();
-//            Inquiry inquiry =  inquiryService.getInquiryById(inquiryId).orElseThrow(() -> new IllegalArgumentException("해당 문의 없음"));
-//            inquiry.setStatus("답변완료");
-//            inquiryService.saveInquiry(inquiry);
-//
-//            redirectAttributes.addFlashAttribute("successMessage" , "답변이 성공적으로 등록되었습니다.");
-//        }catch (Exception e){
-//            System.err.println("문의 저장 중 오류 발생 : " + e.getMessage());
-//            redirectAttributes.addFlashAttribute("errorMessage","문의 저장 중 오류가 발생했습니다. 다시 시도해주세요!");
-//        }
-//        return "redirect:/inquiryList";
-//    }
 
     // 답글용 임시 이미지 업로드
     @PostMapping("/uploadAnswerTempImage")

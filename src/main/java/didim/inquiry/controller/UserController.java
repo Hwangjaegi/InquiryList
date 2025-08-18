@@ -136,25 +136,6 @@ public class UserController extends BaseController{
         return "login";
     }
 
-    //관리자가 유저 권한 수정 시 사용
-    @PostMapping("/user/updateRole")
-    @ResponseBody
-    public ResponseEntity<?> updateUserRole(@RequestBody UserDto userDto) {
-        // 로그인한 유저의 권한이 MANAGER인지 확인
-        User currentUser = getCurrentUser();
-        if (!"MANAGER".equals(currentUser.getRole())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
-        }
-        try {
-            UserDto updatedUser = userService.updateRole(userDto);
-            return ResponseEntity.ok().body(updatedUser);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("권한 수정 중 오류가 발생했습니다: " + e.getMessage());
-        }
-    }
-
     @PostMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable Long id,
                             @RequestParam(value = "page", required = false, defaultValue = "0") int page,

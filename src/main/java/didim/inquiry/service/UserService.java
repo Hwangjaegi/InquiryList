@@ -244,13 +244,7 @@ public class UserService {
         return userRepository.searchAllFieldsExcludeAdmin(search, pageable);
     }
 
-    // 관리자 -> 유저 권한변경
-    public UserDto updateRole(UserDto userDto) {
-        userRepository.updateByRole(userDto.getId(), userDto.getRole());
-        // 변경된 유저 정보 반환
-        User updatedUser = userRepository.findById(userDto.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
-        return new UserDto(updatedUser);
-    }
+
 
     // 비밀번호 변경 없이 이름, 전화번호, 이메일만 수정
     public void updateUserInfoOnly(UserDto userDto) {
